@@ -115,6 +115,11 @@
         </h1>
         <p class="text-lg md:text-xl text-gray-300 font-light mb-12 max-w-xl mx-auto">
             Calendario oficial de partidos de la comunidad.
+
+<!-- Poné esto donde quieras que aparezca el reloj, pelotudo -->
+<div id="reloj-digital" class="text-haxgreen font-mono text-xl md:text-2xl font-bold tracking-widest my-4">
+    00:00:00
+</div>
         </p>
         <a href="#agenda" class="inline-flex items-center justify-center bg-haxgreen text-black font-bold text-lg md:text-xl py-4 px-10 rounded-full transition-all duration-300 hover:bg-haxgreen-light hover:shadow-neon-hover hover:scale-105 active:scale-95">
             VER AGENDA &rarr;
@@ -453,6 +458,27 @@
             animateStars();
         };
 
-    </script>
+    </script> 
+// Pegá esta función en tu script, mirá qué fácil es no ser un inútil
+function iniciarReloj() {
+    const relojElemento = document.getElementById('reloj-digital');
+    if (!relojElemento) return; // Si borraste el div, no rompas las bolas
+
+    setInterval(() => {
+        const ahora = new Date();
+        const horas = String(ahora.getHours()).padStart(2, '0');
+        const minutos = String(ahora.getMinutes()).padStart(2, '0');
+        const segundos = String(ahora.getSeconds()).padStart(2, '0');
+        
+        relojElemento.textContent = `${horas}:${minutos}:${segundos}`;
+    }, 1000);
+}
+
+// Y acordate de llamarla en tu window.onload, pedazo de gil:
+window.onload = function() {
+    iniciarReloj();
+    // ... aca van tus otras funciones de vago ...
+};
+
 </body>
 </html>

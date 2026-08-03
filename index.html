@@ -459,10 +459,9 @@
         };
 
     </script> 
-// Pegá esta función en tu script, mirá qué fácil es no ser un inútil
 function iniciarReloj() {
     const relojElemento = document.getElementById('reloj-digital');
-    if (!relojElemento) return; // Si borraste el div, no rompas las bolas
+    if (!relojElemento) return;
 
     setInterval(() => {
         const ahora = new Date();
@@ -474,11 +473,11 @@ function iniciarReloj() {
     }, 1000);
 }
 
-// Y acordate de llamarla en tu window.onload, pedazo de gil:
 window.onload = function() {
+    actualizarFecha();
+    resizeCanvas();
+    animateStars();
     iniciarReloj();
-    // ... aca van tus otras funciones de vago ...
 };
-
 </body>
 </html>

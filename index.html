@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HaxCalendar - Oficial</title>
     <link rel="icon" type="image/png" href="https://kappa.lol/08Xsgl">
-    <!-- Google Fonts: Poppins for a modern, clean look -->
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -13,6 +14,9 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <script>
         tailwind.config = {
             theme: {
@@ -46,7 +50,6 @@
             overflow-x: hidden;
         }
 
-        /* Canvas Background */
         #starsCanvas {
             position: fixed;
             top: 0;
@@ -57,7 +60,6 @@
             pointer-events: none;
         }
 
-        /* Match Item Hover Effect */
         .match-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
@@ -67,7 +69,6 @@
             border-color: #00C853;
         }
 
-        /* Floating Back Button Animation */
         #btn-volver {
             opacity: 0;
             visibility: hidden;
@@ -80,7 +81,6 @@
             transform: translateY(0);
         }
 
-        /* Custom Toast Notification */
         #toast {
             visibility: hidden;
             opacity: 0;
@@ -93,7 +93,6 @@
             transform: translateY(0);
         }
         
-        /* YouTube Card Thumbnail Hover */
         .yt-card-img {
             transition: transform 0.5s ease;
         }
@@ -106,6 +105,7 @@
 
     <canvas id="starsCanvas"></canvas>
 
+    <!-- INICIO Y HEADER -->
     <header id="inicio" class="min-h-screen flex flex-col items-center justify-center px-4 text-center relative z-10">
         <div class="mb-6 animate-[pulse_4s_ease-in-out_infinite]">
             <img src="https://kappa.lol/08Xsgl" alt="HaxCalendar Logo" class="w-32 md:w-40 h-auto mx-auto drop-shadow-neon">
@@ -113,25 +113,26 @@
         <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-4 uppercase">
             Hax<span class="text-haxgreen">Calendar</span>
         </h1>
-        <p class="text-lg md:text-xl text-gray-300 font-light mb-12 max-w-xl mx-auto">
+        <p class="text-lg md:text-xl text-gray-300 font-light mb-6 max-w-xl mx-auto">
             Calendario oficial de partidos de la comunidad.
-
-<!-- Poné esto donde quieras que aparezca el reloj, pelotudo -->
-<div id="reloj-digital" class="text-haxgreen font-mono text-xl md:text-2xl font-bold tracking-widest my-4">
-    00:00:00
-</div>
         </p>
-        <a href="#agenda" class="inline-flex items-center justify-center bg-haxgreen text-black font-bold text-lg md:text-xl py-4 px-10 rounded-full transition-all duration-300 hover:bg-haxgreen-light hover:shadow-neon-hover hover:scale-105 active:scale-95">
+
+        <!-- RELOJ DIGITAL EN VIVO -->
+        <div id="reloj-digital" class="text-haxgreen font-mono text-2xl md:text-3xl font-bold tracking-widest my-2 bg-black/60 px-6 py-2 rounded-xl border border-haxborder shadow-neon">
+            00:00:00
+        </div>
+
+        <a href="#agenda" class="mt-8 inline-flex items-center justify-center bg-haxgreen text-black font-bold text-lg md:text-xl py-4 px-10 rounded-full transition-all duration-300 hover:bg-haxgreen-light hover:shadow-neon-hover hover:scale-105 active:scale-95">
             VER AGENDA &rarr;
         </a>
     </header>
 
+    <!-- AGENDA DE HOY -->
     <section id="agenda" class="py-24 px-4 max-w-4xl mx-auto relative z-10">
         <div class="text-center mb-16">
             <h2 class="text-4xl md:text-5xl font-extrabold mb-4 flex justify-center items-center gap-3">
                 <span>📅</span> AGENDA DE HOY
             </h2>
-            <!-- El script actualizará este texto automáticamente -->
             <p id="fecha-actual" class="text-haxgreen font-semibold text-xl tracking-wide">
                 (Cargando fecha...)
             </p>
@@ -139,9 +140,7 @@
 
         <div class="flex flex-col space-y-8">
             
-            <!-- ========================================== -->
-            <!-- ⬇️ BLOQUE DE PARTIDO: COPIAR Y PEGAR ⬇️ -->
-            <!-- ========================================== -->
+            <!-- BLOQUE DE PARTIDO 1 -->
             <article class="match-card bg-haxcard border border-haxborder rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-6">
                 <div class="flex-1 w-full">
                     <h3 class="text-2xl md:text-3xl font-bold uppercase tracking-wider break-words">
@@ -151,24 +150,19 @@
                 <div class="flex flex-col sm:flex-row items-center gap-4 shrink-0">
                     <span class="inline-flex items-center gap-2 bg-red-600/20 text-red-500 font-bold px-4 py-2 rounded-lg border border-red-600/30 whitespace-nowrap">
                         <span class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
-                        EN STREAM
+                        POSPUESTO
                     </span>
                     <span class="inline-flex items-center gap-2 bg-gray-800 text-white font-bold px-4 py-2 rounded-lg border border-gray-700 whitespace-nowrap">
                         🕒 17:00 PM
                     </span>
                 </div>
             </article>
-            <!-- ========================================== -->
-            <!-- ⬆️ FIN BLOQUE DE PARTIDO ⬆️ -->
-            <!-- ========================================== -->
 
-            <!-- ========================================== -->
-            <!-- ⬇️ BLOQUE DE PARTIDO: COPIAR Y PEGAR ⬇️ -->
-            <!-- ========================================== -->
+            <!-- BLOQUE DE PARTIDO 2 -->
             <article class="match-card bg-haxcard border border-haxborder rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-6">
                 <div class="flex-1 w-full">
                     <h3 class="text-2xl md:text-3xl font-bold uppercase tracking-wider break-words">
-                       NINGUN CLUB <span class="text-haxgreen mx-2">VS</span> NINGUN CLUB
+                        NINGUN CLUB <span class="text-haxgreen mx-2">VS</span> NINGUN CLUB
                     </h3>
                 </div>
                 <div class="flex flex-col sm:flex-row items-center gap-4 shrink-0">
@@ -177,17 +171,39 @@
                         NO STREAM
                     </span>
                     <span class="inline-flex items-center gap-2 bg-gray-800 text-white font-bold px-4 py-2 rounded-lg border border-gray-700 whitespace-nowrap">
-                        🕒 
+                        🕒 --:--
                     </span>
                 </div>
             </article>
-            <!-- ========================================== -->
-            <!-- ⬆️ FIN BLOQUE DE PARTIDO ⬆️ -->
-            <!-- ========================================== -->
 
         </div>
     </section>
 
+    <!-- HAXBALL HUB -->
+    <section id="hub" class="py-16 px-4 max-w-5xl mx-auto relative z-10">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl md:text-4xl font-extrabold uppercase tracking-wider text-white">
+                🚀 HAXBALL HUB
+            </h2>
+            <p class="text-gray-400 mt-2">Accesos rápidos para la comunidad</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <a href="https://www.haxball.com" target="_blank" class="bg-haxcard border border-haxborder hover:border-haxgreen p-4 rounded-xl text-center font-bold text-gray-200 hover:text-haxgreen transition-all hover:-translate-y-1">
+                🎮 Jugar Haxball
+            </a>
+            <a href="https://discord.gg/zamH2FZGUb" target="_blank" class="bg-haxcard border border-haxborder hover:border-haxgreen p-4 rounded-xl text-center font-bold text-gray-200 hover:text-haxgreen transition-all hover:-translate-y-1">
+                💬 Discord Oficial
+            </a>
+            <a href="https://kick.com/espnhaxball" target="_blank" class="bg-haxcard border border-haxborder hover:border-haxgreen p-4 rounded-xl text-center font-bold text-gray-200 hover:text-haxgreen transition-all hover:-translate-y-1">
+                📺 Kick Stream
+            </a>
+            <a href="#destacados" class="bg-haxcard border border-haxborder hover:border-haxgreen p-4 rounded-xl text-center font-bold text-gray-200 hover:text-haxgreen transition-all hover:-translate-y-1">
+                ⭐ Highlights
+            </a>
+        </div>
+    </section>
+
+    <!-- DESTACADOS -->
     <section id="destacados" class="py-24 px-4 max-w-7xl mx-auto relative z-10">
         <div class="text-center mb-16">
             <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-haxgreen-light to-haxgreen">
@@ -197,15 +213,9 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <!-- ========================================== -->
-            <!-- ⬇️ TARJETA DESTACADA: COPIAR Y PEGAR ⬇️ -->
-            <!-- ========================================== -->
             <a href="https://www.youtube.com/watch?v=IzD32QLD2Ns" target="_blank" class="yt-card group block bg-haxcard rounded-2xl overflow-hidden border border-haxborder hover:border-haxgreen transition-colors duration-300 shadow-lg relative">
                 <div class="relative overflow-hidden aspect-video">
-                    <!-- Reemplazar src por la URL de la miniatura de YouTube -->
                     <img src="https://placehold.co/600x338/111/00FF00?text=Japon+vs+Peru" alt="Japon vs Peru" class="yt-card-img w-full h-full object-cover">
-                    <!-- Icono de Play sobre la imagen -->
                     <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
                             <div class="w-0 h-0 border-t-8 border-t-transparent border-l-[16px] border-l-white border-b-8 border-b-transparent ml-1"></div>
@@ -217,16 +227,9 @@
                     <p class="text-gray-400 text-sm">9 de Agosto</p>
                 </div>
             </a>
-            <!-- ========================================== -->
-            <!-- ⬆️ FIN TARJETA DESTACADA ⬆️ -->
-            <!-- ========================================== -->
 
-            <!-- ========================================== -->
-            <!-- ⬇️ TARJETA DESTACADA: COPIAR Y PEGAR ⬇️ -->
-            <!-- ========================================== -->
             <a href="https://youtu.be/956xxARm924" target="_blank" class="yt-card group block bg-haxcard rounded-2xl overflow-hidden border border-haxborder hover:border-haxgreen transition-colors duration-300 shadow-lg relative">
                 <div class="relative overflow-hidden aspect-video">
-                    <!-- Reemplazar src por la URL de la miniatura de YouTube -->
                     <img src="https://placehold.co/600x338/111/00FF00?text=Brasil+vs+Peru" alt="Brasil vs Peru" class="yt-card-img w-full h-full object-cover">
                     <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
@@ -236,19 +239,12 @@
                 </div>
                 <div class="p-6">
                     <h3 class="text-xl font-bold mb-2 group-hover:text-haxgreen transition-colors">Brasil vs Peru</h3>
-                    <p class="text-gray-400 text-sm" >20 de Diciembre</p>
+                    <p class="text-gray-400 text-sm">20 de Diciembre</p>
                 </div>
             </a>
-            <!-- ========================================== -->
-            <!-- ⬆️ FIN TARJETA DESTACADA ⬆️ -->
-            <!-- ========================================== -->
 
-            <!-- ========================================== -->
-            <!-- ⬇️ TARJETA DESTACADA: COPIAR Y PEGAR ⬇️ -->
-            <!-- ========================================== -->
             <a href="https://youtube.com" target="_blank" class="yt-card group block bg-haxcard rounded-2xl overflow-hidden border border-haxborder hover:border-haxgreen transition-colors duration-300 shadow-lg relative">
                 <div class="relative overflow-hidden aspect-video">
-                    <!-- Reemplazar src por la URL de la miniatura de YouTube -->
                     <img src="https://placehold.co/600x338/111/00FF00?text=Boca+vs+Fluminense" alt="Boca vs Fluminense" class="yt-card-img w-full h-full object-cover">
                     <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
@@ -261,13 +257,10 @@
                     <p class="text-gray-400 text-sm">15 de Febrero</p>
                 </div>
             </a>
-            <!-- ========================================== -->
-            <!-- ⬆️ FIN TARJETA DESTACADA ⬆️ -->
-            <!-- ========================================== -->
-
         </div>
     </section>
 
+    <!-- STREAMING BANNER -->
     <section id="streaming" class="py-20 mt-10 bg-haxgreen relative z-10 overflow-hidden">
         <div class="absolute inset-0 bg-black/10"></div>
         <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
@@ -280,11 +273,11 @@
         </div>
     </section>
 
+    <!-- FOOTER -->
     <footer class="bg-[#030303] border-t border-haxborder py-12 relative z-10">
         <div class="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-center items-center gap-6 md:gap-12">
-            
             <a href="https://discord.gg/zamH2FZGUb" target="_blank" class="text-gray-300 hover:text-white hover:bg-haxcard px-6 py-3 rounded-lg transition-colors duration-200 font-semibold tracking-wider text-sm md:text-base border border-transparent hover:border-gray-700 w-full md:w-auto text-center">
-                COMO JUGAR
+                <i class="fa-brands fa-discord mr-2"></i> COMO JUGAR
             </a>
             
             <button onclick="copiarDiscord()" class="text-haxgreen hover:text-haxgreen-light hover:bg-haxcard px-6 py-3 rounded-lg transition-colors duration-200 font-semibold tracking-wider text-sm md:text-base border border-haxgreen/30 hover:border-haxgreen w-full md:w-auto text-center shadow-[0_0_10px_rgba(0,200,83,0.1)]">
@@ -294,28 +287,25 @@
             <a href="https://kick.com/espnhaxball" target="_blank" class="text-gray-300 hover:text-white hover:bg-haxcard px-6 py-3 rounded-lg transition-colors duration-200 font-semibold tracking-wider text-sm md:text-base border border-transparent hover:border-gray-700 w-full md:w-auto text-center">
                 STREAMING
             </a>
-
         </div>
         <div class="text-center mt-12 text-xs text-gray-600">
             &copy; <span id="year"></span> HaxCalendar. Todos los derechos reservados.
         </div>
     </footer>
 
-    <!-- Botón Flotante Volver -->
+    <!-- BOTÓN VOLVER -->
     <a href="#inicio" id="btn-volver" class="fixed bottom-6 right-6 bg-haxgreen text-black font-bold py-3 px-5 rounded-xl shadow-neon z-50 flex items-center gap-2 hover:bg-haxgreen-light transition-colors">
         <span class="text-2xl leading-none">&larr;</span> VOLVER
     </a>
 
-    <!-- Toast Notificación -->
+    <!-- TOAST NOTIFICACIÓN -->
     <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 border border-haxgreen text-white px-6 py-4 rounded-xl shadow-2xl z-50 flex items-center gap-3">
         <span class="text-haxgreen text-xl">✅</span>
         <span class="font-medium">Usuario copiado al portapapeles.</span>
     </div>
 
+    <!-- SCRIPT PRINCIPAL -->
     <script>
-        /* ========================================================
-           GENERACIÓN DE FECHA AUTOMÁTICA
-           ======================================================== */
         function actualizarFecha() {
             const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
             const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
@@ -331,14 +321,22 @@
             document.getElementById('year').textContent = anio;
         }
 
-        /* ========================================================
-           FUNCIÓN PARA COPIAR AL PORTAPAPELES
-           ======================================================== */
+        function iniciarReloj() {
+            const relojElemento = document.getElementById('reloj-digital');
+            if (!relojElemento) return;
+
+            setInterval(() => {
+                const ahora = new Date();
+                const horas = String(ahora.getHours()).padStart(2, '0');
+                const minutos = String(ahora.getMinutes()).padStart(2, '0');
+                const segundos = String(ahora.getSeconds()).padStart(2, '0');
+                
+                relojElemento.textContent = `${horas}:${minutos}:${segundos}`;
+            }, 1000);
+        }
+
         function copiarDiscord() {
             const textoACopiar = "nnahh_arg (Discord de EspnHaxball)";
-            
-            // Creamos un textarea oculto para ejecutar el comando de copia 
-            // (funciona mejor en todos los entornos que navigator.clipboard a veces)
             const textArea = document.createElement("textarea");
             textArea.value = textoACopiar;
             document.body.appendChild(textArea);
@@ -349,9 +347,6 @@
             mostrarToast();
         }
 
-        /* ========================================================
-           CONTROL DE LA NOTIFICACIÓN TOAST
-           ======================================================== */
         let toastTimeout;
         function mostrarToast() {
             const toast = document.getElementById('toast');
@@ -360,12 +355,9 @@
             clearTimeout(toastTimeout);
             toastTimeout = setTimeout(() => {
                 toast.classList.remove('show');
-            }, 3000); // Se oculta tras 3 segundos
+            }, 3000);
         }
 
-        /* ========================================================
-           CONTROL DEL BOTÓN FLOTANTE "VOLVER"
-           ======================================================== */
         window.addEventListener('scroll', () => {
             const btn = document.getElementById('btn-volver');
             const heroHeight = document.getElementById('inicio').offsetHeight;
@@ -377,9 +369,7 @@
             }
         });
 
-        /* ========================================================
-           ANIMACIÓN DEL FONDO DE ESTRELLAS (CANVAS)
-           ======================================================== */
+        // ANIMACIÓN DE ESTRELLAS EN CANVAS
         const canvas = document.getElementById('starsCanvas');
         const ctx = canvas.getContext('2d');
         let width, height;
@@ -402,22 +392,17 @@
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
                 this.size = Math.random() * 1.5;
-                // Velocidad muy lenta para no distraer
                 this.speed = (Math.random() * 0.2) + 0.05;
-                // Brillo bajo para ser sutil
                 this.opacity = Math.random() * 0.5 + 0.1;
                 this.opacityDir = Math.random() > 0.5 ? 1 : -1;
             }
 
             update() {
                 this.y -= this.speed;
-                
-                // Parpadeo sutil
                 this.opacity += 0.005 * this.opacityDir;
                 if (this.opacity >= 0.6) this.opacityDir = -1;
                 if (this.opacity <= 0.1) this.opacityDir = 1;
 
-                // Reposicionar si sale de la pantalla
                 if (this.y < 0) {
                     this.y = height;
                     this.x = Math.random() * width;
@@ -434,7 +419,6 @@
 
         function initStars() {
             stars = [];
-            // Cantidad de estrellas dependiente del tamaño de la pantalla
             const numStars = Math.floor((width * height) / 8000);
             for (let i = 0; i < numStars; i++) {
                 stars.push(new Star());
@@ -450,34 +434,13 @@
             requestAnimationFrame(animateStars);
         }
 
-        // Inicialización general al cargar
         window.addEventListener('resize', resizeCanvas);
         window.onload = function() {
             actualizarFecha();
+            iniciarReloj();
             resizeCanvas();
             animateStars();
         };
-
-    </script> 
-function iniciarReloj() {
-    const relojElemento = document.getElementById('reloj-digital');
-    if (!relojElemento) return;
-
-    setInterval(() => {
-        const ahora = new Date();
-        const horas = String(ahora.getHours()).padStart(2, '0');
-        const minutos = String(ahora.getMinutes()).padStart(2, '0');
-        const segundos = String(ahora.getSeconds()).padStart(2, '0');
-        
-        relojElemento.textContent = `${horas}:${minutos}:${segundos}`;
-    }, 1000);
-}
-
-window.onload =    iniciarReloj(); () {
-    actualizarFecha();
-    resizeCanvas();
-    animateStars();
-    iniciarReloj();
-};
+    </script>
 </body>
 </html>

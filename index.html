@@ -99,6 +99,23 @@
         .yt-card:hover .yt-card-img {
             transform: scale(1.05);
         }
+
+        /* Estilos HaxPenal Modal */
+        #haxpenal-modal {
+            backdrop-filter: blur(8px);
+            background: radial-gradient(circle at center, rgba(0,200,83,0.1) 0%, rgba(0,0,0,0.95) 100%);
+        }
+        .hax-input {
+            background: #222;
+            border: 2px solid #333;
+            color: white;
+            transition: all 0.3s;
+        }
+        .hax-input:focus {
+            outline: none;
+            border-color: #00C853;
+            box-shadow: 0 0 10px rgba(0,200,83,0.3);
+        }
     </style>
 </head>
 <body class="antialiased relative">
@@ -107,8 +124,18 @@
 
     <!-- INICIO Y HEADER -->
     <header id="inicio" class="min-h-screen flex flex-col items-center justify-center px-4 text-center relative z-10">
+        
+        <!-- BOTÓN JUGAR HAXPENAL (FIJO EN EL INICIO / HERO) -->
+        <div onclick="abrirHaxPenal()" class="absolute top-8 right-6 md:right-12 w-28 h-28 md:w-32 md:h-32 rounded-2xl overflow-hidden cursor-pointer shadow-[0_0_20px_rgba(0,0,0,0.8)] z-40 group transition-transform hover:scale-105 active:scale-95 border-2 border-black hover:border-haxgreen flex flex-col items-center justify-center bg-[#111]">
+            <!-- Imagen de IA difuminada simulando penal -->
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=400&q=80')] bg-cover bg-center blur-[3px] group-hover:blur-[1px] transition-all duration-300 opacity-70"></div>
+            <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all duration-300"></div>
+            <!-- Texto sobre la imagen -->
+            <span class="relative z-10 text-black font-black text-lg md:text-xl tracking-widest bg-white/95 px-3 py-1 rounded shadow-2xl transform -rotate-6 group-hover:rotate-0 group-hover:bg-haxgreen transition-all duration-300 border-2 border-black">HAXPENAL</span>
+        </div>
+
         <div class="mb-6 animate-[pulse_4s_ease-in-out_infinite]">
-            <img src="https://kappa.lol/08Xsgl" alt="HaxCalendar Logo" class="w-32 md:w-40 h-auto mx-auto drop-shadow-neon">
+            <img src="https://kappa.lol/08Xsgl" alt="HaxCalendar Logo" onerror="this.src='https://placehold.co/200x200/111/00C853?text=HC'" class="w-32 md:w-40 h-auto mx-auto drop-shadow-[0_0_15px_rgba(0,200,83,0.5)]">
         </div>
         <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-4 uppercase">
             Hax<span class="text-haxgreen">Calendar</span>
@@ -139,7 +166,6 @@
         </div>
 
         <div class="flex flex-col space-y-8">
-            
             <!-- BLOQUE DE PARTIDO 1 -->
             <article class="match-card bg-haxcard border border-haxborder rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-6">
                 <div class="flex-1 w-full">
@@ -161,21 +187,16 @@
             <!-- BLOQUE DE PARTIDO 2 -->
             <article class="match-card bg-haxcard border border-haxborder rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-6">
                 <div class="flex-1 w-full">
-                    <h3 class="text-2xl md:text-3xl font-bold uppercase tracking-wider break-words">
-                        NINGUN CLUB <span class="text-haxgreen mx-2">VS</span> NINGUN CLUB
+                    <h3 class="text-2xl md:text-3xl font-bold uppercase tracking-wider break-words text-gray-500">
+                        SIN PARTIDOS <span class="text-haxborder mx-2">VS</span> PROGRAMADOS
                     </h3>
                 </div>
-                <div class="flex flex-col sm:flex-row items-center gap-4 shrink-0">
-                    <span class="inline-flex items-center gap-2 bg-red-600/20 text-red-500 font-bold px-4 py-2 rounded-lg border border-red-600/30 whitespace-nowrap">
-                        <span class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
-                        NO STREAM
-                    </span>
-                    <span class="inline-flex items-center gap-2 bg-gray-800 text-white font-bold px-4 py-2 rounded-lg border border-gray-700 whitespace-nowrap">
+                <div class="flex flex-col sm:flex-row items-center gap-4 shrink-0 opacity-50">
+                    <span class="inline-flex items-center gap-2 bg-gray-800 text-gray-400 font-bold px-4 py-2 rounded-lg border border-gray-700 whitespace-nowrap">
                         🕒 --:--
                     </span>
                 </div>
             </article>
-
         </div>
     </section>
 
@@ -204,6 +225,7 @@
     </section>
 
     <!-- DESTACADOS -->
+
     <section id="destacados" class="py-24 px-4 max-w-7xl mx-auto relative z-10">
         <div class="text-center mb-16">
             <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-haxgreen-light to-haxgreen">
@@ -279,11 +301,9 @@
             <a href="https://discord.gg/zamH2FZGUb" target="_blank" class="text-gray-300 hover:text-white hover:bg-haxcard px-6 py-3 rounded-lg transition-colors duration-200 font-semibold tracking-wider text-sm md:text-base border border-transparent hover:border-gray-700 w-full md:w-auto text-center">
                 <i class="fa-brands fa-discord mr-2"></i> COMO JUGAR
             </a>
-            
             <button onclick="copiarDiscord()" class="text-haxgreen hover:text-haxgreen-light hover:bg-haxcard px-6 py-3 rounded-lg transition-colors duration-200 font-semibold tracking-wider text-sm md:text-base border border-haxgreen/30 hover:border-haxgreen w-full md:w-auto text-center shadow-[0_0_10px_rgba(0,200,83,0.1)]">
                 CONTACTAR
             </button>
-            
             <a href="https://kick.com/espnhaxball" target="_blank" class="text-gray-300 hover:text-white hover:bg-haxcard px-6 py-3 rounded-lg transition-colors duration-200 font-semibold tracking-wider text-sm md:text-base border border-transparent hover:border-gray-700 w-full md:w-auto text-center">
                 STREAMING
             </a>
@@ -293,8 +313,8 @@
         </div>
     </footer>
 
-    <!-- BOTÓN VOLVER -->
-    <a href="#inicio" id="btn-volver" class="fixed bottom-6 right-6 bg-haxgreen text-black font-bold py-3 px-5 rounded-xl shadow-neon z-50 flex items-center gap-2 hover:bg-haxgreen-light transition-colors">
+    <!-- BOTÓN VOLVER (ABAJO DERECHA) -->
+    <a href="#inicio" id="btn-volver" class="fixed bottom-6 right-6 bg-haxgreen text-black font-bold py-3 px-5 rounded-xl shadow-neon z-40 flex items-center gap-2 hover:bg-haxgreen-light transition-colors">
         <span class="text-2xl leading-none">&larr;</span> VOLVER
     </a>
 
@@ -304,143 +324,562 @@
         <span class="font-medium">Usuario copiado al portapapeles.</span>
     </div>
 
-    <!-- SCRIPT PRINCIPAL -->
+    <!-- MODAL HAXPENAL -->
+    <div id="haxpenal-modal" class="fixed inset-0 z-[60] hidden flex-col items-center justify-center p-4">
+        
+        <!-- Header del Modal -->
+        <div class="w-full max-w-3xl flex justify-between items-end mb-2">
+            <div>
+                <h2 class="text-3xl font-black text-haxgreen drop-shadow-[0_0_10px_rgba(0,200,83,0.8)] tracking-widest uppercase">HAXPENAL</h2>
+                <p class="text-gray-300 text-sm font-semibold">Minijuego de penales de Haxball</p>
+            </div>
+            <button onclick="cerrarHaxPenal()" class="text-gray-400 hover:text-white text-4xl font-bold leading-none mb-1 transition-colors drop-shadow-md">&times;</button>
+        </div>
+
+        <!-- Contenedor del Juego -->
+        <div class="relative w-full max-w-3xl aspect-[16/9] bg-black rounded-xl overflow-hidden shadow-[0_0_40px_rgba(0,200,83,0.3)] border-2 border-haxborder">
+            
+            <!-- Lienzo del juego -->
+            <canvas id="hp-canvas" class="w-full h-full block cursor-crosshair"></canvas>
+
+            <!-- UI: Menú de Perfil (Overlay) -->
+            <div id="hp-menu" class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-6 z-10 transition-opacity duration-300">
+                <div class="bg-[#111] border border-[#333] rounded-2xl p-6 w-full max-w-md shadow-2xl">
+                    <h3 class="text-center font-bold text-xl mb-6 text-white uppercase tracking-wider">Personaliza tu Haxballer</h3>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center gap-4">
+                            <label class="w-24 text-gray-400 font-semibold text-right">NOMBRE:</label>
+                            <input type="text" id="hp-input-name" class="hax-input flex-1 rounded-lg px-3 py-2 text-sm" placeholder="Ej: Messi" maxlength="15">
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <label class="w-24 text-gray-400 font-semibold text-right">DORSAL:</label>
+                            <input type="text" id="hp-input-dorsal" class="hax-input flex-1 rounded-lg px-3 py-2 text-sm" placeholder="10" maxlength="2" oninput="this.value = this.value.slice(0, 2)">
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <label class="w-24 text-gray-400 font-semibold text-right">APODO:</label>
+                            <input type="text" id="hp-input-apodo" class="hax-input flex-1 rounded-lg px-3 py-2 text-sm" placeholder="La Pulga" maxlength="15">
+                        </div>
+                    </div>
+
+                    <button onclick="guardarPerfilHaxPenal()" class="w-full bg-haxgreen hover:bg-haxgreen-light text-black font-bold py-3 rounded-lg transition-colors uppercase tracking-widest shadow-[0_0_15px_rgba(0,200,83,0.4)]">
+                        ¡A PATEAR!
+                    </button>
+                </div>
+            </div>
+
+            <!-- UI: Resultado (Overlay) -->
+            <div id="hp-resultado" class="absolute inset-0 bg-black/70 flex flex-col items-center justify-center p-6 z-10 hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm">
+                <div class="bg-[#1a1a1a] border border-[#333] rounded-2xl p-8 w-full max-w-lg text-center shadow-2xl relative overflow-hidden">
+                    <div id="hp-res-bg" class="absolute inset-0 opacity-20 pointer-events-none"></div>
+                    
+                    <h2 id="hp-res-title" class="text-4xl md:text-5xl font-black mb-4 uppercase drop-shadow-[0_0_15px_rgba(0,0,0,1)] z-10 relative">
+                        ¡GOOOL!
+                    </h2>
+                    
+                    <p id="hp-res-desc" class="text-lg text-gray-200 mb-8 z-10 relative px-4 font-medium">
+                        Metiste el gol y el arquero se quedó clavado.
+                    </p>
+                    
+                    <button onclick="reiniciarPenal()" class="bg-white hover:bg-gray-200 text-black font-extrabold py-3 px-10 rounded-full transition-transform hover:scale-105 active:scale-95 text-xl z-10 relative border-2 border-black shadow-lg">
+                        REINTENTAR
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer del Modal: Estadísticas -->
+        <div class="w-full max-w-3xl mt-4 flex justify-between items-center bg-[#111] border border-haxborder rounded-lg p-4 shadow-lg">
+            <div class="text-gray-400 font-medium text-sm md:text-base">
+                Jugador: <span id="hp-stats-name" class="text-white font-bold ml-1">---</span>
+            </div>
+            <div class="text-white font-bold text-base md:text-lg bg-haxgreen/20 px-4 py-1 rounded-full border border-haxgreen/50">
+                XP: <span id="hp-stats-xp" class="text-haxgreen">0</span>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // -- SCRIPTS ORIGINALES DE LA PÁGINA --
         function actualizarFecha() {
             const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
             const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-            
             const hoy = new Date();
-            const diaSemana = dias[hoy.getDay()];
-            const diaMes = hoy.getDate();
-            const mes = meses[hoy.getMonth()];
-            const anio = hoy.getFullYear();
-            
-            const stringFecha = `(${diaSemana} - ${diaMes} de ${mes} de ${anio})`;
+            const stringFecha = `(${dias[hoy.getDay()]} - ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()})`;
             document.getElementById('fecha-actual').textContent = stringFecha;
-            document.getElementById('year').textContent = anio;
+            document.getElementById('year').textContent = hoy.getFullYear();
         }
 
         function iniciarReloj() {
-            const relojElemento = document.getElementById('reloj-digital');
-            if (!relojElemento) return;
-
+            const reloj = document.getElementById('reloj-digital');
+            if(!reloj) return;
             setInterval(() => {
                 const ahora = new Date();
-                const horas = String(ahora.getHours()).padStart(2, '0');
-                const minutos = String(ahora.getMinutes()).padStart(2, '0');
-                const segundos = String(ahora.getSeconds()).padStart(2, '0');
-                
-                relojElemento.textContent = `${horas}:${minutos}:${segundos}`;
+                reloj.textContent = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}:${String(ahora.getSeconds()).padStart(2, '0')}`;
             }, 1000);
         }
 
         function copiarDiscord() {
-            const textoACopiar = "nnahh_arg (Discord de EspnHaxball)";
-            const textArea = document.createElement("textarea");
-            textArea.value = textoACopiar;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand("Copy");
-            textArea.remove();
-
-            mostrarToast();
-        }
-
-        let toastTimeout;
-        function mostrarToast() {
+            const txt = "nnahh_arg (Discord de EspnHaxball)";
+            const el = document.createElement('textarea');
+            el.value = txt;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            
             const toast = document.getElementById('toast');
             toast.classList.add('show');
-            
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
         window.addEventListener('scroll', () => {
             const btn = document.getElementById('btn-volver');
-            const heroHeight = document.getElementById('inicio').offsetHeight;
-            
-            if (window.scrollY > heroHeight / 2) {
+            if (window.scrollY > document.getElementById('inicio').offsetHeight / 2) {
                 btn.classList.add('visible');
             } else {
                 btn.classList.remove('visible');
             }
         });
 
-        // ANIMACIÓN DE ESTRELLAS EN CANVAS
-        const canvas = document.getElementById('starsCanvas');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        let stars = [];
+        // -- ANIMACIÓN DE ESTRELLAS DE FONDO --
+        const canvasBg = document.getElementById('starsCanvas');
+        const ctxBg = canvasBg.getContext('2d');
+        let w, h, stars = [];
 
-        function resizeCanvas() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-            initStars();
+        function initStars() {
+            w = canvasBg.width = window.innerWidth;
+            h = canvasBg.height = window.innerHeight;
+            stars = Array.from({length: Math.floor((w*h)/8000)}, () => ({
+                x: Math.random() * w, y: Math.random() * h,
+                s: Math.random() * 1.5, sp: (Math.random() * 0.2) + 0.05,
+                o: Math.random() * 0.5 + 0.1, od: Math.random() > 0.5 ? 1 : -1
+            }));
         }
 
-        class Star {
-            constructor() {
-                this.reset();
+        function animStars() {
+            ctxBg.clearRect(0, 0, w, h);
+            stars.forEach(st => {
+                st.y -= st.sp;
+                st.o += 0.005 * st.od;
+                if(st.o >= 0.6) st.od = -1;
+                if(st.o <= 0.1) st.od = 1;
+                if(st.y < 0) { st.y = h; st.x = Math.random() * w; }
+                ctxBg.fillStyle = `rgba(255,255,255,${st.o})`;
+                ctxBg.beginPath(); ctxBg.arc(st.x, st.y, st.s, 0, Math.PI*2); ctxBg.fill();
+            });
+            requestAnimationFrame(animStars);
+        }
+
+        window.onload = () => {
+            actualizarFecha(); iniciarReloj(); initStars(); animStars();
+            window.addEventListener('resize', initStars);
+            cargarDatosHaxPenal();
+        };
+
+        // ==========================================
+        //         MINIJUEGO HAXPENAL (FLAT 2D ESTILO HAXBALL)
+        // ==========================================
+        
+        const hpCanvas = document.getElementById('hp-canvas');
+        const hpCtx = hpCanvas.getContext('2d');
+        let hpAnimationId;
+        let hpPlayerData = { name: '', dorsal: '10', apodo: '', xp: 0 };
+        
+        let hpState = 'IDLE_DIR'; 
+        const FIELD = { w: 800, h: 450 }; 
+        
+        // Variables Barra Dirección
+        let DIR_POS = 0.5;
+        let DIR_DIR = 1;
+        let DIR_SPEED = 0.012;
+        let savedDir = 0.5;
+
+        // Variables Barra Potencia
+        let ARROW_POS = 0.5; 
+        let ARROW_DIR = 1; 
+        let ARROW_SPEED = 0.02; 
+
+        let ball = { x: 400, y: 300, r: 8, targetX: 400, targetY: 300 };
+        let gk = { x: 400, y: 80, r: 18, targetX: 400 };
+        let kicker = { x: 380, y: 330, r: 22 };
+        
+        const COLOR_RED = '#E53935';
+        const COLOR_BLUE = '#1E88E5';
+
+        function abrirHaxPenal() {
+            document.getElementById('haxpenal-modal').classList.remove('hidden');
+            document.getElementById('haxpenal-modal').classList.add('flex');
+            
+            hpCanvas.width = FIELD.w;
+            hpCanvas.height = FIELD.h;
+
+            if (!hpPlayerData.name) {
+                document.getElementById('hp-menu').classList.remove('hidden');
+            } else {
+                iniciarPartidaPenal();
             }
+        }
 
-            reset() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 1.5;
-                this.speed = (Math.random() * 0.2) + 0.05;
-                this.opacity = Math.random() * 0.5 + 0.1;
-                this.opacityDir = Math.random() > 0.5 ? 1 : -1;
+        function cerrarHaxPenal() {
+            document.getElementById('haxpenal-modal').classList.add('hidden');
+            document.getElementById('haxpenal-modal').classList.remove('flex');
+            cancelAnimationFrame(hpAnimationId);
+        }
+
+        function cargarDatosHaxPenal() {
+            const saved = localStorage.getItem('haxpenal_user');
+            if (saved) {
+                hpPlayerData = JSON.parse(saved);
+                actualizarUIEstadisticas();
             }
+        }
 
-            update() {
-                this.y -= this.speed;
-                this.opacity += 0.005 * this.opacityDir;
-                if (this.opacity >= 0.6) this.opacityDir = -1;
-                if (this.opacity <= 0.1) this.opacityDir = 1;
+        function guardarPerfilHaxPenal() {
+            const name = document.getElementById('hp-input-name').value.trim() || 'Jugador';
+            let dorsal = document.getElementById('hp-input-dorsal').value.trim() || '10';
+            if(dorsal.length > 2) dorsal = dorsal.slice(0, 2);
+            const apodo = document.getElementById('hp-input-apodo').value.trim() || name;
+            
+            hpPlayerData = { name, dorsal, apodo, xp: hpPlayerData.xp || 0 };
+            localStorage.setItem('haxpenal_user', JSON.stringify(hpPlayerData));
+            
+            document.getElementById('hp-menu').classList.add('opacity-0');
+            setTimeout(() => {
+                document.getElementById('hp-menu').classList.add('hidden');
+                document.getElementById('hp-menu').classList.remove('opacity-0');
+                actualizarUIEstadisticas();
+                iniciarPartidaPenal();
+            }, 300);
+        }
 
-                if (this.y < 0) {
-                    this.y = height;
-                    this.x = Math.random() * width;
+        function actualizarUIEstadisticas() {
+            document.getElementById('hp-stats-name').textContent = `${hpPlayerData.name} "${hpPlayerData.apodo}"`;
+            document.getElementById('hp-stats-xp').textContent = hpPlayerData.xp;
+        }
+
+        function iniciarPartidaPenal() {
+            document.getElementById('hp-resultado').classList.add('hidden');
+            document.getElementById('hp-resultado').classList.remove('opacity-100');
+            
+            hpState = 'IDLE_DIR';
+            DIR_POS = Math.random() * 0.8 + 0.1;
+            ARROW_POS = Math.random() * 0.8 + 0.1;
+            
+            ball = { x: 400, y: 280, r: 8, targetX: 400, targetY: 280 };
+            gk = { x: 400, y: 70, r: 18, targetX: 400 };
+            kicker = { x: 370, y: 310, r: 24 };
+
+            cancelAnimationFrame(hpAnimationId);
+            gameLoopPenal();
+        }
+
+        function handleHaxPenalClick() {
+            if (hpState === 'IDLE_DIR') {
+                savedDir = DIR_POS; 
+                hpState = 'IDLE_POWER'; 
+            } else if (hpState === 'IDLE_POWER') {
+                ejecutarPenal();
+            }
+        }
+
+        hpCanvas.addEventListener('mousedown', function(e) { handleHaxPenalClick(); });
+        hpCanvas.addEventListener('touchstart', function(e) { e.preventDefault(); handleHaxPenalClick(); });
+
+        function gameLoopPenal() {
+            updateFisicasPenal();
+            drawPenal();
+            hpAnimationId = requestAnimationFrame(gameLoopPenal);
+        }
+
+        function updateFisicasPenal() {
+            if (hpState === 'IDLE_DIR') {
+                DIR_POS += DIR_SPEED * DIR_DIR;
+                if (DIR_POS >= 1) { DIR_POS = 1; DIR_DIR = -1; }
+                if (DIR_POS <= 0) { DIR_POS = 0; DIR_DIR = 1; }
+            } else if (hpState === 'IDLE_POWER') {
+                ARROW_POS += ARROW_SPEED * ARROW_DIR;
+                if (ARROW_POS >= 1) { ARROW_POS = 1; ARROW_DIR = -1; }
+                if (ARROW_POS <= 0) { ARROW_POS = 0; ARROW_DIR = 1; }
+            } else if (hpState === 'SHOOTING') {
+                ball.x += (ball.targetX - ball.x) * 0.1;
+                ball.y += (ball.targetY - ball.y) * 0.1;
+                
+                gk.x += (gk.targetX - gk.x) * 0.08;
+                gk.y += ((70) - gk.y) * 0.1; 
+            }
+        }
+
+        function drawPenal() {
+            // 1. Fondo de Cancha Estilo Haxball Clásico (Plano)
+            hpCtx.fillStyle = '#718c5a';
+            hpCtx.fillRect(0, 0, FIELD.w, FIELD.h);
+
+            // Líneas de cancha blancas planas
+            hpCtx.strokeStyle = '#ffffff';
+            hpCtx.lineWidth = 3;
+            
+            // Línea de meta / área
+            hpCtx.beginPath(); hpCtx.moveTo(0, 70); hpCtx.lineTo(FIELD.w, 70); hpCtx.stroke(); 
+            hpCtx.strokeRect(250, 70, 300, 100); // Área grande
+
+            // 2. Red del arco clásica Haxball (plana y cuadriculada)
+            hpCtx.fillStyle = '#4c5f3c';
+            hpCtx.fillRect(300, 20, 200, 50);
+            
+            hpCtx.strokeStyle = 'rgba(255,255,255,0.15)';
+            hpCtx.lineWidth = 1;
+            hpCtx.beginPath();
+            for(let i = 300; i <= 500; i+=10) { hpCtx.moveTo(i, 20); hpCtx.lineTo(i, 70); }
+            for(let j = 20; j <= 70; j+=10) { hpCtx.moveTo(300, j); hpCtx.lineTo(500, j); }
+            hpCtx.stroke();
+
+            // Postes del arco (Amarillos planos con borde negro)
+            hpCtx.fillStyle = '#f5d742';
+            hpCtx.strokeStyle = '#000000';
+            hpCtx.lineWidth = 2;
+            hpCtx.beginPath(); hpCtx.arc(300, 70, 6, 0, Math.PI*2); hpCtx.fill(); hpCtx.stroke();
+            hpCtx.beginPath(); hpCtx.arc(500, 70, 6, 0, Math.PI*2); hpCtx.fill(); hpCtx.stroke();
+
+            // 3. Dibujar Arquero (Estilo 2D Flat Haxball sin círculo blanco central)
+            drawDiscFlat(gk.x, gk.y, gk.r, COLOR_BLUE, '1');
+
+            // 4. Dibujar Pateador (Estilo 2D Flat Haxball sin círculo blanco central)
+            drawDiscFlat(kicker.x, kicker.y, kicker.r, COLOR_RED, hpPlayerData.dorsal || '10');
+
+            // 5. Dibujar Pelota (Blanca plana con borde negro)
+            hpCtx.fillStyle = '#ffffff';
+            hpCtx.strokeStyle = '#000000';
+            hpCtx.lineWidth = 2;
+            hpCtx.beginPath(); hpCtx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2); 
+            hpCtx.fill(); hpCtx.stroke();
+
+            // 6. UI: Barras de Puntería y Potencia
+            if (hpState === 'IDLE_DIR' || hpState === 'IDLE_POWER') {
+                const barW = 340;
+                const barH = 24;
+                const barX = (FIELD.w - barW) / 2;
+                
+                // --- BARRA DE DIRECCIÓN (Blanca) ---
+                const dirY = 190;
+                hpCtx.fillStyle = '#ffffff';
+                hpCtx.fillRect(barX, dirY, barW, barH);
+                hpCtx.strokeStyle = '#000000';
+                hpCtx.lineWidth = 2;
+                hpCtx.strokeRect(barX, dirY, barW, barH);
+                
+                // Marcas visuales de los palos
+                hpCtx.fillStyle = 'rgba(0,0,0,0.3)';
+                hpCtx.fillRect(barX + (barW * 0.2), dirY, 2, barH);
+                hpCtx.fillRect(barX + (barW * 0.8), dirY, 2, barH);
+                hpCtx.fillRect(barX + (barW * 0.5), dirY, 1, barH);
+
+                // Flecha indicadora Dirección
+                const actDir = hpState === 'IDLE_DIR' ? DIR_POS : savedDir;
+                const arrowDirX = barX + (barW * actDir);
+                hpCtx.fillStyle = hpState === 'IDLE_DIR' ? '#000000' : '#888888'; 
+                hpCtx.beginPath();
+                hpCtx.moveTo(arrowDirX, dirY - 4);
+                hpCtx.lineTo(arrowDirX - 10, dirY - 18);
+                hpCtx.lineTo(arrowDirX + 10, dirY - 18);
+                hpCtx.fill();
+                
+                // Textos Dirección
+                hpCtx.fillStyle = '#ffffff';
+                hpCtx.font = "bold 15px sans-serif";
+                hpCtx.textAlign = "center";
+                hpCtx.fillText(hpState === 'IDLE_DIR' ? "PASO 1: DIRECCIÓN (CLICK)" : "DIRECCIÓN FIJADA", FIELD.w/2, dirY - 26);
+
+                // --- BARRA DE POTENCIA (Colores planos) ---
+                if (hpState === 'IDLE_POWER') {
+                    const powY = 260;
+                    
+                    // Dibujar tramos de potencia planos
+                    const sectionW = barW / 5;
+                    const colors = ['#F44336', '#FFEB3B', '#4CAF50', '#FFEB3B', '#F44336'];
+                    for(let i=0; i<5; i++) {
+                        hpCtx.fillStyle = colors[i];
+                        hpCtx.fillRect(barX + (i * sectionW), powY, sectionW, barH);
+                    }
+                    hpCtx.strokeStyle = '#000000';
+                    hpCtx.lineWidth = 2;
+                    hpCtx.strokeRect(barX, powY, barW, barH);
+
+                    // Flecha indicadora Potencia
+                    const arrowPowX = barX + (barW * ARROW_POS);
+                    hpCtx.fillStyle = '#ffffff';
+                    hpCtx.strokeStyle = '#000000'; 
+                    hpCtx.lineWidth = 2;
+                    hpCtx.beginPath();
+                    hpCtx.moveTo(arrowPowX, powY - 4);
+                    hpCtx.lineTo(arrowPowX - 10, powY - 18);
+                    hpCtx.lineTo(arrowPowX + 10, powY - 18);
+                    hpCtx.fill(); hpCtx.stroke();
+                    
+                    hpCtx.fillStyle = '#ffffff';
+                    hpCtx.fillText("PASO 2: POTENCIA (CLICK)", FIELD.w/2, powY - 26);
+                }
+            }
+        }
+
+        // Función auxiliar para dibujar discos en estilo 2D Flat Haxball (sin centro blanco)
+        function drawDiscFlat(x, y, r, colorBase, text) {
+            // Cuerpo del disco (Plano con borde negro grueso característico de Haxball)
+            hpCtx.fillStyle = colorBase;
+            hpCtx.strokeStyle = '#000000';
+            hpCtx.lineWidth = 2.5;
+            hpCtx.beginPath(); hpCtx.arc(x, y, r, 0, Math.PI*2);
+            hpCtx.fill(); hpCtx.stroke();
+
+            // Texto o número interior directamente sobre el disco
+            hpCtx.fillStyle = '#ffffff';
+            hpCtx.font = `bold ${r * 0.9}px sans-serif`;
+            hpCtx.textAlign = 'center';
+            hpCtx.textBaseline = 'middle';
+            hpCtx.fillText(text, x, y + 1);
+        }
+
+        function ejecutarPenal() {
+            hpState = 'SHOOTING';
+            
+            // 1. Zonas
+            let dirZone = '';
+            if (savedDir < 0.2) dirZone = 'LEFT_POST';
+            else if (savedDir < 0.4) dirZone = 'LEFT';
+            else if (savedDir < 0.6) dirZone = 'MIDDLE';
+            else if (savedDir < 0.8) dirZone = 'RIGHT';
+            else dirZone = 'RIGHT_POST';
+
+            let powZone = '';
+            if (ARROW_POS >= 0.4 && ARROW_POS <= 0.6) powZone = 'GREEN';
+            else if ((ARROW_POS >= 0.2 && ARROW_POS < 0.4) || (ARROW_POS > 0.6 && ARROW_POS <= 0.8)) powZone = 'YELLOW';
+            else powZone = 'RED';
+
+            // 2. Base lógica
+            let outcome = 'SAVE';
+            let targetX = 400;
+            let targetY = 40; 
+            
+            if (dirZone === 'LEFT_POST') targetX = 295;
+            if (dirZone === 'LEFT') targetX = 330;
+            if (dirZone === 'MIDDLE') targetX = 400;
+            if (dirZone === 'RIGHT') targetX = 470;
+            if (dirZone === 'RIGHT_POST') targetX = 505;
+
+            // Decisión del arquero
+            let gkX = 400;
+            const gkGuess = Math.random();
+            if (gkGuess < 0.33) gkX = 330;
+            else if (gkGuess < 0.66) gkX = 470;
+            else gkX = 400;
+
+            // 3. Cruzar Dirección + Potencia
+            if (powZone === 'GREEN') {
+                if (dirZone === 'LEFT_POST' || dirZone === 'RIGHT_POST') {
+                    outcome = 'POST'; // Palo justo
+                } else {
+                    if (Math.abs(targetX - gkX) < 40) outcome = 'SAVE'; 
+                    else outcome = 'GOAL';
+                }
+            } else if (powZone === 'YELLOW') {
+                if (dirZone === 'LEFT_POST' || dirZone === 'RIGHT_POST') {
+                    outcome = Math.random() > 0.5 ? 'POST' : 'OUT_WIDE';
+                } else {
+                    if (Math.random() < 0.2) outcome = 'POST'; 
+                    else if (Math.abs(targetX - gkX) < 60) outcome = 'SAVE'; 
+                    else outcome = 'GOAL';
+                }
+            } else { 
+                // RED
+                if (dirZone === 'MIDDLE') {
+                    outcome = 'OUT_HIGH';
+                    targetY = -80; // Voló
+                } else {
+                    outcome = 'OUT_WIDE';
+                    targetX = dirZone.includes('LEFT') ? 220 : 580; // Tribuna
+                    targetY = 20;
                 }
             }
 
-            draw() {
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
+            ball.targetX = targetX + (Math.random()*10 - 5);
+            ball.targetY = targetY;
+            gk.targetX = gkX;
+
+            kicker.x += 10;
+            kicker.y -= 15;
+
+            setTimeout(() => {
+                mostrarResultadoPenal(outcome, dirZone, powZone);
+            }, 800); 
         }
 
-        function initStars() {
-            stars = [];
-            const numStars = Math.floor((width * height) / 8000);
-            for (let i = 0; i < numStars; i++) {
-                stars.push(new Star());
+        function mostrarResultadoPenal(outcome, dirZone, powZone) {
+            hpState = 'ENDED';
+            
+            const resModal = document.getElementById('hp-resultado');
+            const resTitle = document.getElementById('hp-res-title');
+            const resDesc = document.getElementById('hp-res-desc');
+            const resBg = document.getElementById('hp-res-bg');
+            
+            resModal.classList.remove('hidden');
+            void resModal.offsetWidth;
+            resModal.classList.add('opacity-100');
+
+            let title = '';
+            let desc = '';
+            let bgClass = '';
+            let txtColor = '';
+
+            // TEXTOS NARRATIVOS PERSONALIZADOS
+            if (outcome === 'GOAL') {
+                title = '¡GOLAZO! ⚽';
+                bgClass = 'absolute inset-0 bg-green-500 opacity-20 pointer-events-none';
+                txtColor = 'text-white drop-shadow-[0_0_15px_rgba(0,200,83,1)]';
+                
+                if (dirZone === 'MIDDLE') desc = "Fuerte y al medio. El arquero se tiró a cazar mariposas y vos aseguraste el tanto.";
+                else desc = "Le diste con la precisión justa contra el palo. Inatajable para el portero que solo salió en la foto.";
+                
+                hpPlayerData.xp += 10;
+                
+            } else if (outcome === 'SAVE') {
+                title = '¡ATAJADÓN! 🧤';
+                bgClass = 'absolute inset-0 bg-red-600 opacity-20 pointer-events-none';
+                txtColor = 'text-red-500 drop-shadow-[0_0_15px_rgba(244,67,54,1)]';
+                
+                if (powZone === 'GREEN') desc = "¡Increíble! Le pegaste perfecto pero el arquero adivinó tus intenciones y voló espectacularmente.";
+                else desc = "El arquero leyó tu mente y se quedó con la pelota. Te faltó sorprender un poco más de potencia, capo.";
+
+            } else if (outcome === 'POST') {
+                title = '¡CLINK, CAJA! 🥅';
+                bgClass = 'absolute inset-0 bg-yellow-500 opacity-20 pointer-events-none';
+                txtColor = 'text-yellow-400 drop-shadow-[0_0_15px_rgba(255,235,59,1)]';
+                desc = "Buscaste ajustar tanto el tiro que le sacaste chispas al poste. El arquero ya estaba vencido, ¡qué mala suerte!";
+
+            } else if (outcome === 'OUT_HIGH') {
+                title = '¡ADENTRO, PERO DE LA CASA DEL VECINO! 🏠';
+                bgClass = 'absolute inset-0 bg-red-600 opacity-30 pointer-events-none';
+                txtColor = 'text-red-500 drop-shadow-[0_0_15px_rgba(244,67,54,1)]';
+                desc = "Le pegaste fuerte al medio pero se te fue la pelota y terminó por arriba del travesaño, alguien duerme con la pelota hoy.";
+
+            } else if (outcome === 'OUT_WIDE') {
+                title = '¡A LA TRIBUNA! 🦅';
+                bgClass = 'absolute inset-0 bg-red-600 opacity-20 pointer-events-none';
+                txtColor = 'text-red-500 drop-shadow-[0_0_15px_rgba(244,67,54,1)]';
+                desc = "Le quisiste dar tanto efecto que la mandaste directo a la fila 15 de la popular. Tratá de apuntarle al arco la próxima.";
             }
+            
+            resTitle.innerHTML = title;
+            resTitle.className = `text-3xl md:text-5xl font-black mb-4 uppercase z-10 relative ${txtColor}`;
+            resDesc.textContent = desc;
+            resBg.className = bgClass;
+            
+            localStorage.setItem('haxpenal_user', JSON.stringify(hpPlayerData));
+            actualizarUIEstadisticas();
         }
 
-        function animateStars() {
-            ctx.clearRect(0, 0, width, height);
-            for (let star of stars) {
-                star.update();
-                star.draw();
-            }
-            requestAnimationFrame(animateStars);
+        function reiniciarPenal() {
+            iniciarPartidaPenal();
         }
-
-        window.addEventListener('resize', resizeCanvas);
-        window.onload = function() {
-            actualizarFecha();
-            iniciarReloj();
-            resizeCanvas();
-            animateStars();
-        };
     </script>
 </body>
 </html>

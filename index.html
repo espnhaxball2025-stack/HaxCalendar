@@ -884,5 +884,247 @@
             iniciarPartidaPenal();
         }
     </script>
+<!-- ========================================== -->
+<!--       BLOQUE COMPLETO DE CANCIONERO        -->
+<!-- ========================================== -->
+
+<!-- Estilos del Cancionero (Podés pasarlos a tu archivo CSS si querés) -->
+<style>
+  /* Footer del Cancionero */
+  .site-footer {
+    text-align: center;
+    padding: 25px 10px;
+    margin-top: 50px;
+  }
+
+  .footer-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .footer-btn:hover {
+    background: #00e676;
+    color: #000000;
+    border-color: #00e676;
+    box-shadow: 0 0 12px rgba(0, 230, 118, 0.4);
+  }
+
+  /* Sección Principal del Cancionero */
+  .cancionero-container {
+    max-width: 700px;
+    margin: 20px auto 40px auto;
+    background: rgba(18, 18, 18, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+  }
+
+  .cancionero-container.hidden {
+    display: none;
+  }
+
+  .cancionero-header {
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+
+  .cancionero-header h2 {
+    color: #00e676;
+    margin: 0 0 5px 0;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+  }
+
+  .cancionero-header p {
+    color: #888888;
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  /* Lista de Canciones */
+  .playlist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .song-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin-bottom: 10px;
+    transition: background 0.2s;
+  }
+
+  .song-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .song-title {
+    color: #eeeeee;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  /* Botón de Play / Pause */
+  .btn-play {
+    background: #00e676;
+    border: none;
+    color: #000000;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+  }
+
+  .btn-play:hover {
+    transform: scale(1.1);
+    background: #00c853;
+    box-shadow: 0 0 10px rgba(0, 230, 118, 0.5);
+  }
+
+  .btn-play.playing {
+    background: #ff3d00;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 61, 0, 0.5);
+  }
+</style>
+
+<!-- Pie de Página con Botón Activador -->
+<footer class="site-footer">
+  <button id="btn-cancionero" class="footer-btn">
+    🎵 CANCIONERO HAXBALL
+  </button>
+</footer>
+
+<!-- Desplegable del Cancionero -->
+<section id="cancionero-section" class="cancionero-container hidden">
+  <div class="cancionero-header">
+    <h2>🎵 CANCIONERO HAXBALL</h2>
+    <p>Hitazos de la sala para viciar a pleno</p>
+  </div>
+
+  <ul class="playlist">
+    <!-- Tema 1: SE QUEJA -->
+    <li class="song-item">
+      <span class="song-title">SE QUEJA - ESPN HAXBALL</span>
+      <button class="btn-play" data-ytid="5JoTWZLJvwA" title="Reproducir">▶</button>
+    </li>
+
+<!-- Tema 2: HINCHADA -->
+    <li class="song-item">
+      <span class="song-title">HINCHADA FUTBOL PACK</span>
+      <button class="btn-play" data-ytid="v=j7GJQUNMRzo" title="Reproducir">▶</button>
+    </li>      
+      
+    <!-- Si querés sumar más temas, copiás el <li> entero y le cambiás el data-ytid -->
+  </ul>
+
+  <!-- Div invisible para el reproductor de YouTube -->
+  <div id="youtube-player" style="display: none;"></div>
+</section>
+
+<!-- Script con la API de YouTube y Lógica de Audio -->
+<script>
+  let player;
+  let currentPlayingBtn = null;
+
+  // Cargar API Iframe de YouTube dinámicamente
+  const ytScript = document.createElement('script');
+  ytScript.src = "https://www.youtube.com/iframe_api";
+  document.head.appendChild(ytScript);
+
+  // Inicializar reproductor de YouTube
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('youtube-player', {
+      height: '0',
+      width: '0',
+      videoId: '',
+      events: {
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+
+  // Desplegar / Ocultar la lista de Canciones al hacer click en el botón
+  const btnCancionero = document.getElementById('btn-cancionero');
+  const cancioneroSection = document.getElementById('cancionero-section');
+
+  btnCancionero.addEventListener('click', () => {
+    cancioneroSection.classList.toggle('hidden');
+    if (!cancioneroSection.classList.contains('hidden')) {
+      cancioneroSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+
+  // Evento de Play/Pause para cada botón de la playlist
+  document.querySelectorAll('.btn-play').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const videoId = this.getAttribute('data-ytid');
+
+      // Caso 1: Pausar el mismo tema que está sonando
+      if (currentPlayingBtn === this && player && player.getPlayerState() === YT.PlayerState.PLAYING) {
+        player.pauseVideo();
+        this.textContent = '▶';
+        this.classList.remove('playing');
+        return;
+      }
+
+      // Caso 2: Cambiar de tema (apagar el botón anterior si había uno)
+      if (currentPlayingBtn && currentPlayingBtn !== this) {
+        currentPlayingBtn.textContent = '▶';
+        currentPlayingBtn.classList.remove('playing');
+      }
+
+      // Reproducir el video en segundo plano
+      if (player && player.loadVideoById) {
+        player.loadVideoById(videoId);
+        player.playVideo();
+        
+        this.textContent = '⏸';
+        this.classList.add('playing');
+        currentPlayingBtn = this;
+      } else {
+        console.warn('La API de YouTube todavía se está cargando...');
+      }
+    });
+  });
+
+  // Detectar cuándo termina la canción para resetear el botón
+  function onPlayerStateChange(event) {
+    if (event.data === YT.PlayerState.ENDED && currentPlayingBtn) {
+      currentPlayingBtn.textContent = '▶';
+      currentPlayingBtn.classList.remove('playing');
+      currentPlayingBtn = null;
+    }
+  }
+</script>
+    
+<!-- ========================================== -->
+    
 </body>
 </html>

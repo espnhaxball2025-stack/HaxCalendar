@@ -6,10 +6,10 @@
     <title>HaxCalendar - Oficial</title>
     <link rel="icon" type="image/png" href="https://kappa.lol/08Xsgl">
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Outfit para un look más moderno y e-sports -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -22,7 +22,7 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
+                        sans: ['Outfit', 'sans-serif'],
                     },
                     colors: {
                         haxgreen: {
@@ -31,12 +31,12 @@
                             light: '#5efc82'
                         },
                         haxdark: '#050505',
-                        haxcard: '#121212',
-                        haxborder: '#2a2a2a'
+                        haxcard: 'rgba(18, 18, 18, 0.6)', /* Glassmorphism */
                     },
                     boxShadow: {
-                        'neon': '0 0 15px rgba(0, 200, 83, 0.3)',
-                        'neon-hover': '0 0 25px rgba(0, 200, 83, 0.6)'
+                        'neon': '0 0 15px rgba(0, 200, 83, 0.4)',
+                        'neon-red': '0 0 15px rgba(220, 38, 38, 0.6)',
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
                     }
                 }
             }
@@ -48,8 +48,12 @@
             background-color: #050505;
             color: #ffffff;
             overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 200, 83, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(0, 200, 83, 0.05), transparent 25%);
         }
 
+        /* Fondo de estrellas */
         #starsCanvas {
             position: fixed;
             top: 0;
@@ -60,61 +64,43 @@
             pointer-events: none;
         }
 
+        /* Utilidad de Glassmorphism */
+        .glass-panel {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
         .match-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            transition: all 0.3s ease;
         }
         .match-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-            border-color: #00C853;
+            border-color: rgba(0, 200, 83, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 200, 83, 0.1);
         }
 
-        #btn-volver {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-            transform: translateY(20px);
+        /* Scrollbar personalizado */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
         }
-        #btn-volver.visible {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05); 
+            border-radius: 4px;
         }
-
-        #toast {
-            visibility: hidden;
-            opacity: 0;
-            transform: translateY(100%);
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        #toast.show {
-            visibility: visible;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .yt-card-img {
-            transition: transform 0.5s ease;
-        }
-        .yt-card:hover .yt-card-img {
-            transform: scale(1.05);
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 200, 83, 0.5); 
+            border-radius: 4px;
         }
 
-        /* Estilos HaxPenal Modal */
-        #haxpenal-modal {
-            backdrop-filter: blur(8px);
-            background: radial-gradient(circle at center, rgba(0,200,83,0.1) 0%, rgba(0,0,0,0.95) 100%);
+        /* Animaciones para inyectar contenido */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .hax-input {
-            background: #222;
-            border: 2px solid #333;
-            color: white;
-            transition: all 0.3s;
-        }
-        .hax-input:focus {
-            outline: none;
-            border-color: #00C853;
-            box-shadow: 0 0 10px rgba(0,200,83,0.3);
+        .animate-fade-up {
+            animation: fadeUp 0.5s ease forwards;
         }
     </style>
 </head>
@@ -125,297 +111,332 @@
     <!-- INICIO Y HEADER -->
     <header id="inicio" class="min-h-screen flex flex-col items-center justify-center px-4 text-center relative z-10">
         
-        <!-- BOTÓN JUGAR HAXPENAL (FIJO EN EL INICIO / HERO) -->
-        <div onclick="abrirHaxPenal()" class="absolute top-8 right-6 md:right-12 w-28 h-28 md:w-32 md:h-32 rounded-2xl overflow-hidden cursor-pointer shadow-[0_0_20px_rgba(0,0,0,0.8)] z-40 group transition-transform hover:scale-105 active:scale-95 border-2 border-black hover:border-haxgreen flex flex-col items-center justify-center bg-[#111]">
-            <!-- Imagen de IA difuminada simulando penal -->
-            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=400&q=80')] bg-cover bg-center blur-[3px] group-hover:blur-[1px] transition-all duration-300 opacity-70"></div>
-            <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all duration-300"></div>
-            <!-- Texto sobre la imagen -->
-            <span class="relative z-10 text-black font-black text-lg md:text-xl tracking-widest bg-white/95 px-3 py-1 rounded shadow-2xl transform -rotate-6 group-hover:rotate-0 group-hover:bg-haxgreen transition-all duration-300 border-2 border-black">HAXPENAL</span>
+        <!-- BOTÓN HAXPENAL FLOTANTE -->
+        <div onclick="abrirHaxPenal()" class="absolute top-6 right-6 md:top-10 md:right-10 w-24 h-24 md:w-32 md:h-32 rounded-2xl overflow-hidden cursor-pointer shadow-glass z-40 group transition-all duration-300 hover:scale-105 border border-white/10 hover:border-haxgreen bg-black/40 backdrop-blur-md flex flex-col items-center justify-center">
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=400&q=80')] bg-cover bg-center blur-[2px] opacity-40 group-hover:opacity-60 transition-opacity"></div>
+            <span class="relative z-10 text-white font-black text-sm md:text-lg tracking-widest uppercase drop-shadow-[0_2px_2px_rgba(0,0,0,1)] group-hover:text-haxgreen transition-colors flex flex-col items-center gap-1">
+                <i class="fa-solid fa-futbol text-2xl md:text-3xl mb-1 group-hover:animate-bounce"></i>
+                HaxPenal
+            </span>
         </div>
 
-        <div class="mb-6 animate-[pulse_4s_ease-in-out_infinite]">
-            <img src="https://kappa.lol/08Xsgl" alt="HaxCalendar Logo" onerror="this.src='https://placehold.co/200x200/111/00C853?text=HC'" class="w-32 md:w-40 h-auto mx-auto drop-shadow-[0_0_15px_rgba(0,200,83,0.5)]">
+        <div class="mb-6">
+            <img src="https://kappa.lol/08Xsgl" alt="HaxCalendar Logo" onerror="this.src='https://placehold.co/200x200/111/00C853?text=HC'" class="w-32 md:w-48 h-auto mx-auto drop-shadow-[0_0_25px_rgba(0,200,83,0.4)] animate-[pulse_4s_ease-in-out_infinite]">
         </div>
-        <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-4 uppercase">
-            Hax<span class="text-haxgreen">Calendar</span>
+        <h1 class="text-6xl md:text-8xl font-black tracking-tighter mb-2 uppercase drop-shadow-lg">
+            Hax<span class="text-transparent bg-clip-text bg-gradient-to-r from-haxgreen to-haxgreen-light">Calendar</span>
         </h1>
-        <p class="text-lg md:text-xl text-gray-300 font-light mb-6 max-w-xl mx-auto">
+        <p class="text-lg md:text-xl text-gray-400 font-light mb-8 max-w-xl mx-auto tracking-wide">
             Calendario oficial de partidos de la comunidad.
         </p>
 
-        <!-- RELOJ DIGITAL EN VIVO -->
-        <div id="reloj-digital" class="text-haxgreen font-mono text-2xl md:text-3xl font-bold tracking-widest my-2 bg-black/60 px-6 py-2 rounded-xl border border-haxborder shadow-neon">
+        <!-- RELOJ DIGITAL -->
+        <div id="reloj-digital" class="text-haxgreen font-mono text-3xl md:text-4xl font-bold tracking-widest my-2 glass-panel px-8 py-3 rounded-2xl shadow-neon border-haxgreen/30">
             00:00:00
         </div>
 
-        <a href="#agenda" class="mt-8 inline-flex items-center justify-center bg-haxgreen text-black font-bold text-lg md:text-xl py-4 px-10 rounded-full transition-all duration-300 hover:bg-haxgreen-light hover:shadow-neon-hover hover:scale-105 active:scale-95">
-            VER AGENDA &rarr;
+        <a href="#agenda" class="mt-10 inline-flex items-center justify-center bg-haxgreen text-black font-extrabold text-lg md:text-xl py-4 px-10 rounded-full transition-all duration-300 hover:bg-haxgreen-light hover:shadow-neon hover:-translate-y-1">
+            VER AGENDA <i class="fa-solid fa-arrow-down ml-3"></i>
         </a>
     </header>
 
-    <!-- AGENDA DE HOY -->
+    <!-- SECCIÓN AGENDA -->
     <section id="agenda" class="py-24 px-4 max-w-4xl mx-auto relative z-10">
         <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-extrabold mb-4 flex justify-center items-center gap-3">
-                <span>📅</span> AGENDA DE HOY
+            <h2 class="text-4xl md:text-5xl font-black mb-2 uppercase tracking-tight">
+                Agenda de <span class="text-haxgreen">Hoy</span>
             </h2>
-            <p id="fecha-actual" class="text-haxgreen font-semibold text-xl tracking-wide">
+            <p id="fecha-actual" class="text-gray-400 font-medium text-lg tracking-wide uppercase">
                 (Cargando fecha...)
             </p>
         </div>
 
-        <div class="flex flex-col space-y-8">
- <!-- BLOQUE DE PARTIDO 1 -->
-<article class="match-card bg-haxcard border border-haxborder rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-6">
-    <div class="flex-1 w-full">
-        <h3 class="text-2xl md:text-3xl font-bold uppercase tracking-wider break-words">
-            FLAMENGO <span class="text-haxgreen mx-2">VS</span> REAL MADRID
-        </h3>
-    </div>
-    
-    <div class="flex flex-col sm:flex-row items-center gap-4 shrink-0">
-        <div class="flex flex-col items-center gap-2">
-            <span class="inline-flex items-center gap-2 bg-red-600/20 text-red-500 font-bold px-4 py-2 rounded-lg border border-red-600/30 whitespace-nowrap">
-                <span class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
-                FINALIZADO
-            </span>
-            
-            <!-- ACÁ CAMBIÁS "on" POR "off" -->
-            <div data-resultado="on" class="resultado-box bg-gray-800/80 border border-gray-700 text-gray-200 font-extrabold px-4 py-1.5 rounded-lg text-lg tracking-wider">
-                5 - 1
-            </div>
-        </div>
-
-        <span class="inline-flex items-center gap-2 bg-gray-800 text-white font-bold px-4 py-2 rounded-lg border border-gray-700 whitespace-nowrap">
-            🕒 23:00 PM
-        </span>
-    </div>
-</article>
-
-<!-- Regla CSS simple para ocultarlo cuando pones "off" -->
-<style>
-    .resultado-box[data-resultado="off"] {
-        display: none !important;
-    }
-</style>
-            
+        <!-- CONTENEDOR DONDE JS INYECTARÁ LOS PARTIDOS -->
+        <div id="contenedor-partidos" class="flex flex-col space-y-6">
+            <!-- Los partidos se generarán aquí automáticamente -->
         </div>
     </section>
 
     <!-- HAXBALL HUB -->
     <section id="hub" class="py-16 px-4 max-w-5xl mx-auto relative z-10">
-        <div class="text-center mb-10">
-            <h2 class="text-3xl md:text-4xl font-extrabold uppercase tracking-wider text-white">
-                🚀 HAXBALL HUB
-            </h2>
-            <p class="text-gray-400 mt-2">Accesos rápidos para la comunidad</p>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <a href="https://www.haxball.com" target="_blank" class="bg-haxcard border border-haxborder hover:border-haxgreen p-4 rounded-xl text-center font-bold text-gray-200 hover:text-haxgreen transition-all hover:-translate-y-1">
-                🎮 Jugar Haxball
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            <a href="https://www.haxball.com" target="_blank" class="glass-panel p-6 rounded-2xl text-center group transition-all hover:-translate-y-2 hover:border-haxgreen hover:shadow-neon">
+                <i class="fa-solid fa-gamepad text-3xl mb-3 text-gray-400 group-hover:text-haxgreen transition-colors"></i>
+                <h3 class="font-bold text-gray-200 group-hover:text-white">Jugar Haxball</h3>
             </a>
-            <a href="https://discord.gg/zamH2FZGUb" target="_blank" class="bg-haxcard border border-haxborder hover:border-haxgreen p-4 rounded-xl text-center font-bold text-gray-200 hover:text-haxgreen transition-all hover:-translate-y-1">
-                💬 Discord Oficial
+            <a href="https://discord.gg/zamH2FZGUb" target="_blank" class="glass-panel p-6 rounded-2xl text-center group transition-all hover:-translate-y-2 hover:border-[#5865F2] hover:shadow-[0_0_15px_rgba(88,101,242,0.5)]">
+                <i class="fa-brands fa-discord text-3xl mb-3 text-gray-400 group-hover:text-[#5865F2] transition-colors"></i>
+                <h3 class="font-bold text-gray-200 group-hover:text-white">Discord</h3>
             </a>
-            <a href="https://kick.com/espnhaxball" target="_blank" class="bg-haxcard border border-haxborder hover:border-haxgreen p-4 rounded-xl text-center font-bold text-gray-200 hover:text-haxgreen transition-all hover:-translate-y-1">
-                📺 Kick Stream
+            <a href="https://kick.com/espnhaxball" target="_blank" class="glass-panel p-6 rounded-2xl text-center group transition-all hover:-translate-y-2 hover:border-[#53fc18] hover:shadow-[0_0_15px_rgba(83,252,24,0.5)]">
+                <i class="fa-brands fa-kickstarter-k text-3xl mb-3 text-gray-400 group-hover:text-[#53fc18] transition-colors"></i>
+                <h3 class="font-bold text-gray-200 group-hover:text-white">Kick Stream</h3>
             </a>
-            <a href="#destacados" class="bg-haxcard border border-haxborder hover:border-haxgreen p-4 rounded-xl text-center font-bold text-gray-200 hover:text-haxgreen transition-all hover:-translate-y-1">
-                ⭐ Highlights
+            <a href="#destacados" class="glass-panel p-6 rounded-2xl text-center group transition-all hover:-translate-y-2 hover:border-yellow-400 hover:shadow-[0_0_15px_rgba(250,204,21,0.4)]">
+                <i class="fa-solid fa-star text-3xl mb-3 text-gray-400 group-hover:text-yellow-400 transition-colors"></i>
+                <h3 class="font-bold text-gray-200 group-hover:text-white">Highlights</h3>
             </a>
         </div>
     </section>
 
-    <!-- DESTACADOS -->
-
-    <section id="destacados" class="py-24 px-4 max-w-7xl mx-auto relative z-10">
+    <!-- VIDEOS DESTACADOS -->
+    <section id="destacados" class="py-24 px-4 max-w-6xl mx-auto relative z-10">
         <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-haxgreen-light to-haxgreen">
-                ⭐ PARTIDOS DESTACADOS ⭐
+            <h2 class="text-4xl md:text-5xl font-black mb-4 uppercase tracking-tight">
+                Partidos <span class="text-haxgreen">Destacados</span>
             </h2>
-            <div class="h-1 w-24 bg-haxgreen mx-auto rounded-full mt-4"></div>
+            <div class="h-1 w-24 bg-haxgreen mx-auto rounded-full"></div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <a href="https://www.youtube.com/watch?v=IzD32QLD2Ns" target="_blank" class="yt-card group block bg-haxcard rounded-2xl overflow-hidden border border-haxborder hover:border-haxgreen transition-colors duration-300 shadow-lg relative">
-                <div class="relative overflow-hidden aspect-video">
-                    <img src="https://placehold.co/600x338/111/00FF00?text=Japon+vs+Peru" alt="Japon vs Peru" class="yt-card-img w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
-                            <div class="w-0 h-0 border-t-8 border-t-transparent border-l-[16px] border-l-white border-b-8 border-b-transparent ml-1"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2 group-hover:text-haxgreen transition-colors">Japon vs Peru</h3>
-                    <p class="text-gray-400 text-sm">9 de Agosto</p>
-                </div>
-            </a>
-
-            <a href="https://youtu.be/956xxARm924" target="_blank" class="yt-card group block bg-haxcard rounded-2xl overflow-hidden border border-haxborder hover:border-haxgreen transition-colors duration-300 shadow-lg relative">
-                <div class="relative overflow-hidden aspect-video">
-                    <img src="https://placehold.co/600x338/111/00FF00?text=Brasil+vs+Peru" alt="Brasil vs Peru" class="yt-card-img w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
-                            <div class="w-0 h-0 border-t-8 border-t-transparent border-l-[16px] border-l-white border-b-8 border-b-transparent ml-1"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2 group-hover:text-haxgreen transition-colors">Brasil vs Peru</h3>
-                    <p class="text-gray-400 text-sm">20 de Diciembre</p>
-                </div>
-            </a>
-
-            <a href="https://www.youtube.com/watch?v=KPMUjSr0Jvg" target="_blank" class="yt-card group block bg-haxcard rounded-2xl overflow-hidden border border-haxborder hover:border-haxgreen transition-colors duration-300 shadow-lg relative">
-                <div class="relative overflow-hidden aspect-video">
-                    <img src="https://placehold.co/600x338/111/00FF00?text=Boca+vs+Fluminense" alt="Boca vs Fluminense" class="yt-card-img w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
-                            <div class="w-0 h-0 border-t-8 border-t-transparent border-l-[16px] border-l-white border-b-8 border-b-transparent ml-1"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2 group-hover:text-haxgreen transition-colors">Boca vs Fluminense</h3>
-                    <p class="text-gray-400 text-sm">15 de Febrero</p>
-                </div>
-            </a>
+        <!-- CONTENEDOR DE VIDEOS JS -->
+        <div id="contenedor-videos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- JS inyectará los videos aquí -->
         </div>
     </section>
 
-    <!-- STREAMING BANNER -->
-    <section id="streaming" class="py-20 mt-10 bg-haxgreen relative z-10 overflow-hidden">
-        <div class="absolute inset-0 bg-black/10"></div>
+    <!-- BANNER STREAMING -->
+    <section class="py-20 mt-10 bg-haxgreen relative z-10 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
-            <h2 class="text-3xl md:text-5xl font-black text-black uppercase mb-8 drop-shadow-sm">
-                🎥 MIRÁ LOS PARTIDOS EN VIVO POR KICK
+            <i class="fa-solid fa-video text-5xl text-black mb-6"></i>
+            <h2 class="text-4xl md:text-6xl font-black text-black uppercase mb-10 tracking-tighter leading-none">
+                Seguí las transmisiones en vivo
             </h2>
-            <a href="https://kick.com/espnhaxball" target="_blank" class="inline-block bg-black text-haxgreen font-bold text-xl py-4 px-10 rounded-xl transition-transform duration-300 hover:scale-110 shadow-xl border-2 border-black hover:border-white">
-                VER TRANSMISIONES
+            <a href="https://kick.com/espnhaxball" target="_blank" class="inline-flex items-center gap-3 bg-black text-haxgreen font-bold text-xl py-5 px-12 rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl border border-black hover:border-haxgreen-light hover:text-haxgreen-light">
+                <i class="fa-brands fa-kickstarter-k"></i> VER EN KICK
             </a>
         </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="bg-[#030303] border-t border-haxborder py-12 relative z-10">
-        <div class="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-center items-center gap-6 md:gap-12">
-            <a href="https://discord.gg/zamH2FZGUb" target="_blank" class="text-gray-300 hover:text-white hover:bg-haxcard px-6 py-3 rounded-lg transition-colors duration-200 font-semibold tracking-wider text-sm md:text-base border border-transparent hover:border-gray-700 w-full md:w-auto text-center">
-                <i class="fa-brands fa-discord mr-2"></i> COMO JUGAR
-            </a>
-            <button onclick="copiarDiscord()" class="text-haxgreen hover:text-haxgreen-light hover:bg-haxcard px-6 py-3 rounded-lg transition-colors duration-200 font-semibold tracking-wider text-sm md:text-base border border-haxgreen/30 hover:border-haxgreen w-full md:w-auto text-center shadow-[0_0_10px_rgba(0,200,83,0.1)]">
-                CONTACTAR
-            </button>
-            <a href="https://kick.com/espnhaxball" target="_blank" class="text-gray-300 hover:text-white hover:bg-haxcard px-6 py-3 rounded-lg transition-colors duration-200 font-semibold tracking-wider text-sm md:text-base border border-transparent hover:border-gray-700 w-full md:w-auto text-center">
-                STREAMING
-            </a>
-        </div>
-        <div class="text-center mt-12 text-xs text-gray-600">
-            &copy; <span id="year"></span> HaxCalendar. Todos los derechos reservados.
+    <footer class="bg-black border-t border-white/10 py-16 relative z-10">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col items-center">
+            <div class="flex gap-6 mb-10">
+                <a href="https://discord.gg/zamH2FZGUb" class="glass-panel px-8 py-4 rounded-xl text-sm font-bold tracking-widest uppercase hover:bg-white/10 transition-colors flex items-center gap-2">
+                    Cómo Jugar
+                </a>
+                <button onclick="copiarDiscord()" class="glass-panel border-haxgreen/50 text-haxgreen px-8 py-4 rounded-xl text-sm font-bold tracking-widest uppercase hover:bg-haxgreen/10 transition-colors flex items-center gap-2">
+                    <i class="fa-brands fa-discord"></i> Contacto
+                </button>
+            </div>
+            <p class="text-gray-600 text-xs tracking-widest uppercase">
+                &copy; <span id="year"></span> HaxCalendar v2.0. Todos los derechos reservados.
+            </p>
         </div>
     </footer>
 
-    <!-- BOTÓN VOLVER (ABAJO DERECHA) -->
-    <a href="#inicio" id="btn-volver" class="fixed bottom-6 right-6 bg-haxgreen text-black font-bold py-3 px-5 rounded-xl shadow-neon z-40 flex items-center gap-2 hover:bg-haxgreen-light transition-colors">
-        <span class="text-2xl leading-none">&larr;</span> VOLVER
-    </a>
+    <!-- BOTONES FLOTANTES INFERIORES -->
+    <div class="fixed bottom-6 right-6 z-40 flex flex-col gap-4">
+        <a href="#inicio" id="btn-volver" class="w-14 h-14 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full flex items-center justify-center hover:bg-haxgreen hover:text-black hover:border-haxgreen transition-all opacity-0 invisible translate-y-4">
+            <i class="fa-solid fa-arrow-up text-xl"></i>
+        </a>
+    </div>
 
     <!-- TOAST NOTIFICACIÓN -->
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 border border-haxgreen text-white px-6 py-4 rounded-xl shadow-2xl z-50 flex items-center gap-3">
-        <span class="text-haxgreen text-xl">✅</span>
-        <span class="font-medium">Usuario copiado al portapapeles.</span>
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 glass-panel border-haxgreen text-white px-8 py-4 rounded-full shadow-2xl z-50 flex items-center gap-3 transition-all duration-300 opacity-0 invisible translate-y-10">
+        <i class="fa-solid fa-check-circle text-haxgreen text-xl"></i>
+        <span class="font-bold tracking-wide">Usuario Discord Copiado!</span>
     </div>
 
     <!-- MODAL HAXPENAL -->
-    <div id="haxpenal-modal" class="fixed inset-0 z-[60] hidden flex-col items-center justify-center p-4">
-        
-        <!-- Header del Modal -->
+    <div id="haxpenal-modal" class="fixed inset-0 z-[60] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/80">
         <div class="w-full max-w-3xl flex justify-between items-end mb-2">
             <div>
-                <h2 class="text-3xl font-black text-haxgreen drop-shadow-[0_0_10px_rgba(0,200,83,0.8)] tracking-widest uppercase">HAXPENAL</h2>
-                <p class="text-gray-300 text-sm font-semibold">Minijuego de penales de Haxball</p>
+                <h2 class="text-3xl font-black text-haxgreen tracking-widest uppercase">HAXPENAL</h2>
             </div>
-            <button onclick="cerrarHaxPenal()" class="text-gray-400 hover:text-white text-4xl font-bold leading-none mb-1 transition-colors drop-shadow-md">&times;</button>
+            <button onclick="cerrarHaxPenal()" class="text-gray-400 hover:text-white text-4xl font-bold leading-none mb-1 transition-colors">&times;</button>
         </div>
-
-        <!-- Contenedor del Juego -->
-        <div class="relative w-full max-w-3xl aspect-[16/9] bg-black rounded-xl overflow-hidden shadow-[0_0_40px_rgba(0,200,83,0.3)] border-2 border-haxborder">
-            
-            <!-- Lienzo del juego -->
+        <div class="relative w-full max-w-3xl aspect-[16/9] bg-black rounded-xl overflow-hidden shadow-neon border-2 border-white/10">
             <canvas id="hp-canvas" class="w-full h-full block cursor-crosshair"></canvas>
-
-            <!-- UI: Menú de Perfil (Overlay) -->
             <div id="hp-menu" class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-6 z-10 transition-opacity duration-300">
-                <div class="bg-[#111] border border-[#333] rounded-2xl p-6 w-full max-w-md shadow-2xl">
-                    <h3 class="text-center font-bold text-xl mb-6 text-white uppercase tracking-wider">Personaliza tu Haxballer</h3>
-                    
+                <div class="glass-panel rounded-2xl p-6 w-full max-w-md">
+                    <h3 class="text-center font-bold text-xl mb-6 text-white uppercase tracking-wider">Tu Haxballer</h3>
                     <div class="space-y-4 mb-6">
                         <div class="flex items-center gap-4">
                             <label class="w-24 text-gray-400 font-semibold text-right">NOMBRE:</label>
-                            <input type="text" id="hp-input-name" class="hax-input flex-1 rounded-lg px-3 py-2 text-sm" placeholder="Ej: Messi" maxlength="15">
+                            <input type="text" id="hp-input-name" class="flex-1 bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-haxgreen" placeholder="Ej: Messi">
                         </div>
                         <div class="flex items-center gap-4">
                             <label class="w-24 text-gray-400 font-semibold text-right">DORSAL:</label>
-                            <input type="text" id="hp-input-dorsal" class="hax-input flex-1 rounded-lg px-3 py-2 text-sm" placeholder="10" maxlength="2" oninput="this.value = this.value.slice(0, 2)">
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <label class="w-24 text-gray-400 font-semibold text-right">APODO:</label>
-                            <input type="text" id="hp-input-apodo" class="hax-input flex-1 rounded-lg px-3 py-2 text-sm" placeholder="La Pulga" maxlength="15">
+                            <input type="text" id="hp-input-dorsal" class="flex-1 bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-haxgreen" placeholder="10" maxlength="2">
                         </div>
                     </div>
-
-                    <button onclick="guardarPerfilHaxPenal()" class="w-full bg-haxgreen hover:bg-haxgreen-light text-black font-bold py-3 rounded-lg transition-colors uppercase tracking-widest shadow-[0_0_15px_rgba(0,200,83,0.4)]">
+                    <button onclick="guardarPerfilHaxPenal()" class="w-full bg-haxgreen text-black font-black py-3 rounded-lg hover:scale-105 transition-transform uppercase tracking-widest">
                         ¡A PATEAR!
                     </button>
                 </div>
             </div>
-
-            <!-- UI: Resultado (Overlay) -->
             <div id="hp-resultado" class="absolute inset-0 bg-black/70 flex flex-col items-center justify-center p-6 z-10 hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm">
                 <div class="bg-[#1a1a1a] border border-[#333] rounded-2xl p-8 w-full max-w-lg text-center shadow-2xl relative overflow-hidden">
                     <div id="hp-res-bg" class="absolute inset-0 opacity-20 pointer-events-none"></div>
-                    
-                    <h2 id="hp-res-title" class="text-4xl md:text-5xl font-black mb-4 uppercase drop-shadow-[0_0_15px_rgba(0,0,0,1)] z-10 relative">
-                        ¡GOOOL!
-                    </h2>
-                    
-                    <p id="hp-res-desc" class="text-lg text-gray-200 mb-8 z-10 relative px-4 font-medium">
-                        Metiste el gol y el arquero se quedó clavado.
-                    </p>
-                    
-                    <button onclick="reiniciarPenal()" class="bg-white hover:bg-gray-200 text-black font-extrabold py-3 px-10 rounded-full transition-transform hover:scale-105 active:scale-95 text-xl z-10 relative border-2 border-black shadow-lg">
+                    <h2 id="hp-res-title" class="text-4xl font-black mb-4 uppercase z-10 relative"></h2>
+                    <p id="hp-res-desc" class="text-lg text-gray-200 mb-8 z-10 relative font-medium"></p>
+                    <button onclick="reiniciarPenal()" class="bg-white text-black font-extrabold py-3 px-10 rounded-full hover:scale-105 transition-transform text-xl z-10 relative">
                         REINTENTAR
                     </button>
                 </div>
             </div>
         </div>
-
-        <!-- Footer del Modal: Estadísticas -->
-        <div class="w-full max-w-3xl mt-4 flex justify-between items-center bg-[#111] border border-haxborder rounded-lg p-4 shadow-lg">
-            <div class="text-gray-400 font-medium text-sm md:text-base">
-                Jugador: <span id="hp-stats-name" class="text-white font-bold ml-1">---</span>
-            </div>
-            <div class="text-white font-bold text-base md:text-lg bg-haxgreen/20 px-4 py-1 rounded-full border border-haxgreen/50">
+        <div class="w-full max-w-3xl mt-4 flex justify-between items-center glass-panel rounded-lg p-4">
+            <div class="text-gray-300 font-medium">Jugador: <span id="hp-stats-name" class="text-white font-bold ml-1">---</span></div>
+            <div class="text-white font-bold bg-haxgreen/20 px-4 py-1 rounded-full border border-haxgreen/50">
                 XP: <span id="hp-stats-xp" class="text-haxgreen">0</span>
             </div>
         </div>
     </div>
 
+    <!-- ========================================================================= -->
+    <!--                            ZONA DE EDICIÓN FÁCIL                          -->
+    <!-- ========================================================================= -->
     <script>
-        // -- SCRIPTS ORIGINALES DE LA PÁGINA --
+        // 1. CONFIGURACIÓN GENERAL
+        // Cambia a 'on' si quieres que aparezca el cartel de "No hay partidos", 'off' para mostrar la lista.
+        const SIMULAR_SIN_PARTIDOS = 'on';
+
+        // 2. LISTA DE PARTIDOS
+        // estado: Puedes poner "EN VIVO" (sale rojo neón), "FINALIZADO" (sale gris), o dejarlo vacío "" (no sale nada).
+        // mostrar_resultado: "on" o "off".
+        const PARTIDOS = [
+            {
+                equipo1: "FLAMENGO",
+                equipo2: "REAL MADRID",
+                resultado: "5 - 1",
+                mostrar_resultado: "on",
+                estado: "FINALIZADO",
+                hora: "21:00 PM"
+            },
+            {
+                equipo1: "BOCA JUNIORS",
+                equipo2: "RIVER PLATE",
+                resultado: "0 - 0",
+                mostrar_resultado: "off",
+                estado: "EN VIVO",
+                hora: "23:30 PM"
+            },
+            {
+                equipo1: "CHELSEA",
+                equipo2: "MILAN",
+                resultado: "? - ?",
+                mostrar_resultado: "off",
+                estado: "",
+                hora: "Mañana 22:00 PM"
+            }
+        ];
+
+        // 3. VIDEOS DESTACADOS
+        const VIDEOS_DESTACADOS = [
+            { titulo: "Japon vs Peru", fecha: "9 de Agosto", id_youtube: "IzD32QLD2Ns" },
+            { titulo: "Brasil vs Peru", fecha: "20 de Diciembre", id_youtube: "956xxARm924" },
+            { titulo: "Boca vs Fluminense", fecha: "15 de Febrero", id_youtube: "KPMUjSr0Jvg" }
+        ];
+
+        // =========================================================================
+        //                      FIN DE ZONA DE EDICIÓN FÁCIL
+        // (A partir de aquí, el código hace la magia automáticamente. No necesitas tocarlo)
+        // =========================================================================
+
+        // --- RENDERIZADO DE AGENDA ---
+        function renderizarPartidos() {
+            const container = document.getElementById('contenedor-partidos');
+            container.innerHTML = '';
+
+            if (SIMULAR_SIN_PARTIDOS === 'on' || PARTIDOS.length === 0) {
+                container.innerHTML = `
+                    <div class="glass-panel p-12 rounded-3xl text-center flex flex-col items-center justify-center border-dashed border-2 border-white/20 animate-fade-up">
+                        <i class="fa-regular fa-calendar-xmark text-6xl text-gray-500 mb-4"></i>
+                        <h3 class="text-2xl font-bold text-gray-300 mb-2">NO HAY PARTIDOS PROGRAMADOS</h3>
+                        <p class="text-gray-500">Toca descansar. ¡Revisa más tarde o únete al Discord para organizar amistosos!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            PARTIDOS.forEach((partido, index) => {
+                let badgeHTML = '';
+                
+                // Sistema de estados limpio
+                if (partido.estado === 'EN VIVO') {
+                    badgeHTML = `
+                        <span class="inline-flex items-center gap-2 bg-red-600 text-white font-bold px-3 py-1 rounded-md text-xs tracking-wider shadow-neon-red">
+                            <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                            EN VIVO
+                        </span>
+                    `;
+                } else if (partido.estado === 'FINALIZADO') {
+                    badgeHTML = `
+                        <span class="inline-flex items-center gap-2 bg-gray-600 text-white font-bold px-3 py-1 rounded-md text-xs tracking-wider">
+                            <i class="fa-solid fa-flag-checkered"></i>
+                            FINALIZADO
+                        </span>
+                    `;
+                }
+                
+                const showRes = partido.mostrar_resultado === 'on' ? 'block' : 'hidden';
+
+                const cardHTML = `
+                    <article class="match-card glass-panel rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-6 animate-fade-up" style="animation-delay: ${index * 0.1}s">
+                        <div class="flex-1 w-full">
+                            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-wider text-gray-100">
+                                ${partido.equipo1} <span class="text-haxgreen font-normal mx-2 text-xl">VS</span> ${partido.equipo2}
+                            </h3>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row items-center gap-5 shrink-0">
+                            <div class="flex flex-col items-center gap-2">
+                                ${badgeHTML}
+                                <div class="${showRes} bg-black/60 border border-white/10 text-white font-black px-5 py-2 rounded-lg text-xl tracking-widest shadow-inner">
+                                    ${partido.resultado}
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center gap-2 bg-white/5 text-gray-300 font-semibold px-4 py-2 rounded-lg border border-white/10 text-sm">
+                                <i class="fa-regular fa-clock text-haxgreen"></i> ${partido.hora}
+                            </span>
+                        </div>
+                    </article>
+                `;
+                container.innerHTML += cardHTML;
+            });
+        }
+
+        // --- RENDERIZADO DE VIDEOS ---
+        function renderizarVideos() {
+            const container = document.getElementById('contenedor-videos');
+            container.innerHTML = '';
+
+            VIDEOS_DESTACADOS.forEach((video, index) => {
+                const imgUrl = `https://img.youtube.com/vi/${video.id_youtube}/maxresdefault.jpg`;
+                const cardHTML = `
+                    <a href="https://www.youtube.com/watch?v=${video.id_youtube}" target="_blank" class="group block glass-panel rounded-2xl overflow-hidden hover:border-haxgreen transition-all duration-300 hover:-translate-y-2 hover:shadow-neon animate-fade-up" style="animation-delay: ${index * 0.1}s">
+                        <div class="relative overflow-hidden aspect-video bg-black">
+                            <img src="${imgUrl}" alt="${video.titulo}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-100">
+                            <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300"></div>
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
+                                    <i class="fa-solid fa-play text-white text-xl ml-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-lg font-bold mb-1 text-white group-hover:text-haxgreen transition-colors">${video.titulo}</h3>
+                            <p class="text-gray-400 text-sm"><i class="fa-regular fa-calendar-days mr-1"></i> ${video.fecha}</p>
+                        </div>
+                    </a>
+                `;
+                container.innerHTML += cardHTML;
+            });
+        }
+
+        // --- SCRIPTS GENERALES ---
         function actualizarFecha() {
             const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
             const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
             const hoy = new Date();
-            const stringFecha = `(${dias[hoy.getDay()]} - ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()})`;
-            document.getElementById('fecha-actual').textContent = stringFecha;
+            document.getElementById('fecha-actual').textContent = `${dias[hoy.getDay()]} - ${hoy.getDate()} de ${meses[hoy.getMonth()]}`;
             document.getElementById('year').textContent = hoy.getFullYear();
         }
 
         function iniciarReloj() {
             const reloj = document.getElementById('reloj-digital');
-            if(!reloj) return;
             setInterval(() => {
                 const ahora = new Date();
                 reloj.textContent = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}:${String(ahora.getSeconds()).padStart(2, '0')}`;
@@ -424,28 +445,29 @@
 
         function copiarDiscord() {
             const txt = "nnahh_arg (Discord de EspnHaxball)";
+            // Fallback para copy si el iframe molesta
             const el = document.createElement('textarea');
             el.value = txt;
             document.body.appendChild(el);
             el.select();
             document.execCommand('copy');
             document.body.removeChild(el);
-            
+
             const toast = document.getElementById('toast');
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
+            toast.classList.remove('opacity-0', 'invisible', 'translate-y-10');
+            setTimeout(() => toast.classList.add('opacity-0', 'invisible', 'translate-y-10'), 3000);
         }
 
         window.addEventListener('scroll', () => {
             const btn = document.getElementById('btn-volver');
-            if (window.scrollY > document.getElementById('inicio').offsetHeight / 2) {
-                btn.classList.add('visible');
+            if (window.scrollY > 300) {
+                btn.classList.remove('opacity-0', 'invisible', 'translate-y-4');
             } else {
-                btn.classList.remove('visible');
+                btn.classList.add('opacity-0', 'invisible', 'translate-y-4');
             }
         });
 
-        // -- ANIMACIÓN DE ESTRELLAS DE FONDO --
+        // --- ANIMACIÓN DE ESTRELLAS ---
         const canvasBg = document.getElementById('starsCanvas');
         const ctxBg = canvasBg.getContext('2d');
         let w, h, stars = [];
@@ -453,10 +475,11 @@
         function initStars() {
             w = canvasBg.width = window.innerWidth;
             h = canvasBg.height = window.innerHeight;
-            stars = Array.from({length: Math.floor((w*h)/8000)}, () => ({
+            stars = Array.from({length: Math.floor((w*h)/7000)}, () => ({
                 x: Math.random() * w, y: Math.random() * h,
-                s: Math.random() * 1.5, sp: (Math.random() * 0.2) + 0.05,
-                o: Math.random() * 0.5 + 0.1, od: Math.random() > 0.5 ? 1 : -1
+                s: Math.random() * 1.5 + 0.5, sp: (Math.random() * 0.3) + 0.1,
+                o: Math.random() * 0.5 + 0.1, od: Math.random() > 0.5 ? 1 : -1,
+                color: Math.random() > 0.8 ? '#00C853' : '#ffffff' // 20% de estrellas verdes
             }));
         }
 
@@ -465,23 +488,31 @@
             stars.forEach(st => {
                 st.y -= st.sp;
                 st.o += 0.005 * st.od;
-                if(st.o >= 0.6) st.od = -1;
+                if(st.o >= 0.8) st.od = -1;
                 if(st.o <= 0.1) st.od = 1;
                 if(st.y < 0) { st.y = h; st.x = Math.random() * w; }
-                ctxBg.fillStyle = `rgba(255,255,255,${st.o})`;
+                
+                ctxBg.fillStyle = st.color;
+                ctxBg.globalAlpha = st.o;
                 ctxBg.beginPath(); ctxBg.arc(st.x, st.y, st.s, 0, Math.PI*2); ctxBg.fill();
             });
+            ctxBg.globalAlpha = 1;
             requestAnimationFrame(animStars);
         }
 
         window.onload = () => {
-            actualizarFecha(); iniciarReloj(); initStars(); animStars();
+            actualizarFecha(); 
+            iniciarReloj(); 
+            initStars(); 
+            animStars();
+            renderizarPartidos();
+            renderizarVideos();
             window.addEventListener('resize', initStars);
             cargarDatosHaxPenal();
         };
 
         // ==========================================
-        //         MINIJUEGO HAXPENAL (FLAT 2D ESTILO HAXBALL)
+        //         MINIJUEGO HAXPENAL 
         // ==========================================
         
         const hpCanvas = document.getElementById('hp-canvas');
@@ -492,16 +523,8 @@
         let hpState = 'IDLE_DIR'; 
         const FIELD = { w: 800, h: 450 }; 
         
-        // Variables Barra Dirección
-        let DIR_POS = 0.5;
-        let DIR_DIR = 1;
-        let DIR_SPEED = 0.012;
-        let savedDir = 0.5;
-
-        // Variables Barra Potencia
-        let ARROW_POS = 0.5; 
-        let ARROW_DIR = 1; 
-        let ARROW_SPEED = 0.02; 
+        let DIR_POS = 0.5, DIR_DIR = 1, DIR_SPEED = 0.012, savedDir = 0.5;
+        let ARROW_POS = 0.5, ARROW_DIR = 1, ARROW_SPEED = 0.02; 
 
         let ball = { x: 400, y: 300, r: 8, targetX: 400, targetY: 300 };
         let gk = { x: 400, y: 80, r: 18, targetX: 400 };
@@ -513,15 +536,10 @@
         function abrirHaxPenal() {
             document.getElementById('haxpenal-modal').classList.remove('hidden');
             document.getElementById('haxpenal-modal').classList.add('flex');
-            
-            hpCanvas.width = FIELD.w;
-            hpCanvas.height = FIELD.h;
+            hpCanvas.width = FIELD.w; hpCanvas.height = FIELD.h;
 
-            if (!hpPlayerData.name) {
-                document.getElementById('hp-menu').classList.remove('hidden');
-            } else {
-                iniciarPartidaPenal();
-            }
+            if (!hpPlayerData.name) document.getElementById('hp-menu').classList.remove('hidden');
+            else iniciarPartidaPenal();
         }
 
         function cerrarHaxPenal() {
@@ -532,32 +550,22 @@
 
         function cargarDatosHaxPenal() {
             const saved = localStorage.getItem('haxpenal_user');
-            if (saved) {
-                hpPlayerData = JSON.parse(saved);
-                actualizarUIEstadisticas();
-            }
+            if (saved) { hpPlayerData = JSON.parse(saved); actualizarUIEstadisticas(); }
         }
 
         function guardarPerfilHaxPenal() {
             const name = document.getElementById('hp-input-name').value.trim() || 'Jugador';
             let dorsal = document.getElementById('hp-input-dorsal').value.trim() || '10';
-            if(dorsal.length > 2) dorsal = dorsal.slice(0, 2);
-            const apodo = document.getElementById('hp-input-apodo').value.trim() || name;
-            
-            hpPlayerData = { name, dorsal, apodo, xp: hpPlayerData.xp || 0 };
+            hpPlayerData = { name, dorsal, apodo: name, xp: hpPlayerData.xp || 0 };
             localStorage.setItem('haxpenal_user', JSON.stringify(hpPlayerData));
             
-            document.getElementById('hp-menu').classList.add('opacity-0');
-            setTimeout(() => {
-                document.getElementById('hp-menu').classList.add('hidden');
-                document.getElementById('hp-menu').classList.remove('opacity-0');
-                actualizarUIEstadisticas();
-                iniciarPartidaPenal();
-            }, 300);
+            document.getElementById('hp-menu').classList.add('hidden');
+            actualizarUIEstadisticas();
+            iniciarPartidaPenal();
         }
 
         function actualizarUIEstadisticas() {
-            document.getElementById('hp-stats-name').textContent = `${hpPlayerData.name} "${hpPlayerData.apodo}"`;
+            document.getElementById('hp-stats-name').textContent = `${hpPlayerData.name} (#${hpPlayerData.dorsal})`;
             document.getElementById('hp-stats-xp').textContent = hpPlayerData.xp;
         }
 
@@ -566,9 +574,7 @@
             document.getElementById('hp-resultado').classList.remove('opacity-100');
             
             hpState = 'IDLE_DIR';
-            DIR_POS = Math.random() * 0.8 + 0.1;
-            ARROW_POS = Math.random() * 0.8 + 0.1;
-            
+            DIR_POS = Math.random() * 0.8 + 0.1; ARROW_POS = Math.random() * 0.8 + 0.1;
             ball = { x: 400, y: 280, r: 8, targetX: 400, targetY: 280 };
             gk = { x: 400, y: 70, r: 18, targetX: 400 };
             kicker = { x: 370, y: 310, r: 24 };
@@ -578,20 +584,15 @@
         }
 
         function handleHaxPenalClick() {
-            if (hpState === 'IDLE_DIR') {
-                savedDir = DIR_POS; 
-                hpState = 'IDLE_POWER'; 
-            } else if (hpState === 'IDLE_POWER') {
-                ejecutarPenal();
-            }
+            if (hpState === 'IDLE_DIR') { savedDir = DIR_POS; hpState = 'IDLE_POWER'; } 
+            else if (hpState === 'IDLE_POWER') { ejecutarPenal(); }
         }
 
-        hpCanvas.addEventListener('mousedown', function(e) { handleHaxPenalClick(); });
-        hpCanvas.addEventListener('touchstart', function(e) { e.preventDefault(); handleHaxPenalClick(); });
+        hpCanvas.addEventListener('mousedown', handleHaxPenalClick);
+        hpCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); handleHaxPenalClick(); });
 
         function gameLoopPenal() {
-            updateFisicasPenal();
-            drawPenal();
+            updateFisicasPenal(); drawPenal();
             hpAnimationId = requestAnimationFrame(gameLoopPenal);
         }
 
@@ -605,118 +606,65 @@
                 if (ARROW_POS >= 1) { ARROW_POS = 1; ARROW_DIR = -1; }
                 if (ARROW_POS <= 0) { ARROW_POS = 0; ARROW_DIR = 1; }
             } else if (hpState === 'SHOOTING') {
-                ball.x += (ball.targetX - ball.x) * 0.1;
-                ball.y += (ball.targetY - ball.y) * 0.1;
-                
-                gk.x += (gk.targetX - gk.x) * 0.08;
-                gk.y += ((70) - gk.y) * 0.1; 
+                ball.x += (ball.targetX - ball.x) * 0.1; ball.y += (ball.targetY - ball.y) * 0.1;
+                gk.x += (gk.targetX - gk.x) * 0.08; gk.y += (70 - gk.y) * 0.1; 
             }
         }
 
         function drawPenal() {
-            // 1. Fondo de Cancha Estilo Haxball Clásico (Plano)
-            hpCtx.fillStyle = '#718c5a';
-            hpCtx.fillRect(0, 0, FIELD.w, FIELD.h);
-
-            // Líneas de cancha blancas planas
-            hpCtx.strokeStyle = '#ffffff';
-            hpCtx.lineWidth = 3;
-            
-            // Línea de meta / área
+            hpCtx.fillStyle = '#1a3c20'; hpCtx.fillRect(0, 0, FIELD.w, FIELD.h);
+            hpCtx.strokeStyle = 'rgba(255,255,255,0.2)'; hpCtx.lineWidth = 3;
             hpCtx.beginPath(); hpCtx.moveTo(0, 70); hpCtx.lineTo(FIELD.w, 70); hpCtx.stroke(); 
-            hpCtx.strokeRect(250, 70, 300, 100); // Área grande
+            hpCtx.strokeRect(250, 70, 300, 100); 
 
-            // 2. Red del arco clásica Haxball (plana y cuadriculada)
-            hpCtx.fillStyle = '#4c5f3c';
-            hpCtx.fillRect(300, 20, 200, 50);
-            
-            hpCtx.strokeStyle = 'rgba(255,255,255,0.15)';
-            hpCtx.lineWidth = 1;
-            hpCtx.beginPath();
-            for(let i = 300; i <= 500; i+=10) { hpCtx.moveTo(i, 20); hpCtx.lineTo(i, 70); }
-            for(let j = 20; j <= 70; j+=10) { hpCtx.moveTo(300, j); hpCtx.lineTo(500, j); }
-            hpCtx.stroke();
+            hpCtx.fillStyle = 'rgba(0,0,0,0.4)'; hpCtx.fillRect(300, 20, 200, 50);
+            hpCtx.fillStyle = '#ffffff';
+            hpCtx.beginPath(); hpCtx.arc(300, 70, 5, 0, Math.PI*2); hpCtx.fill();
+            hpCtx.beginPath(); hpCtx.arc(500, 70, 5, 0, Math.PI*2); hpCtx.fill();
 
-            // Postes del arco (Amarillos planos con borde negro)
-            hpCtx.fillStyle = '#f5d742';
-            hpCtx.strokeStyle = '#000000';
-            hpCtx.lineWidth = 2;
-            hpCtx.beginPath(); hpCtx.arc(300, 70, 6, 0, Math.PI*2); hpCtx.fill(); hpCtx.stroke();
-            hpCtx.beginPath(); hpCtx.arc(500, 70, 6, 0, Math.PI*2); hpCtx.fill(); hpCtx.stroke();
-
-            // 3. Dibujar Arquero (Estilo 2D Flat Haxball sin círculo blanco central)
             drawDiscFlat(gk.x, gk.y, gk.r, COLOR_BLUE, '1');
-
-            // 4. Dibujar Pateador (Estilo 2D Flat Haxball sin círculo blanco central)
             drawDiscFlat(kicker.x, kicker.y, kicker.r, COLOR_RED, hpPlayerData.dorsal || '10');
 
-            // 5. Dibujar Pelota (Blanca plana con borde negro)
-            hpCtx.fillStyle = '#ffffff';
-            hpCtx.strokeStyle = '#000000';
+            hpCtx.fillStyle = '#ffffff'; hpCtx.strokeStyle = '#000000';
             hpCtx.lineWidth = 2;
             hpCtx.beginPath(); hpCtx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2); 
             hpCtx.fill(); hpCtx.stroke();
 
-            // 6. UI: Barras de Puntería y Potencia
+            // Interfaz de Tiro (Barras)
             if (hpState === 'IDLE_DIR' || hpState === 'IDLE_POWER') {
-                const barW = 340;
-                const barH = 24;
-                const barX = (FIELD.w - barW) / 2;
+                const barW = 340, barH = 24, barX = (FIELD.w - barW) / 2;
                 
-                // --- BARRA DE DIRECCIÓN (Blanca) ---
                 const dirY = 190;
-                hpCtx.fillStyle = '#ffffff';
-                hpCtx.fillRect(barX, dirY, barW, barH);
-                hpCtx.strokeStyle = '#000000';
-                hpCtx.lineWidth = 2;
-                hpCtx.strokeRect(barX, dirY, barW, barH);
+                hpCtx.fillStyle = '#ffffff'; hpCtx.fillRect(barX, dirY, barW, barH);
+                hpCtx.strokeStyle = '#000000'; hpCtx.strokeRect(barX, dirY, barW, barH);
                 
-                // Marcas visuales de los palos
                 hpCtx.fillStyle = 'rgba(0,0,0,0.3)';
                 hpCtx.fillRect(barX + (barW * 0.2), dirY, 2, barH);
                 hpCtx.fillRect(barX + (barW * 0.8), dirY, 2, barH);
                 hpCtx.fillRect(barX + (barW * 0.5), dirY, 1, barH);
 
-                // Flecha indicadora Dirección
                 const actDir = hpState === 'IDLE_DIR' ? DIR_POS : savedDir;
                 const arrowDirX = barX + (barW * actDir);
                 hpCtx.fillStyle = hpState === 'IDLE_DIR' ? '#000000' : '#888888'; 
                 hpCtx.beginPath();
-                hpCtx.moveTo(arrowDirX, dirY - 4);
-                hpCtx.lineTo(arrowDirX - 10, dirY - 18);
-                hpCtx.lineTo(arrowDirX + 10, dirY - 18);
+                hpCtx.moveTo(arrowDirX, dirY - 4); hpCtx.lineTo(arrowDirX - 10, dirY - 18); hpCtx.lineTo(arrowDirX + 10, dirY - 18);
                 hpCtx.fill();
                 
-                // Textos Dirección
-                hpCtx.fillStyle = '#ffffff';
-                hpCtx.font = "bold 15px sans-serif";
-                hpCtx.textAlign = "center";
+                hpCtx.fillStyle = '#ffffff'; hpCtx.font = "bold 15px sans-serif"; hpCtx.textAlign = "center";
                 hpCtx.fillText(hpState === 'IDLE_DIR' ? "PASO 1: DIRECCIÓN (CLICK)" : "DIRECCIÓN FIJADA", FIELD.w/2, dirY - 26);
 
-                // --- BARRA DE POTENCIA (Colores planos) ---
                 if (hpState === 'IDLE_POWER') {
-                    const powY = 260;
-                    
-                    // Dibujar tramos de potencia planos
-                    const sectionW = barW / 5;
+                    const powY = 260, sectionW = barW / 5;
                     const colors = ['#F44336', '#FFEB3B', '#4CAF50', '#FFEB3B', '#F44336'];
                     for(let i=0; i<5; i++) {
                         hpCtx.fillStyle = colors[i];
                         hpCtx.fillRect(barX + (i * sectionW), powY, sectionW, barH);
                     }
-                    hpCtx.strokeStyle = '#000000';
-                    hpCtx.lineWidth = 2;
-                    hpCtx.strokeRect(barX, powY, barW, barH);
+                    hpCtx.strokeStyle = '#000000'; hpCtx.strokeRect(barX, powY, barW, barH);
 
-                    // Flecha indicadora Potencia
                     const arrowPowX = barX + (barW * ARROW_POS);
-                    hpCtx.fillStyle = '#ffffff';
-                    hpCtx.strokeStyle = '#000000'; 
-                    hpCtx.lineWidth = 2;
-                    hpCtx.beginPath();
-                    hpCtx.moveTo(arrowPowX, powY - 4);
-                    hpCtx.lineTo(arrowPowX - 10, powY - 18);
-                    hpCtx.lineTo(arrowPowX + 10, powY - 18);
+                    hpCtx.fillStyle = '#ffffff'; hpCtx.beginPath();
+                    hpCtx.moveTo(arrowPowX, powY - 4); hpCtx.lineTo(arrowPowX - 10, powY - 18); hpCtx.lineTo(arrowPowX + 10, powY - 18);
                     hpCtx.fill(); hpCtx.stroke();
                     
                     hpCtx.fillStyle = '#ffffff';
@@ -725,450 +673,66 @@
             }
         }
 
-        // Función auxiliar para dibujar discos en estilo 2D Flat Haxball (sin centro blanco)
         function drawDiscFlat(x, y, r, colorBase, text) {
-            // Cuerpo del disco (Plano con borde negro grueso característico de Haxball)
-            hpCtx.fillStyle = colorBase;
-            hpCtx.strokeStyle = '#000000';
-            hpCtx.lineWidth = 2.5;
-            hpCtx.beginPath(); hpCtx.arc(x, y, r, 0, Math.PI*2);
-            hpCtx.fill(); hpCtx.stroke();
-
-            // Texto o número interior directamente sobre el disco
-            hpCtx.fillStyle = '#ffffff';
-            hpCtx.font = `bold ${r * 0.9}px sans-serif`;
-            hpCtx.textAlign = 'center';
-            hpCtx.textBaseline = 'middle';
-            hpCtx.fillText(text, x, y + 1);
+            hpCtx.fillStyle = colorBase; hpCtx.strokeStyle = '#000000'; hpCtx.lineWidth = 2.5;
+            hpCtx.beginPath(); hpCtx.arc(x, y, r, 0, Math.PI*2); hpCtx.fill(); hpCtx.stroke();
+            hpCtx.fillStyle = '#ffffff'; hpCtx.font = `bold ${r * 0.9}px sans-serif`;
+            hpCtx.textAlign = 'center'; hpCtx.textBaseline = 'middle'; hpCtx.fillText(text, x, y + 1);
         }
 
         function ejecutarPenal() {
             hpState = 'SHOOTING';
+            let dirZone = savedDir < 0.2 ? 'LEFT_POST' : savedDir < 0.4 ? 'LEFT' : savedDir < 0.6 ? 'MIDDLE' : savedDir < 0.8 ? 'RIGHT' : 'RIGHT_POST';
+            let powZone = (ARROW_POS >= 0.4 && ARROW_POS <= 0.6) ? 'GREEN' : ((ARROW_POS >= 0.2 && ARROW_POS < 0.4) || (ARROW_POS > 0.6 && ARROW_POS <= 0.8)) ? 'YELLOW' : 'RED';
             
-            // 1. Zonas
-            let dirZone = '';
-            if (savedDir < 0.2) dirZone = 'LEFT_POST';
-            else if (savedDir < 0.4) dirZone = 'LEFT';
-            else if (savedDir < 0.6) dirZone = 'MIDDLE';
-            else if (savedDir < 0.8) dirZone = 'RIGHT';
-            else dirZone = 'RIGHT_POST';
-
-            let powZone = '';
-            if (ARROW_POS >= 0.4 && ARROW_POS <= 0.6) powZone = 'GREEN';
-            else if ((ARROW_POS >= 0.2 && ARROW_POS < 0.4) || (ARROW_POS > 0.6 && ARROW_POS <= 0.8)) powZone = 'YELLOW';
-            else powZone = 'RED';
-
-            // 2. Base lógica
-            let outcome = 'SAVE';
-            let targetX = 400;
-            let targetY = 40; 
+            let outcome = 'SAVE', targetX = 400, targetY = 40; 
             
-            if (dirZone === 'LEFT_POST') targetX = 295;
+            if (dirZone === 'LEFT_POST') targetX = 295; 
             if (dirZone === 'LEFT') targetX = 330;
-            if (dirZone === 'MIDDLE') targetX = 400;
-            if (dirZone === 'RIGHT') targetX = 470;
+            if (dirZone === 'MIDDLE') targetX = 400; 
+            if (dirZone === 'RIGHT') targetX = 470; 
             if (dirZone === 'RIGHT_POST') targetX = 505;
 
-            // Decisión del arquero
-            let gkX = 400;
             const gkGuess = Math.random();
-            if (gkGuess < 0.33) gkX = 330;
-            else if (gkGuess < 0.66) gkX = 470;
-            else gkX = 400;
+            let gkX = gkGuess < 0.33 ? 330 : gkGuess < 0.66 ? 470 : 400;
 
-            // 3. Cruzar Dirección + Potencia
             if (powZone === 'GREEN') {
-                if (dirZone === 'LEFT_POST' || dirZone === 'RIGHT_POST') {
-                    outcome = 'POST'; // Palo justo
-                } else {
-                    if (Math.abs(targetX - gkX) < 40) outcome = 'SAVE'; 
-                    else outcome = 'GOAL';
-                }
+                if (dirZone === 'LEFT_POST' || dirZone === 'RIGHT_POST') outcome = 'POST';
+                else if (Math.abs(targetX - gkX) < 40) outcome = 'SAVE'; else outcome = 'GOAL';
             } else if (powZone === 'YELLOW') {
-                if (dirZone === 'LEFT_POST' || dirZone === 'RIGHT_POST') {
-                    outcome = Math.random() > 0.5 ? 'POST' : 'OUT_WIDE';
-                } else {
-                    if (Math.random() < 0.2) outcome = 'POST'; 
-                    else if (Math.abs(targetX - gkX) < 60) outcome = 'SAVE'; 
-                    else outcome = 'GOAL';
-                }
+                if (dirZone === 'LEFT_POST' || dirZone === 'RIGHT_POST') outcome = Math.random() > 0.5 ? 'POST' : 'OUT_WIDE';
+                else if (Math.random() < 0.2) outcome = 'POST'; else if (Math.abs(targetX - gkX) < 60) outcome = 'SAVE'; else outcome = 'GOAL';
             } else { 
-                // RED
-                if (dirZone === 'MIDDLE') {
-                    outcome = 'OUT_HIGH';
-                    targetY = -80; // Voló
-                } else {
-                    outcome = 'OUT_WIDE';
-                    targetX = dirZone.includes('LEFT') ? 220 : 580; // Tribuna
-                    targetY = 20;
-                }
+                if (dirZone === 'MIDDLE') { outcome = 'OUT_HIGH'; targetY = -80; } 
+                else { outcome = 'OUT_WIDE'; targetX = dirZone.includes('LEFT') ? 220 : 580; targetY = 20; }
             }
 
-            ball.targetX = targetX + (Math.random()*10 - 5);
-            ball.targetY = targetY;
-            gk.targetX = gkX;
-
-            kicker.x += 10;
-            kicker.y -= 15;
-
-            setTimeout(() => {
-                mostrarResultadoPenal(outcome, dirZone, powZone);
-            }, 800); 
+            ball.targetX = targetX + (Math.random()*10 - 5); ball.targetY = targetY; gk.targetX = gkX;
+            setTimeout(() => mostrarResultadoPenal(outcome), 800); 
         }
 
-        function mostrarResultadoPenal(outcome, dirZone, powZone) {
+        function mostrarResultadoPenal(outcome) {
             hpState = 'ENDED';
-            
             const resModal = document.getElementById('hp-resultado');
-            const resTitle = document.getElementById('hp-res-title');
-            const resDesc = document.getElementById('hp-res-desc');
-            const resBg = document.getElementById('hp-res-bg');
-            
             resModal.classList.remove('hidden');
-            void resModal.offsetWidth;
-            resModal.classList.add('opacity-100');
+            setTimeout(() => resModal.classList.add('opacity-100'), 10);
 
-            let title = '';
-            let desc = '';
-            let bgClass = '';
-            let txtColor = '';
-
-            // TEXTOS NARRATIVOS PERSONALIZADOS
-            if (outcome === 'GOAL') {
-                title = '¡GOLAZO! ⚽';
-                bgClass = 'absolute inset-0 bg-green-500 opacity-20 pointer-events-none';
-                txtColor = 'text-white drop-shadow-[0_0_15px_rgba(0,200,83,1)]';
-                
-                if (dirZone === 'MIDDLE') desc = "Fuerte y al medio. El arquero se tiró a cazar mariposas y vos aseguraste el tanto.";
-                else desc = "Le diste con la precisión justa contra el palo. Inatajable para el portero que solo salió en la foto.";
-                
-                hpPlayerData.xp += 10;
-                
-            } else if (outcome === 'SAVE') {
-                title = '¡ATAJADÓN! 🧤';
-                bgClass = 'absolute inset-0 bg-red-600 opacity-20 pointer-events-none';
-                txtColor = 'text-red-500 drop-shadow-[0_0_15px_rgba(244,67,54,1)]';
-                
-                if (powZone === 'GREEN') desc = "¡Increíble! Le pegaste perfecto pero el arquero adivinó tus intenciones y voló espectacularmente.";
-                else desc = "El arquero leyó tu mente y se quedó con la pelota. Te faltó sorprender un poco más de potencia, capo.";
-
-            } else if (outcome === 'POST') {
-                title = '¡CLINK, CAJA! 🥅';
-                bgClass = 'absolute inset-0 bg-yellow-500 opacity-20 pointer-events-none';
-                txtColor = 'text-yellow-400 drop-shadow-[0_0_15px_rgba(255,235,59,1)]';
-                desc = "Buscaste ajustar tanto el tiro que le sacaste chispas al poste. El arquero ya estaba vencido, ¡qué mala suerte!";
-
-            } else if (outcome === 'OUT_HIGH') {
-                title = '¡ADENTRO, PERO DE LA CASA DEL VECINO! 🏠';
-                bgClass = 'absolute inset-0 bg-red-600 opacity-30 pointer-events-none';
-                txtColor = 'text-red-500 drop-shadow-[0_0_15px_rgba(244,67,54,1)]';
-                desc = "Le pegaste fuerte al medio pero se te fue la pelota y terminó por arriba del travesaño, alguien duerme con la pelota hoy.";
-
-            } else if (outcome === 'OUT_WIDE') {
-                title = '¡A LA TRIBUNA! 🦅';
-                bgClass = 'absolute inset-0 bg-red-600 opacity-20 pointer-events-none';
-                txtColor = 'text-red-500 drop-shadow-[0_0_15px_rgba(244,67,54,1)]';
-                desc = "Le quisiste dar tanto efecto que la mandaste directo a la fila 15 de la popular. Tratá de apuntarle al arco la próxima.";
-            }
+            let title = '', desc = '', txtColor = 'text-white';
+            if (outcome === 'GOAL') { title = '¡GOOOL!'; txtColor = 'text-haxgreen'; desc = "¡Excelente definición!"; hpPlayerData.xp += 10; } 
+            else if (outcome === 'SAVE') { title = '¡ATAJADA!'; txtColor = 'text-red-500'; desc = "El arquero te adivinó el palo."; } 
+            else if (outcome === 'POST') { title = '¡AL PALO!'; txtColor = 'text-yellow-400'; desc = "Cerquísima, rebotó en el poste."; } 
+            else { title = '¡AFUERA!'; txtColor = 'text-red-500'; desc = "A la tribuna, horrible definición."; }
             
-            resTitle.innerHTML = title;
-            resTitle.className = `text-3xl md:text-5xl font-black mb-4 uppercase z-10 relative ${txtColor}`;
-            resDesc.textContent = desc;
-            resBg.className = bgClass;
+            const titleEl = document.getElementById('hp-res-title');
+            titleEl.textContent = title;
+            titleEl.className = `text-4xl font-black mb-4 uppercase z-10 relative ${txtColor}`;
+            document.getElementById('hp-res-desc').textContent = desc;
             
             localStorage.setItem('haxpenal_user', JSON.stringify(hpPlayerData));
             actualizarUIEstadisticas();
         }
 
-        function reiniciarPenal() {
-            iniciarPartidaPenal();
-        }
+        function reiniciarPenal() { iniciarPartidaPenal(); }
     </script>
-<!-- ========================================== -->
-<!--       BLOQUE COMPLETO DE CANCIONERO        -->
-<!-- ========================================== -->
-
-<!-- Estilos del Cancionero (Podés pasarlos a tu archivo CSS si querés) -->
-<style>
-  /* Footer del Cancionero */
-  .site-footer {
-    text-align: center;
-    padding: 25px 10px;
-    margin-top: 50px;
-  }
-
-  .footer-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    padding: 12px 24px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 0.95rem;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .footer-btn:hover {
-    background: #00e676;
-    color: #000000;
-    border-color: #00e676;
-    box-shadow: 0 0 12px rgba(0, 230, 118, 0.4);
-  }
-
-  /* Sección Principal del Cancionero */
-  .cancionero-container {
-    max-width: 700px;
-    margin: 20px auto 40px auto;
-    background: rgba(18, 18, 18, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease;
-  }
-
-  .cancionero-container.hidden {
-    display: none;
-  }
-
-  .cancionero-header {
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 12px;
-    margin-bottom: 20px;
-  }
-
-  .cancionero-header h2 {
-    color: #00e676;
-    margin: 0 0 5px 0;
-    font-size: 1.5rem;
-    letter-spacing: 1px;
-  }
-
-  .cancionero-header p {
-    color: #888888;
-    font-size: 0.85rem;
-    margin: 0;
-  }
-
-  /* Lista de Canciones */
-  .playlist {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .song-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-    padding: 12px 18px;
-    margin-bottom: 10px;
-    transition: background 0.2s;
-  }
-
-  .song-item:hover {
-    background: rgba(255, 255, 255, 0.06);
-  }
-
-  .song-title {
-    color: #eeeeee;
-    font-weight: 600;
-    font-size: 0.95rem;
-  }
-
-  /* Botón de Play / Pause */
-  .btn-play {
-    background: #00e676;
-    border: none;
-    color: #000000;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    font-size: 0.9rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
-  }
-
-  .btn-play:hover {
-    transform: scale(1.1);
-    background: #00c853;
-    box-shadow: 0 0 10px rgba(0, 230, 118, 0.5);
-  }
-
-  .btn-play.playing {
-    background: #ff3d00;
-    color: #ffffff;
-    box-shadow: 0 0 10px rgba(255, 61, 0, 0.5);
-  }
-</style>
-
-<!-- Pie de Página con Botón Activador -->
-<footer class="site-footer">
-  <button id="btn-cancionero" class="footer-btn">
-    🎵 CANCIONERO HAXBALL
-  </button>
-</footer>
-
-<!-- Desplegable del Cancionero -->
-<section id="cancionero-section" class="cancionero-container hidden">
-  <div class="cancionero-header">
-    <h2>🎵 CANCIONERO HAXBALL</h2>
-    <p>Hitazos de la sala para viciar a pleno</p>
-  </div>
-
-  <ul class="playlist">
-    <!-- Tema 1: SE QUEJA (ESPN HAXBALL) -->
-    <li class="song-item">
-      <span class="song-title">SE QUEJA - ESPN HAXBALL</span>
-      <button class="btn-play" data-ytid="5JoTWZLJvwA" title="Reproducir">▶</button>
-    </li>
-
-    <!-- Tema 2: HINCHADA FUTBOL -->
-    <li class="song-item">
-      <span class="song-title">HINCHADA FUTBOL PACK</span>
-      <button class="btn-play" data-ytid="j7GJQUNMRzo" title="Reproducir">▶</button>
-    </li>      
-
-    <!-- Tema 3: LA FICHA DE D10S -->
-    <li class="song-item">
-      <span class="song-title">LA FICHA DE D105 - RUSITO</span>
-      <button class="btn-play" data-ytid="CbrxVTg5kPk" title="Reproducir">▶</button>
-    </li> 
-
-    <!-- Tema 4: LA RESAKA (SUPERMERK2) -->
-    <li class="song-item">
-      <span class="song-title">Supermerk2 - La Resaka</span>
-      <button class="btn-play" data-ytid="htc-knWf018" title="Reproducir">▶</button>
-    </li>
-
-    <!-- Tema 5: AMOR CLASIFICADO (RODRIGO) -->
-    <li class="song-item">
-      <span class="song-title">Rodrigo - Amor Clasificado</span>
-      <button class="btn-play" data-ytid="Wp75WKhWT48" title="Reproducir">▶</button>
-    </li>
-
-
-    <!-- Tema 6: PIDEME LA LUNA -->
-    <li class="song-item">
-      <span class="song-title">RePiola - Pideme la Luna </span>
-      <button class="btn-play" data-ytid="u7_9qFUmbEw" title="Reproducir">▶</button>
-    </li>
-
-       <!-- Tema 7: NENA -->
-    <li class="song-item">
-      <span class="song-title">Marama - Nena </span>
-      <button class="btn-play" data-ytid="teON5axS2UM" title="Reproducir">▶</button>
-    </li>
-
-
-       <!-- Tema 8: SUPERESTRELLA -->
-    <li class="song-item">
-      <span class="song-title">Aitana - Superestrella </span>
-      <button class="btn-play" data-ytid="ElvzE2cPclc" title="Reproducir">▶</button>
-    </li>
-
-     <!-- Tema 9: PA LA SELECCION -->
-    <li class="song-item">
-      <span class="song-title">La T y la M - Pa´ la Selección </span>
-      <button class="btn-play" data-ytid="tYZqgJp3X5g" title="Reproducir">▶</button>
-    </li>
-      
-    <!-- Si querés sumar más temas, copiás el <li> entero y le cambiás el data-ytid -->
-  </ul>
-
-  <!-- Div invisible para el reproductor de YouTube -->
-  <div id="youtube-player" style="display: none;"></div>
-</section>
-
-<!-- Script con la API de YouTube y Lógica de Audio -->
-<script>
-  let player;
-  let currentPlayingBtn = null;
-
-  // Cargar API Iframe de YouTube dinámicamente
-  const ytScript = document.createElement('script');
-  ytScript.src = "https://www.youtube.com/iframe_api";
-  document.head.appendChild(ytScript);
-
-  // Inicializar reproductor de YouTube
-  function onYouTubeIframeAPIReady() {
-    player = new YT.Player('youtube-player', {
-      height: '0',
-      width: '0',
-      videoId: '',
-      events: {
-        'onStateChange': onPlayerStateChange
-      }
-    });
-  }
-
-  // Desplegar / Ocultar la lista de Canciones al hacer click en el botón
-  const btnCancionero = document.getElementById('btn-cancionero');
-  const cancioneroSection = document.getElementById('cancionero-section');
-
-  btnCancionero.addEventListener('click', () => {
-    cancioneroSection.classList.toggle('hidden');
-    if (!cancioneroSection.classList.contains('hidden')) {
-      cancioneroSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  });
-
-  // Evento de Play/Pause para cada botón de la playlist
-  document.querySelectorAll('.btn-play').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const videoId = this.getAttribute('data-ytid');
-
-      // Caso 1: Pausar el mismo tema que está sonando
-      if (currentPlayingBtn === this && player && player.getPlayerState() === YT.PlayerState.PLAYING) {
-        player.pauseVideo();
-        this.textContent = '▶';
-        this.classList.remove('playing');
-        return;
-      }
-
-      // Caso 2: Cambiar de tema (apagar el botón anterior si había uno)
-      if (currentPlayingBtn && currentPlayingBtn !== this) {
-        currentPlayingBtn.textContent = '▶';
-        currentPlayingBtn.classList.remove('playing');
-      }
-
-      // Reproducir el video en segundo plano
-      if (player && player.loadVideoById) {
-        player.loadVideoById(videoId);
-        player.playVideo();
-        
-        this.textContent = '⏸';
-        this.classList.add('playing');
-        currentPlayingBtn = this;
-      } else {
-        console.warn('La API de YouTube todavía se está cargando...');
-      }
-    });
-  });
-
-  // Detectar cuándo termina la canción para resetear el botón
-  function onPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.ENDED && currentPlayingBtn) {
-      currentPlayingBtn.textContent = '▶';
-      currentPlayingBtn.classList.remove('playing');
-      currentPlayingBtn = null;
-    }
-  }
-</script>
-    
-<!-- ========================================== -->
-    
 </body>
 </html>

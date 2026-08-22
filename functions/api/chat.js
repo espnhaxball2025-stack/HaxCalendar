@@ -17,8 +17,7 @@ export async function onRequestPost(context) {
           Si el usuario pregunta sobre temas ajenos a Haxball o creación de contenido/gaming, explícale de forma respetuosa que solo puedes responder consultas relacionadas a HaxCalendar y Haxball.
         `;
 
-        // Se actualizó a gemini-2.5-flash
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
 
         const payload = {
             contents: [

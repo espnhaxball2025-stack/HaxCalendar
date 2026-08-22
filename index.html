@@ -733,26 +733,25 @@
 <!-- WIDGET DE CHAT HAXBALL - HAXCALENDAR -->
     <div id="hax-chat-widget" class="fixed bottom-4 right-4 z-50 font-sans">
         <button id="chat-toggle-btn" onclick="toggleHaxChat()" class="bg-green-600 hover:bg-green-500 text-black font-black p-3 rounded-full shadow-lg border-2 border-black flex items-center justify-center transition-all duration-200 hover:scale-110">
-            💬 <span class="ml-2 text-xs uppercase tracking-wider font-extrabold hidden sm:inline">IA Haxball</span>
+        🎧 <span class="ml-2 text-xs uppercase tracking-wider font-extrabold hidden sm:inline">HAXBALL AI </span>
         </button>
 
         <div id="chat-window" class="hidden flex-col w-[350px] sm:w-[400px] h-[500px] bg-neutral-900 border-2 border-neutral-700 rounded-xl shadow-2xl overflow-hidden mt-2">
             <div class="bg-neutral-800 p-3 border-b border-neutral-700 flex justify-between items-center">
                 <div class="flex items-center space-x-2">
                     <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                    <span class="font-extrabold text-sm text-green-400 uppercase tracking-wide">HaxTermo Bot IA</span>
+                    <span class="font-extrabold text-sm text-green-400 uppercase tracking-wide">Haxball AI </span>
                 </div>
                 <button onclick="toggleHaxChat()" class="text-neutral-400 hover:text-white font-bold text-lg px-2">✕</button>
             </div>
 
-            <div id="chat-messages" class="flex-1 p-3 overflow-y-auto space-y-3 text-xs sm:text-sm bg-neutral-950">
-                <div class="bg-neutral-800 text-neutral-200 p-3 rounded-lg border border-neutral-700 max-w-[85%]">
-                    ¡Qué hacés, salame! Soy la IA oficial de <b>HaxCalendar</b>. Preguntame de streamers de Haxball, torneos, tácticas o ideas para videos. Si me venís a preguntar boludeces que no son de Haxball, te mando a cagar. ¡Arrancá!
-                </div>
+            <div class="bg-neutral-800 text-neutral-200 p-3 rounded-lg border border-neutral-700 max-w-[85%]">
+    ¡Hola! Bienvenido al asistente virtual de <b>HaxCalendar</b>. Podés consultarme sobre la agenda de partidos, novedades de streamers, torneos y tácticas de Haxball. ¿En qué te puedo ayudar hoy?
+</div>
             </div>
 
             <form id="chat-form" onsubmit="sendHaxMessage(event)" class="p-2 bg-neutral-900 border-t border-neutral-800 flex gap-2">
-                <input type="text" id="chat-input" placeholder="Preguntá de Haxball o streamers..." required class="flex-1 bg-neutral-950 text-white text-xs sm:text-sm rounded-lg px-3 py-2 border border-neutral-700 focus:outline-none focus:border-green-500">
+                <input type="text" id="chat-input" placeholder="Pregunta a Haxball AI" required class="flex-1 bg-neutral-950 text-white text-xs sm:text-sm rounded-lg px-3 py-2 border border-neutral-700 focus:outline-none focus:border-green-500">
                 <button type="submit" id="chat-send-btn" class="bg-green-600 hover:bg-green-500 text-black font-black px-4 py-2 rounded-lg text-xs uppercase tracking-wider transition-colors">Enviar</button>
             </form>
         </div>

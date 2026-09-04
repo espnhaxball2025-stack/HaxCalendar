@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - HaxCalendar</title>
+    <link rel="icon" type="image/png" href="https://kappa.lol/MhiKyW">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 200, 83, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(0, 200, 83, 0.05), transparent 25%);
+        }
+        .glass-panel {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-in {
+            animation: slideIn 0.3s ease forwards;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="min-h-screen p-4 md:p-8">
+        <div class="max-w-6xl mx-auto">
+            
+            <!-- HEADER -->
+            <div class="mb-12">
+                <div class="flex items-center justify-between mb-4 flex-wrap gap-4">
+                    <div>
+                        <h1 class="text-5xl md:text-6xl font-black tracking-tighter mb-2">
+                            Panel <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-green-400">Admin</span>
+                        </h1>
+                        <p class="text-gray-400">Gestiona la agenda de partidos de HaxCalendar</p>
+                    </div>
+                    <a href="index.html" class="glass-panel px-6 py-3 rounded-lg hover:border-green-500 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-left"></i> Volver
+                    </a>
+                </div>
+            </div>
+
+            <!-- CONTENEDOR PRINCIPAL -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                <!-- COLUMNA IZQUIERDA: FORMULARIO -->
+                <div class="lg:col-span-2">
+                    <div class="glass-panel p-8 rounded-2xl mb-8">
+                        <h2 class="text-3xl font-black mb-6 flex items-center gap-3">
+                            <i class="fa-solid fa-plus-circle text-green-500"></i>
+                            Agregar Nuevo Partido
+                        </h2>
+
+                        <div class="space-y-4">
+                            <!-- Equipo 1 -->
+                            <div>
+                                <label class="block text-sm font-bold text-gray-400 mb-2">Equipo 1</label>
+                                <input 
+                                    type="text" 
+                                    id="equipo1" 
+                                    placeholder="Ej: PORTO" 
+                                    class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-500 transition-colors"
+                                >
+                            </div>
+
+                            <!-- Equipo 2 -->
+                            <div>
+                                <label class="block text-sm font-bold text-gray-400 mb-2">Equipo 2</label>
+                                <input 
+                                    type="text" 
+                                    id="equipo2" 
+                                    placeholder="Ej: TOTTENHAM" 
+                                    class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-500 transition-colors"
+                                >
+                            </div>
+
+                            <!-- Hora -->
+                            <div>
+                                <label class="block text-sm font-bold text-gray-400 mb-2">Hora del Partido</label>
+                                <input 
+                                    type="time" 
+                                    id="hora" 
+                                    class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-500 transition-colors"
+                                >
+                            </div>
+
+                            <!-- Resultado -->
+                            <div>
+                                <label class="block text-sm font-bold text-gray-400 mb-2">Resultado (Ej: 3 - 2)</label>
+                                <input 
+                                    type="text" 
+                                    id="resultado" 
+                                    placeholder="Ej: 9 - 9" 
+                                    class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-500 transition-colors"
+                                >
+                            </div>
+
+                            <!-- Estado -->
+                            <div>
+                                <label class="block text-sm font-bold text-gray-400 mb-2">Estado del Partido</label>
+                                <select id="estado" class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-500 transition-colors">
+                                    <option value="PRÓXIMO">⏳ PRÓXIMO</option>
+                                    <option value="EN VIVO">🔴 EN VIVO</option>
+                                    <option value="FINALIZADO">✅ FINALIZADO</option>
+                                </select>
+                            </div>
+
+                            <!-- Mostrar Resultado -->
+                            <div>
+                                <label class="block text-sm font-bold text-gray-400 mb-2">¿Mostrar Resultado?</label>
+                                <select id="mostrar_resultado" class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-500 transition-colors">
+                                    <option value="off">No (Ocultar resultado)</option>
+                                    <option value="on">Sí (Mostrar resultado)</option>
+                                </select>
+                            </div>
+
+                            <!-- Botones -->
+                            <div class="flex gap-3 pt-4">
+                                <button 
+                                    onclick="agregarPartido()" 
+                                    class="flex-1 bg-green-600 hover:bg-green-700 text-black font-black py-3 rounded-lg transition-all duration-300 flex items-center justify-center gap-2"
+                                >
+                                    <i class="fa-solid fa-plus"></i> Agregar Partido
+                                </button>
+                                <button 
+                                    onclick="limpiarFormulario()" 
+                                    class="flex-1 glass-panel hover:bg-white/10 font-bold py-3 rounded-lg transition-all"
+                                >
+                                    <i class="fa-solid fa-eraser"></i> Limpiar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LISTA DE PARTIDOS -->
+                    <div class="glass-panel p-8 rounded-2xl">
+                        <h2 class="text-3xl font-black mb-6 flex items-center gap-3">
+                            <i class="fa-solid fa-calendar"></i>
+                            Partidos Actuales
+                        </h2>
+
+                        <div id="lista-partidos" class="space-y-4">
+                            <p class="text-gray-400 text-center py-8">Cargando partidos...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMNA DERECHA: ACCIONES Y ESTADÍSTICAS -->
+                <div class="space-y-6">
+                    
+                    <!-- ESTADÍSTICAS -->
+                    <div class="glass-panel p-6 rounded-2xl animate-slide-in">
+                        <h3 class="text-xl font-black mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-simple text-green-500"></i>
+                            Estadísticas
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Total de partidos:</span>
+                                <span class="text-2xl font-bold text-green-500" id="total-partidos">0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">En vivo:</span>
+                                <span class="font-bold text-red-500" id="partidos-vivo">0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Finalizados:</span>
+                                <span class="font-bold text-blue-500" id="partidos-final">0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Próximos:</span>
+                                <span class="font-bold text-yellow-500" id="partidos-proximo">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ACCIONES -->
+                    <div class="glass-panel p-6 rounded-2xl animate-slide-in" style="animation-delay: 0.1s;">
+                        <h3 class="text-xl font-black mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-gears text-green-500"></i>
+                            Acciones
+                        </h3>
+                        <div class="space-y-3">
+                            <button 
+                                onclick="descargarJSON()" 
+                                class="w-full glass-panel hover:bg-white/10 py-3 rounded-lg font-bold transition-all flex items-center justify-center gap-2"
+                            >
+                                <i class="fa-solid fa-download"></i> Descargar JSON
+                            </button>
+                            <button 
+                                onclick="subirJSON()" 
+                                class="w-full glass-panel hover:bg-white/10 py-3 rounded-lg font-bold transition-all flex items-center justify-center gap-2"
+                            >
+                                <i class="fa-solid fa-upload"></i> Subir JSON
+                            </button>
+                            <button 
+                                onclick="limpiarAgenda()" 
+                                class="w-full bg-red-600/20 hover:bg-red-600/40 border border-red-600 py-3 rounded-lg font-bold transition-all flex items-center justify-center gap-2"
+                            >
+                                <i class="fa-solid fa-trash"></i> Limpiar Todo
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- INFO -->
+                    <div class="glass-panel p-6 rounded-2xl animate-slide-in" style="animation-delay: 0.2s;">
+                        <h3 class="text-xl font-black mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-info text-blue-500"></i>
+                            Información
+                        </h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            Los cambios se guardan automáticamente en tu navegador. Cuando cierres esta página, vuelve a abrir <strong>index.html</strong> para ver los cambios reflejados.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INPUT OCULTO PARA SUBIR ARCHIVOS -->
+    <input type="file" id="file-input" accept=".json" style="display:none;">
+
+    <script>
+        // ============================================
+        // VARIABLES GLOBALES
+        // ============================================
+        let agenda = { 
+            partidos: [],
+            videos: [
+                { titulo: "Japon vs Peru", fecha: "9 de Agosto", id_youtube: "IzD32QLD2Ns" },
+                { titulo: "Brasil vs Peru", fecha: "20 de Diciembre", id_youtube: "956xxARm924" },
+                { titulo: "Boca vs Fluminense", fecha: "15 de Febrero", id_youtube: "KPMUjSr0Jvg" }
+            ]
+        };
+
+        // ============================================
+        // CARGAR AGENDA AL INICIAR
+        // ============================================
+        function cargarAgenda() {
+            const saved = localStorage.getItem('haxcalendar_agenda');
+            if (saved) {
+                try {
+                    agenda = JSON.parse(saved);
+                } catch (e) {
+                    console.error('Error al parsear agenda:', e);
+                    agenda = { partidos: [], videos: [] };
+                }
+            }
+            mostrarPartidos();
+            actualizarEstadisticas();
+        }
+
+        // ============================================
+        // MOSTRAR PARTIDOS EN LA LISTA
+        // ============================================
+        function mostrarPartidos() {
+            const container = document.getElementById('lista-partidos');
+            
+            if (agenda.partidos.length === 0) {
+                container.innerHTML = '<p class="text-gray-400 text-center py-8">No hay partidos agregados. ¡Agrega uno!</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            
+            agenda.partidos.forEach((partido, index) => {
+                const estadoClass = partido.estado === 'EN VIVO' ? 'text-red-500' : 
+                                   partido.estado === 'FINALIZADO' ? 'text-blue-500' : 'text-yellow-500';
+                const estadoIcon = partido.estado === 'EN VIVO' ? '🔴' : 
+                                  partido.estado === 'FINALIZADO' ? '✅' : '⏳';
+
+                const html = `
+                    <div class="glass-panel p-5 rounded-xl border-l-4 border-green-500 hover:border-green-400 transition-all animate-slide-in">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold mb-2">
+                                    ${partido.equipo1} <span class="text-green-500 mx-2">VS</span> ${partido.equipo2}
+                                </h3>
+                                <div class="flex flex-col sm:flex-row gap-3 text-sm text-gray-400">
+                                    <span><i class="fa-regular fa-clock"></i> ${partido.hora}</span>
+                                    <span class="${estadoClass}"><i class="fa-solid fa-circle"></i> ${estadoIcon} ${partido.estado}</span>
+                                    ${partido.mostrar_resultado === 'on' ? `<span class="text-green-500"><i class="fa-solid fa-eye"></i> ${partido.resultado}</span>` : '<span class="text-gray-500"><i class="fa-solid fa-eye-slash"></i> Resultado oculto</span>'}
+                                </div>
+                            </div>
+                            <div class="flex gap-2 w-full sm:w-auto">
+                                <button 
+                                    onclick="editarPartido(${index})" 
+                                    class="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg font-bold transition-all"
+                                    title="Editar"
+                                >
+                                    <i class="fa-solid fa-pen"></i> Editar
+                                </button>
+                                <button 
+                                    onclick="eliminarPartido(${index})" 
+                                    class="flex-1 sm:flex-none bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-bold transition-all"
+                                    title="Eliminar"
+                                >
+                                    <i class="fa-solid fa-trash"></i> Eliminar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        // ============================================
+        // AGREGAR PARTIDO
+        // ============================================
+        function agregarPartido() {
+            const equipo1 = document.getElementById('equipo1').value.trim();
+            const equipo2 = document.getElementById('equipo2').value.trim();
+            const hora = document.getElementById('hora').value;
+            const resultado = document.getElementById('resultado').value.trim() || '0 - 0';
+            const estado = document.getElementById('estado').value;
+            const mostrar_resultado = document.getElementById('mostrar_resultado').value;
+
+            // Validar
+            if (!equipo1 || !equipo2) {
+                alert('❌ Completa ambos equipos');
+                return;
+            }
+
+            if (!hora) {
+                alert('❌ Selecciona la hora');
+                return;
+            }
+
+            // Convertir hora a formato 12h
+            const [horas, minutos] = hora.split(':');
+            let horas12 = parseInt(horas);
+            const periodo = horas12 >= 12 ? 'PM' : 'AM';
+            if (horas12 > 12) horas12 -= 12;
+            if (horas12 === 0) horas12 = 12;
+            const horaFormato = `${String(horas12).padStart(2, '0')}:${minutos} ${periodo}`;
+
+            // Agregar partido
+            agenda.partidos.push({
+                equipo1,
+                equipo2,
+                resultado,
+                mostrar_resultado,
+                estado,
+                hora: horaFormato
+            });
+
+            guardarAgenda();
+            limpiarFormulario();
+            mostrarPartidos();
+            actualizarEstadisticas();
+            
+            // Notificación
+            alert('✅ Partido agregado exitosamente');
+        }
+
+        // ============================================
+        // ELIMINAR PARTIDO
+        // ============================================
+        function eliminarPartido(index) {
+            if (confirm(`¿Eliminar el partido: ${agenda.partidos[index].equipo1} vs ${agenda.partidos[index].equipo2}?`)) {
+                agenda.partidos.splice(index, 1);
+                guardarAgenda();
+                mostrarPartidos();
+                actualizarEstadisticas();
+                alert('✅ Partido eliminado');
+            }
+        }
+
+        // ============================================
+        // EDITAR PARTIDO
+        // ============================================
+        function editarPartido(index) {
+            const partido = agenda.partidos[index];
+            
+            document.getElementById('equipo1').value = partido.equipo1;
+            document.getElementById('equipo2').value = partido.equipo2;
+            document.getElementById('resultado').value = partido.resultado;
+            document.getElementById('estado').value = partido.estado;
+            document.getElementById('mostrar_resultado').value = partido.mostrar_resultado;
+            
+            // Convertir hora de 12h a 24h para el input time
+            const [tiempo, periodo] = partido.hora.split(' ');
+            let [horas, minutos] = tiempo.split(':');
+            horas = parseInt(horas);
+            if (periodo === 'PM' && horas !== 12) horas += 12;
+            if (periodo === 'AM' && horas === 12) horas = 0;
+            
+            document.getElementById('hora').value = `${String(horas).padStart(2, '0')}:${minutos}`;
+
+            // Cambiar botón a "Actualizar"
+            const btn = document.querySelector('button:has(i.fa-plus)');
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Actualizar Partido';
+            btn.onclick = () => actualizarPartido(index);
+
+            // Scroll al formulario
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ============================================
+        // ACTUALIZAR PARTIDO
+        // ============================================
+        function actualizarPartido(index) {
+            const equipo1 = document.getElementById('equipo1').value.trim();
+            const equipo2 = document.getElementById('equipo2').value.trim();
+            const hora = document.getElementById('hora').value;
+            const resultado = document.getElementById('resultado').value.trim() || '0 - 0';
+            const estado = document.getElementById('estado').value;
+            const mostrar_resultado = document.getElementById('mostrar_resultado').value;
+
+            if (!equipo1 || !equipo2 || !hora) {
+                alert('❌ Completa todos los campos');
+                return;
+            }
+
+            // Convertir hora
+            const [horas, minutos] = hora.split(':');
+            let horas12 = parseInt(horas);
+            const periodo = horas12 >= 12 ? 'PM' : 'AM';
+            if (horas12 > 12) horas12 -= 12;
+            if (horas12 === 0) horas12 = 12;
+            const horaFormato = `${String(horas12).padStart(2, '0')}:${minutos} ${periodo}`;
+
+            agenda.partidos[index] = {
+                equipo1,
+                equipo2,
+                resultado,
+                mostrar_resultado,
+                estado,
+                hora: horaFormato
+            };
+
+            guardarAgenda();
+            limpiarFormulario();
+            mostrarPartidos();
+            actualizarEstadisticas();
+            
+            // Restaurar botón
+            const btn = document.querySelector('button:has(i.fa-check)');
+            btn.innerHTML = '<i class="fa-solid fa-plus"></i> Agregar Partido';
+            btn.onclick = () => agregarPartido();
+            
+            alert('✅ Partido actualizado');
+        }
+
+        // ============================================
+        // LIMPIAR FORMULARIO
+        // ============================================
+        function limpiarFormulario() {
+            document.getElementById('equipo1').value = '';
+            document.getElementById('equipo2').value = '';
+            document.getElementById('hora').value = '';
+            document.getElementById('resultado').value = '';
+            document.getElementById('estado').value = 'PRÓXIMO';
+            document.getElementById('mostrar_resultado').value = 'off';
+        }
+
+        // ============================================
+        // GUARDAR AGENDA EN LOCALSTORAGE
+        // ============================================
+        function guardarAgenda() {
+            localStorage.setItem('haxcalendar_agenda', JSON.stringify(agenda));
+            console.log('✅ Agenda guardada en localStorage');
+        }
+
+        // ============================================
+        // ACTUALIZAR ESTADÍSTICAS
+        // ============================================
+        function actualizarEstadisticas() {
+            const total = agenda.partidos.length;
+            const vivo = agenda.partidos.filter(p => p.estado === 'EN VIVO').length;
+            const final = agenda.partidos.filter(p => p.estado === 'FINALIZADO').length;
+            const proximo = agenda.partidos.filter(p => p.estado === 'PRÓXIMO').length;
+
+            document.getElementById('total-partidos').textContent = total;
+            document.getElementById('partidos-vivo').textContent = vivo;
+            document.getElementById('partidos-final').textContent = final;
+            document.getElementById('partidos-proximo').textContent = proximo;
+        }
+
+        // ============================================
+        // DESCARGAR JSON
+        // ============================================
+        function descargarJSON() {
+            const dataStr = JSON.stringify(agenda, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'agenda_haxcalendar.json';
+            link.click();
+            URL.revokeObjectURL(url);
+            alert('✅ JSON descargado');
+        }
+
+        // ============================================
+        // SUBIR JSON
+        // ============================================
+        function subirJSON() {
+            document.getElementById('file-input').click();
+        }
+
+        document.getElementById('file-input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const data = JSON.parse(event.target.result);
+                    if (data.partidos && Array.isArray(data.partidos)) {
+                        agenda = data;
+                        guardarAgenda();
+                        mostrarPartidos();
+                        actualizarEstadisticas();
+                        alert('✅ JSON cargado exitosamente');
+                    } else {
+                        alert('❌ Formato JSON inválido');
+                    }
+                } catch (err) {
+                    alert('❌ Error al procesar el archivo: ' + err.message);
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        // ============================================
+        // LIMPIAR TODO
+        // ============================================
+        function limpiarAgenda() {
+            if (confirm('⚠️ ¿Estás seguro? Esto eliminará TODOS los partidos')) {
+                agenda.partidos = [];
+                guardarAgenda();
+                mostrarPartidos();
+                actualizarEstadisticas();
+                alert('🗑️ Agenda limpiada');
+            }
+        }
+
+        // ============================================
+        // INICIALIZAR
+        // ============================================
+        window.onload = () => {
+            cargarAgenda();
+        };
+    </script>
+</body>
+</html>

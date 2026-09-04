@@ -30,6 +30,45 @@
         .animate-slide-in {
             animation: slideIn 0.3s ease forwards;
         }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .toggle-slider {
+            background-color: #00C853;
+        }
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -49,6 +88,21 @@
                         <i class="fa-solid fa-arrow-left"></i> Volver
                     </a>
                 </div>
+            </div>
+
+            <!-- SIMULACIÓN SIN PARTIDOS - TOGGLE CONTROL -->
+            <div class="glass-panel p-6 rounded-2xl mb-8 flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl font-black mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-eye-slash text-yellow-500"></i>
+                        Simular sin Partidos
+                    </h3>
+                    <p class="text-gray-400 text-sm">Activa esto para mostrar "NO HAY PARTIDOS PROGRAMADOS" en la agenda</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggle-sin-partidos">
+                    <span class="toggle-slider"></span>
+                </label>
             </div>
 
             <!-- CONTENEDOR PRINCIPAL -->
@@ -220,7 +274,11 @@
                             Información
                         </h3>
                         <p class="text-sm text-gray-400 leading-relaxed">
-                            Los cambios se guardan automáticamente en tu navegador. Cuando cierres esta página, vuelve a abrir <strong>index.html</strong> para ver los cambios reflejados.
+                            ✅ Los cambios se guardan automáticamente en localStorage.
+                            <br><br>
+                            📱 Abre <strong>index.html</strong> en otra pestaña para ver los cambios en tiempo real.
+                            <br><br>
+                            🔐 Solo tú puedes acceder a este panel. Los demás solo verán la agenda.
                         </p>
                     </div>
 
@@ -260,7 +318,26 @@
             }
             mostrarPartidos();
             actualizarEstadisticas();
+            
+            // Cargar estado del toggle
+            const toggleState = localStorage.getItem('haxcalendar_simular_sin_partidos');
+            if (toggleState === 'on') {
+                document.getElementById('toggle-sin-partidos').checked = true;
+            }
         }
+
+        // ============================================
+        // TOGGLE: SIMULAR SIN PARTIDOS
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.getElementById('toggle-sin-partidos');
+            toggle.addEventListener('change', function() {
+                const state = this.checked ? 'on' : 'off';
+                localStorage.setItem('haxcalendar_simular_sin_partidos', state);
+                console.log('✅ Estado de simulación guardado:', state);
+                alert(`✅ Simulación sin partidos: ${state.toUpperCase()}`);
+            });
+        });
 
         // ============================================
         // MOSTRAR PARTIDOS EN LA LISTA

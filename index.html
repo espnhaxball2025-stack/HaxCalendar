@@ -104,18 +104,55 @@
 
     <canvas id="starsCanvas"></canvas>
 
+    <!-- BOTÓN MENÚ LATERAL IZQUIERDO (HAMBURGUESA) -->
+    <button onclick="abrirMenuTorneos()" class="fixed top-6 left-6 md:top-10 md:left-10 z-40 w-12 h-12 md:w-14 md:h-14 bg-black/60 backdrop-blur-md border border-white/10 hover:border-haxgreen text-white rounded-2xl cursor-pointer shadow-glass flex items-center justify-center group transition-all duration-300 hover:scale-105">
+        <i class="fa-solid fa-bars text-haxgreen text-xl md:text-2xl group-hover:scale-110 transition-transform"></i>
+    </button>
+
+    <!-- SIDEBAR DE TORNEOS -->
+    <div id="sidebar-torneos" class="fixed top-0 left-0 h-full w-72 md:w-80 bg-black/95 backdrop-blur-xl border-r border-haxgreen/30 z-[80] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-6 shadow-neon">
+        <div class="flex justify-between items-center mb-8 pb-4 border-b border-white/10">
+            <h2 class="text-xl md:text-2xl font-black text-white uppercase tracking-wider flex items-center gap-3">
+                <i class="fa-solid fa-sitemap text-haxgreen"></i> Torneos
+            </h2>
+            <button onclick="cerrarMenuTorneos()" class="text-gray-400 hover:text-white text-2xl transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div id="lista-torneos-sidebar" class="flex flex-col gap-3 overflow-y-auto custom-scrollbar flex-1 pb-4">
+            <!-- Se inyecta dinámicamente -->
+        </div>
+    </div>
+    
+    <!-- FONDO OSCURO PARA SIDEBAR -->
+    <div id="overlay-sidebar" onclick="cerrarMenuTorneos()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[75] hidden opacity-0 transition-opacity duration-300"></div>
+
+    <!-- BOTÓN HAXPENAL FLOTANTE -->
+    <div onclick="abrirHaxPenal()" class="absolute top-6 right-6 md:top-10 md:right-10 w-24 h-24 md:w-32 md:h-32 rounded-2xl overflow-hidden cursor-pointer shadow-glass z-40 group transition-all duration-300 hover:scale-105 border border-white/10 hover:border-haxgreen bg-black/40 backdrop-blur-md flex flex-col items-center justify-center">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=400&q=80')] bg-cover bg-center blur-[2px] opacity-40 group-hover:opacity-60 transition-opacity"></div>
+        <span class="relative z-10 text-white font-black text-sm md:text-lg tracking-widest uppercase drop-shadow-[0_2px_2px_rgba(0,0,0,1)] group-hover:text-haxgreen transition-colors flex flex-col items-center gap-1">
+            <i class="fa-solid fa-futbol text-2xl md:text-3xl mb-1 group-hover:animate-bounce"></i>
+            HaxPenal
+        </span>
+    </div>
+
+    <!-- MODAL VISOR DE CUADRO (REEMPLAZA AL VIEJO MODAL COMPUESTO) -->
+    <div id="modal-visor" class="fixed inset-0 z-[90] hidden items-center justify-center p-4 backdrop-blur-md bg-black/80">
+        <div class="w-full max-w-5xl glass-panel rounded-3xl p-4 md:p-6 relative border border-white/10 shadow-neon flex flex-col max-h-[90vh]">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="visor-titulo" class="text-xl md:text-3xl font-black text-haxgreen uppercase tracking-wider">Cuadro</h2>
+                <button onclick="cerrarVisorCuadro()" class="text-gray-400 hover:text-white text-4xl font-bold transition-colors leading-none">&times;</button>
+            </div>
+            <div class="flex-1 overflow-y-auto custom-scrollbar flex items-center justify-center bg-black/80 rounded-2xl p-2 border border-white/10 min-h-[300px]">
+                <div id="visor-cuadro-contenido" class="text-center w-full h-full flex items-center justify-center">
+                    <!-- Contenido dinámico -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- INICIO Y HEADER -->
     <header id="inicio" class="min-h-screen flex flex-col items-center justify-center px-4 text-center relative z-10">
-        
-        <!-- BOTÓN HAXPENAL FLOTANTE -->
-        <div onclick="abrirHaxPenal()" class="absolute top-6 right-6 md:top-10 md:right-10 w-24 h-24 md:w-32 md:h-32 rounded-2xl overflow-hidden cursor-pointer shadow-glass z-40 group transition-all duration-300 hover:scale-105 border border-white/10 hover:border-haxgreen bg-black/40 backdrop-blur-md flex flex-col items-center justify-center">
-            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=400&q=80')] bg-cover bg-center blur-[2px] opacity-40 group-hover:opacity-60 transition-opacity"></div>
-            <span class="relative z-10 text-white font-black text-sm md:text-lg tracking-widest uppercase drop-shadow-[0_2px_2px_rgba(0,0,0,1)] group-hover:text-haxgreen transition-colors flex flex-col items-center gap-1">
-                <i class="fa-solid fa-futbol text-2xl md:text-3xl mb-1 group-hover:animate-bounce"></i>
-                HaxPenal
-            </span>
-        </div>
-
         <div class="mb-6">
             <img src="https://kappa.lol/MhiKyW" alt="HaxCalendar Logo" onerror="this.src='https://placehold.co/200x200/111/00C853?text=HC'" class="w-32 md:w-48 h-auto mx-auto drop-shadow-[0_0_25px_rgba(0,200,83,0.4)] animate-[pulse_4s_ease-in-out_infinite]">
         </div>
@@ -278,37 +315,15 @@
     </div>
 
     <script>
-        const SIMULAR_SIN_PARTIDOS = 'off';
+        // DATOS POR DEFECTO O CARGADOS DESDE LOCALSTORAGE (ADMIN)
+        let PARTIDOS = JSON.parse(localStorage.getItem('haxcalendar_partidos')) || [
+            { equipo1: "PORTO", equipo2: "REAL BETIS", resultado: "9 - 9", mostrar_resultado: "off", estado: "EN VIVO", hora: "17:00 PM" },
+            { equipo1: "PORTO/BETIS", equipo2: "TOTTENHAM", resultado: "9 - 9", mostrar_resultado: "off", estado: "EN VIVO", hora: "17:30 PM" },
+            { equipo1: "BAYERN MUNICH", equipo2: "BODO GLIMT", resultado: "9 - 9", mostrar_resultado: "off", estado: "EN VIVO", hora: "18:00 PM" }
+        ];
 
-        const PARTIDOS = [
-    
-
-             {
-                equipo1: "PORTO",
-                equipo2: "REAL BETIS",
-                resultado: "9 - 9",
-                mostrar_resultado: "off",
-                estado: "EN VIVO",
-                hora: "17:00 PM"
-            },
-
-            {
-                equipo1: "PORTO/BETIS",
-                equipo2: "TOTTENHAM",
-                resultado: "9 - 9",
-                mostrar_resultado: "off",
-                estado: "EN VIVO",
-                hora: "17:30 PM"
-            },
-
-             {
-                equipo1: "BAYERN MUNICH",
-                equipo2: "BODO GLIMT",
-                resultado: "9 - 9",
-                mostrar_resultado: "off",
-                estado: "EN VIVO",
-                hora: "18:00 PM"
-            },
+        let TORNEOS = JSON.parse(localStorage.getItem('haxcalendar_torneos')) || [
+            { id: 1, nombre: "TEST", imagen: "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=800&q=80" }
         ];
 
         const VIDEOS_DESTACADOS = [
@@ -317,11 +332,77 @@
             { titulo: "Boca vs Fluminense", fecha: "15 de Febrero", id_youtube: "KPMUjSr0Jvg" }
         ];
 
+        // FUNCIONES DE TORNEOS / CUADROS
+        function abrirMenuTorneos() {
+            const sidebar = document.getElementById('sidebar-torneos');
+            const overlay = document.getElementById('overlay-sidebar');
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            renderizarBotonesTorneos();
+        }
+
+        function cerrarMenuTorneos() {
+            const sidebar = document.getElementById('sidebar-torneos');
+            const overlay = document.getElementById('overlay-sidebar');
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.classList.add('hidden'), 300);
+        }
+
+        function renderizarBotonesTorneos() {
+            const container = document.getElementById('lista-torneos-sidebar');
+            container.innerHTML = '';
+
+            TORNEOS = JSON.parse(localStorage.getItem('haxcalendar_torneos')) || TORNEOS;
+
+            if (TORNEOS.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 text-sm text-center mt-4">No hay torneos creados todavía.</p>`;
+                return;
+            }
+
+            TORNEOS.forEach((torneo) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full px-5 py-4 rounded-xl font-bold text-sm md:text-base tracking-widest uppercase transition-all duration-300 border bg-black/40 text-gray-300 border-white/10 hover:border-haxgreen hover:text-white hover:bg-haxgreen/10 text-left flex items-center justify-between group shadow-sm`;
+                btn.innerHTML = `
+                    <span class="truncate pr-2">${torneo.nombre}</span>
+                    <i class="fa-solid fa-chevron-right text-haxgreen opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 transform duration-300"></i>
+                `;
+                btn.onclick = () => {
+                    cerrarMenuTorneos(); // Cierra el menú lateral al seleccionar
+                    mostrarCuadroTorneo(torneo); // Abre el visor de imagen
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function mostrarCuadroTorneo(torneo) {
+            const modal = document.getElementById('modal-visor');
+            const titulo = document.getElementById('visor-titulo');
+            const visor = document.getElementById('visor-cuadro-contenido');
+            
+            titulo.textContent = `${torneo.nombre} - Llaves`;
+            visor.innerHTML = `
+                <img src="${torneo.imagen}" alt="${torneo.nombre}" class="max-w-full max-h-[75vh] object-contain rounded-xl shadow-2xl" onerror="this.src='https://placehold.co/600x400/111/fff?text=Error+al+cargar+imagen'">
+            `;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function cerrarVisorCuadro() {
+            const modal = document.getElementById('modal-visor');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
         function renderizarPartidos() {
             const container = document.getElementById('contenedor-partidos');
             container.innerHTML = '';
 
-            if (SIMULAR_SIN_PARTIDOS === 'on' || PARTIDOS.length === 0) {
+            PARTIDOS = JSON.parse(localStorage.getItem('haxcalendar_partidos')) || PARTIDOS;
+
+            if (PARTIDOS.length === 0) {
                 container.innerHTML = `
                     <div class="glass-panel p-12 rounded-3xl text-center flex flex-col items-center justify-center border-dashed border-2 border-white/20 animate-fade-up">
                         <i class="fa-regular fa-calendar-xmark text-6xl text-gray-500 mb-4"></i>
@@ -346,6 +427,12 @@
                         <span class="inline-flex items-center gap-2 bg-gray-600 text-white font-bold px-3 py-1 rounded-md text-xs tracking-wider">
                             <i class="fa-solid fa-flag-checkered"></i>
                             FINALIZADO
+                        </span>
+                    `;
+                } else {
+                    badgeHTML = `
+                        <span class="inline-flex items-center gap-2 bg-blue-600 text-white font-bold px-3 py-1 rounded-md text-xs tracking-wider">
+                            PRÓXIMO
                         </span>
                     `;
                 }
@@ -486,21 +573,18 @@
             cargarDatosHaxPenal();
         };
 
+        // LÓGICA DEL MINIJUEGO HAXPENAL
         const hpCanvas = document.getElementById('hp-canvas');
         const hpCtx = hpCanvas.getContext('2d');
         let hpAnimationId;
         let hpPlayerData = { name: '', dorsal: '10', apodo: '', xp: 0 };
-        
         let hpState = 'IDLE_DIR'; 
         const FIELD = { w: 800, h: 450 }; 
-        
         let DIR_POS = 0.5, DIR_DIR = 1, DIR_SPEED = 0.012, savedDir = 0.5;
         let ARROW_POS = 0.5, ARROW_DIR = 1, ARROW_SPEED = 0.02; 
-
         let ball = { x: 400, y: 300, r: 8, targetX: 400, targetY: 300 };
         let gk = { x: 400, y: 80, r: 18, targetX: 400 };
         let kicker = { x: 380, y: 330, r: 22 };
-        
         const COLOR_RED = '#E53935';
         const COLOR_BLUE = '#1E88E5';
 
@@ -508,7 +592,6 @@
             document.getElementById('haxpenal-modal').classList.remove('hidden');
             document.getElementById('haxpenal-modal').classList.add('flex');
             hpCanvas.width = FIELD.w; hpCanvas.height = FIELD.h;
-
             if (!hpPlayerData.name) document.getElementById('hp-menu').classList.remove('hidden');
             else iniciarPartidaPenal();
         }
@@ -529,7 +612,6 @@
             let dorsal = document.getElementById('hp-input-dorsal').value.trim() || '10';
             hpPlayerData = { name, dorsal, apodo: name, xp: hpPlayerData.xp || 0 };
             localStorage.setItem('haxpenal_user', JSON.stringify(hpPlayerData));
-            
             document.getElementById('hp-menu').classList.add('hidden');
             actualizarUIEstadisticas();
             iniciarPartidaPenal();
@@ -543,13 +625,11 @@
         function iniciarPartidaPenal() {
             document.getElementById('hp-resultado').classList.add('hidden');
             document.getElementById('hp-resultado').classList.remove('opacity-100');
-            
             hpState = 'IDLE_DIR';
             DIR_POS = Math.random() * 0.8 + 0.1; ARROW_POS = Math.random() * 0.8 + 0.1;
             ball = { x: 400, y: 280, r: 8, targetX: 400, targetY: 280 };
             gk = { x: 400, y: 70, r: 18, targetX: 400 };
             kicker = { x: 370, y: 310, r: 24 };
-
             cancelAnimationFrame(hpAnimationId);
             gameLoopPenal();
         }
@@ -603,7 +683,6 @@
 
             if (hpState === 'IDLE_DIR' || hpState === 'IDLE_POWER') {
                 const barW = 340, barH = 24, barX = (FIELD.w - barW) / 2;
-                
                 const dirY = 190;
                 hpCtx.fillStyle = '#ffffff'; hpCtx.fillRect(barX, dirY, barW, barH);
                 hpCtx.strokeStyle = '#000000'; hpCtx.strokeRect(barX, dirY, barW, barH);
@@ -654,7 +733,6 @@
             hpState = 'SHOOTING';
             let dirZone = savedDir < 0.2 ? 'LEFT_POST' : savedDir < 0.4 ? 'LEFT' : savedDir < 0.6 ? 'MIDDLE' : savedDir < 0.8 ? 'RIGHT' : 'RIGHT_POST';
             let powZone = (ARROW_POS >= 0.4 && ARROW_POS <= 0.6) ? 'GREEN' : ((ARROW_POS >= 0.2 && ARROW_POS < 0.4) || (ARROW_POS > 0.6 && ARROW_POS <= 0.8)) ? 'YELLOW' : 'RED';
-            
             let outcome = 'SAVE', targetX = 400, targetY = 40; 
             
             if (dirZone === 'LEFT_POST') targetX = 295; 
@@ -697,103 +775,11 @@
             titleEl.textContent = title;
             titleEl.className = `text-4xl font-black mb-4 uppercase z-10 relative ${txtColor}`;
             document.getElementById('hp-res-desc').textContent = desc;
-            
             localStorage.setItem('haxpenal_user', JSON.stringify(hpPlayerData));
             actualizarUIEstadisticas();
         }
 
         function reiniciarPenal() { iniciarPartidaPenal(); }
-    </script>
-
-    <!-- WIDGET DE CHAT HAXBALL AI -->
-    <div id="hax-chat-widget" style="position: fixed; bottom: 16px; right: 16px; z-index: 9999; font-family: sans-serif;">
-        <button id="chat-toggle-btn" onclick="toggleHaxChat()" style="background-color: #16a34a; color: #000; font-weight: 900; padding: 12px 16px; border-radius: 9999px; border: 2px solid #000; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5);">
-            🎧 <span>HAXBALL AI</span>
-        </button>
-
-        <div id="chat-window" style="display: none; flex-direction: column; width: 340px; height: 450px; background-color: #171717; border: 2px solid #404040; border-radius: 12px; position: absolute; bottom: 60px; right: 0; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);">
-            <div style="background-color: #262626; padding: 12px; border-bottom: 1px solid #404040; display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="width: 10px; height: 10px; background-color: #22c55e; border-radius: 50%;"></span>
-                    <span style="font-weight: 800; color: #4ade80; font-size: 14px; text-transform: uppercase;">Haxball AI</span>
-                </div>
-                <button onclick="toggleHaxChat()" style="background: none; border: none; color: #a3a3a3; font-weight: bold; font-size: 18px; cursor: pointer;">✕</button>
-            </div>
-
-            <div id="chat-messages" style="flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background-color: #0a0a0a; font-size: 13px; color: #e5e5e5;">
-                <div style="background-color: #262626; padding: 10px; border-radius: 8px; border: 1px solid #404040; max-width: 85%;">
-                    ¡Hola! Bienvenido al asistente virtual de <b>HaxCalendar</b>. Podés consultarme sobre la agenda de partidos, novedades de streamers, torneos y tácticas de Haxball. ¿En qué te puedo ayudar hoy?
-                </div>
-            </div>
-
-            <form id="chat-form" onsubmit="sendHaxMessage(event)" style="padding: 8px; background-color: #171717; border-top: 1px solid #262626; display: flex; gap: 6px;">
-                <input type="text" id="chat-input" placeholder="Preguntá a Haxball AI..." required style="flex: 1; background-color: #0a0a0a; color: #fff; font-size: 13px; border-radius: 6px; padding: 8px; border: 1px solid #404040; outline: none;">
-                <button type="submit" id="chat-send-btn" style="background-color: #16a34a; color: #000; font-weight: 900; padding: 8px 12px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; text-transform: uppercase;">Enviar</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- SCRIPT DEL CHAT -->
-    <script>
-        function toggleHaxChat() {
-            const win = document.getElementById('chat-window');
-            if (win.style.display === 'none' || win.style.display === '') {
-                win.style.display = 'flex';
-            } else {
-                win.style.display = 'none';
-            }
-        }
-
-        async function sendHaxMessage(e) {
-            e.preventDefault();
-            const input = document.getElementById('chat-input');
-            const msgContainer = document.getElementById('chat-messages');
-            const sendBtn = document.getElementById('chat-send-btn');
-            const text = input.value.trim();
-
-            if (!text) return;
-
-            const userDiv = document.createElement('div');
-            userDiv.style.cssText = 'background-color: #14532d; color: #dcfce7; padding: 10px; border-radius: 8px; border: 1px solid #15803d; max-width: 85%; margin-left: auto; text-align: right;';
-            userDiv.textContent = text;
-            msgContainer.appendChild(userDiv);
-
-            input.value = '';
-            sendBtn.disabled = true;
-
-            const loadingDiv = document.createElement('div');
-            loadingDiv.id = 'loading-msg';
-            loadingDiv.style.cssText = 'background-color: #262626; color: #a3a3a3; padding: 8px; border-radius: 8px; border: 1px solid #404040; max-width: 60%; font-style: italic; font-size: 11px;';
-            loadingDiv.textContent = 'Procesando respuesta...';
-            msgContainer.appendChild(loadingDiv);
-            msgContainer.scrollTop = msgContainer.scrollHeight;
-
-            try {
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: text })
-                });
-
-                const data = await response.json();
-                document.getElementById('loading-msg')?.remove();
-
-                const aiDiv = document.createElement('div');
-                aiDiv.style.cssText = 'background-color: #262626; color: #e5e5e5; padding: 10px; border-radius: 8px; border: 1px solid #404040; max-width: 85%;';
-                aiDiv.innerHTML = data.reply ? data.reply.replace(/\n/g, '<br>') : 'Error al obtener respuesta.';
-                msgContainer.appendChild(aiDiv);
-
-            } catch (err) {
-                document.getElementById('loading-msg')?.remove();
-                const errDiv = document.createElement('div');
-                errDiv.style.cssText = 'background-color: #7f1d1d; color: #fecaca; padding: 10px; border-radius: 8px; border: 1px solid #b91c1c; max-width: 85%;';
-                errDiv.textContent = 'Error de conexión con el servidor.';
-                msgContainer.appendChild(errDiv);
-            } finally {
-                sendBtn.disabled = false;
-                msgContainer.scrollTop = msgContainer.scrollHeight;
-            }
-        }
     </script>
 </body>
 </html>

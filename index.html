@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HaxCalendar - Oficial</title>
-    <link rel="icon" type="image/png" href="https://kappa.lol/MhiKyW">
+    <link rel="icon" type="image/png" href="./HaxCalendar - Oficial_files/image.png">
     
     <!-- Google Fonts: Outfit -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <script>
         tailwind.config = {
@@ -102,7 +102,20 @@
 </head>
 <body class="antialiased relative">
 
-    <canvas id="starsCanvas"></canvas>
+    <canvas id="starsCanvas" width="1600" height="748"></canvas>
+
+    <!-- MENÚ HAMBURGUESA Y DESPLEGABLE -->
+    <div class="fixed top-6 left-6 z-50">
+        <button onclick="toggleMenu()" class="w-14 h-14 glass-panel rounded-xl flex items-center justify-center cursor-pointer hover:border-haxgreen hover:text-haxgreen transition-all shadow-glass text-white group">
+            <i class="fa-solid fa-bars text-2xl group-hover:scale-110 transition-transform"></i>
+        </button>
+        <!-- Dropdown -->
+        <div id="dropdown-menu" class="absolute top-16 left-0 mt-2 w-56 bg-black/90 border border-white/10 rounded-xl p-2 hidden flex-col gap-1 shadow-glass backdrop-blur-md transform origin-top-left transition-all z-50">
+            <button onclick="abrirReglas()" class="w-full text-left px-4 py-3 text-white hover:bg-haxgreen/20 hover:text-haxgreen rounded-lg font-bold tracking-wide transition-colors flex items-center gap-3">
+                <i class="fa-solid fa-scale-balanced"></i> Ver Reglas
+            </button>
+        </div>
+    </div>
 
     <!-- INICIO Y HEADER -->
     <header id="inicio" class="min-h-screen flex flex-col items-center justify-center px-4 text-center relative z-10">
@@ -117,7 +130,7 @@
         </div>
 
         <div class="mb-6">
-            <img src="https://kappa.lol/MhiKyW" alt="HaxCalendar Logo" onerror="this.src='https://placehold.co/200x200/111/00C853?text=HC'" class="w-32 md:w-48 h-auto mx-auto drop-shadow-[0_0_25px_rgba(0,200,83,0.4)] animate-[pulse_4s_ease-in-out_infinite]">
+            <img src="./HaxCalendar - Oficial_files/image.png" alt="HaxCalendar Logo" onerror="this.src='https://placehold.co/200x200/111/00C853?text=HC'" class="w-32 md:w-48 h-auto mx-auto drop-shadow-[0_0_25px_rgba(0,200,83,0.4)] animate-[pulse_4s_ease-in-out_infinite]">
         </div>
         <h1 class="text-6xl md:text-8xl font-black tracking-tighter mb-2 uppercase drop-shadow-lg">
             Hax<span class="text-transparent bg-clip-text bg-gradient-to-r from-haxgreen to-haxgreen-light">Calendar</span>
@@ -127,9 +140,7 @@
         </p>
 
         <!-- RELOJ DIGITAL -->
-        <div id="reloj-digital" class="text-haxgreen font-mono text-3xl md:text-4xl font-bold tracking-widest my-2 glass-panel px-8 py-3 rounded-2xl shadow-neon border-haxgreen/30">
-            00:00:00
-        </div>
+        <div id="reloj-digital" class="text-haxgreen font-mono text-3xl md:text-4xl font-bold tracking-widest my-2 glass-panel px-8 py-3 rounded-2xl shadow-neon border-haxgreen/30">20:02:41</div>
 
         <a href="#agenda" class="mt-10 inline-flex items-center justify-center bg-haxgreen text-black font-extrabold text-lg md:text-xl py-4 px-10 rounded-full transition-all duration-300 hover:bg-haxgreen-light hover:shadow-neon hover:-translate-y-1">
             VER AGENDA <i class="fa-solid fa-arrow-down ml-3"></i>
@@ -142,20 +153,18 @@
             <h2 class="text-4xl md:text-5xl font-black mb-2 uppercase tracking-tight">
                 Agenda de <span class="text-haxgreen">Hoy</span>
             </h2>
-            <p id="fecha-actual" class="text-gray-400 font-medium text-lg tracking-wide uppercase">
-                (Cargando fecha...)
-            </p>
+            <p id="fecha-actual" class="text-gray-400 font-medium text-lg tracking-wide uppercase">Miércoles - 16 de Septiembre</p>
         </div>
 
         <div id="contenedor-partidos" class="flex flex-col space-y-6">
-            <!-- Los partidos se inyectan mediante JS -->
+            <!-- Renderizado por JS -->
         </div>
     </section>
 
     <!-- HAXBALL HUB -->
     <section id="hub" class="py-16 px-4 max-w-5xl mx-auto relative z-10">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            <a href="https://www.haxball.com" target="_blank" class="glass-panel p-6 rounded-2xl text-center group transition-all hover:-translate-y-2 hover:border-haxgreen hover:shadow-neon">
+            <a href="https://www.haxball.com/" target="_blank" class="glass-panel p-6 rounded-2xl text-center group transition-all hover:-translate-y-2 hover:border-haxgreen hover:shadow-neon">
                 <i class="fa-solid fa-gamepad text-3xl mb-3 text-gray-400 group-hover:text-haxgreen transition-colors"></i>
                 <h3 class="font-bold text-gray-200 group-hover:text-white">Jugar Haxball</h3>
             </a>
@@ -184,7 +193,7 @@
         </div>
 
         <div id="contenedor-videos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Los videos se inyectan mediante JS -->
+            <!-- Renderizado por JS -->
         </div>
     </section>
 
@@ -214,7 +223,7 @@
                 </button>
             </div>
             <p class="text-gray-600 text-xs tracking-widest uppercase">
-                &copy; <span id="year"></span> HaxCalendar v2.0. Todos los derechos reservados.
+                © <span id="year">2026</span> HaxCalendar v2.0. Todos los derechos reservados.
             </p>
         </div>
     </footer>
@@ -232,13 +241,93 @@
         <span class="font-bold tracking-wide">Usuario Discord Copiado!</span>
     </div>
 
+    <!-- MODAL REGLAS DEL DOCUMENTO -->
+    <div id="reglas-modal" class="fixed inset-0 z-[70] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/60 opacity-0 transition-opacity duration-300">
+        <div class="w-full max-w-4xl max-h-[85vh] bg-[#0a0a0a] border border-white/20 rounded-2xl shadow-neon flex flex-col overflow-hidden relative transform scale-95 transition-transform duration-300" id="reglas-container">
+            
+            <!-- Header Modal -->
+            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-black/80 relative z-20">
+                <h2 class="text-2xl md:text-3xl font-black text-white tracking-widest uppercase flex items-center gap-3">
+                    <i class="fa-solid fa-file-contract text-haxgreen"></i> NORMAS Y REGLAS
+                </h2>
+                <button onclick="cerrarReglas()" class="text-gray-400 hover:text-red-500 text-4xl leading-none transition-colors">&times;</button>
+            </div>
+            
+            <!-- Vista Previa Documento (RTF) -->
+            <div class="p-6 md:p-10 overflow-y-auto custom-scrollbar relative z-10 bg-[#121212]">
+                <!-- Document Background Effect -->
+                <div class="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1)_0,transparent_100%)]"></div>
+                
+                <div class="space-y-10 text-gray-300 text-sm md:text-base leading-relaxed relative z-10 font-medium">
+                    
+                    <!-- Sección 1 -->
+                    <section>
+                        <h3 class="text-xl font-black text-haxgreen mb-4 border-b border-white/10 pb-2 uppercase tracking-wide">1) ORGANIZACION DE PARTIDOS OFICIALES</h3>
+                        <ul class="space-y-4 pl-2">
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">a)</span> <p>Previo a un Inicio de un Partido se realizara un sorteo con el boton "Rand" hasta llegar a 2 Equipos con 5 Jugadores cada uno.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">b)</span> <p>Seran 5v5 en el inicio del partido, lo minimo es 4v4.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">c)</span> <p>Para meter jugadores se debera meter por orden en el que estan en el menu de Espectadores.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">d)</span> <p>Se debera jugar en un host con nombre adecuado para hacer referencia al Encuentro.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">e)</span> <p>Si al realizar el sorteo de "Rand" se vuelven a meter los mismos jugadores del partido anterior se debera realizar nuevamente hasta tener equipos con al menos "1 Jugador por equipo que no haya jugado el encuentro anterior".</p></li>
+                        </ul>
+                    </section>
+                    
+                    <!-- Sección 2 -->
+                    <section>
+                        <h3 class="text-xl font-black text-haxgreen mb-4 border-b border-white/10 pb-2 uppercase tracking-wide">2) PARTIDO OFICIAL</h3>
+                        <ul class="space-y-4 pl-2">
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">a)</span> <p>El Tiempo indicado para cada Etapa es de 10 Minutos, Primer tiempo 10 y Segundo 10. Si hay un empate en una serie eliminatoria se jugara con Alargue de 5 Minutos cada tiempo, si el empate persiste, Penales 5v1.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">b)</span> <p>1.B Deberan ser 5 Jugadores por cada equipo al inicio del partido, se tomara el encuentro como "Abandonado" si un equipo pierde todos sus jugadores llegando a 0, se le dara por ganado al Rival automaticamente.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">c)</span> <p>Si la pelota transpasa la pared se debera reanudar haciendo RR, y poniendo los minutos que faltaban.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">d)</span> <p>En caso de que un jugador perjudique a su equipo colocando mucho LAG y haciendo que abandonen, se debera abrir una investigacion para descubrir que jugador fue. El partido no se considera abandonado por un abandono accidental.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">e)</span> <p>Un Equipo no puede ser perjudicado por un administrador no permitido para hacer cambios en el partido (Hoster, Admins para controlar la sala). El hoster puede hacer cambios siempre y cuando pida permiso, owner y staffs pueden hacerlo libre pero sin alterar resultados.</p></li>
+                        </ul>
+                    </section>
+                    
+                    <!-- Sección 3 -->
+                    <section>
+                        <h3 class="text-xl font-black text-haxgreen mb-4 border-b border-white/10 pb-2 uppercase tracking-wide">3) REGLAS</h3>
+                        <ul class="space-y-4 pl-2">
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">a)</span> <p>No se puede hacer gol en contra (troll) aproposito, eso deriba a amonestacion y anulacion de gol.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">b)</span> <p>Al llegar a 3 Amonestaciones requiere una sancion evaluada por el Staff y equipo directivo de la organizacion.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">c)</span> <p>Cada equipo debera tener 5 jugadores en cancha, no se podran añadir mas jugadores, eso deriba a una amonestacion al que realizo el cambio. Si fue por accidente se le perdonara, pero si se repite se tomara en serio.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">d)</span> <p><strong class="text-white">Acoso e intimidad:</strong> No se tolera el acoso personal, la divulgación de información privada de terceros (doxxing) ni las amenazas.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">e)</span> <p><strong class="text-white">Tolerancia cero a la discriminación:</strong> Quedan estrictamente prohibidos los comentarios o conductas de carácter racista, xenófobo, homófobo o discriminatorio.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">f)</span> <p><strong class="text-white">Respeto:</strong> Se permite la competitividad y el debate, pero siempre dentro de los límites del respeto hacia los demás.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">g)</span> <p><strong class="text-white">Pausas de Juego:</strong> Se debera pausar el partido al llegar a las 4 Advertencias de LAG en la sala, se suspendera el juego durante 2 Minutos hasta calmar el LAG de la sala o arreglar algun problema.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">h)</span> <p><strong class="text-white">Pausas de Juego:</strong> Si un jugador falta el respeto al Owner o a un Staff durante una Revision de VAR, Una Pausa por LAG, o lo que sea se debera advertirle, si consiste se debera expulsarlo del partido y se debera meter a un nuevo jugador al equipo que fue expulsado.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">i)</span> <p>Cada equipo debera de tener un Capitan para manejar los equipos, podra pedir cambios pero respetando la Regla 1.C.</p></li>
+                        </ul>
+                    </section>
+                    
+                    <!-- Sección 4 -->
+                    <section>
+                        <h3 class="text-xl font-black text-haxgreen mb-4 border-b border-white/10 pb-2 uppercase tracking-wide">4) PROTOCOLO DE HOMENAJE</h3>
+                        <ul class="space-y-4 pl-2">
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">a)</span> <p>Se debera guardar silencio absoluto por un Minuto para homenajear a la victima/victimas.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">b)</span> <p>Cualquier jugador que falte el respeto debera ser investigado, la sancion puede ser grave segun el grado.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">c)</span> <p>Los jugadores deberan hacer un circulo o quedarse en la posicion original donde estaban al inicio del homenaje (En Fila).</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">d)</span> <p>Los Jugadores no podran hablar en el homenaje, quien hable sera sancionado levemente pero con advertencia.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">e)</span> <p>Se colocara en el stream una placa conmemorativa para el fallecido.</p></li>
+                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">f)</span> <p>Si un jugador sufre una perdida familiar o quiere homenajear a su pais si sufre un desastre, podra hablar con el staff/owner para ver si se podra hacer un homenaje, nunca dudes con el staff, siempre estaremos contigo.</p></li>
+                        </ul>
+                    </section>
+                    
+                    <div class="pt-8 mt-6 border-t border-white/10 text-center text-gray-500 font-bold tracking-widest uppercase text-xs">
+                        - Organización del Comité de EspnHaxball
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL HAXPENAL -->
     <div id="haxpenal-modal" class="fixed inset-0 z-[60] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/80">
         <div class="w-full max-w-3xl flex justify-between items-end mb-2">
             <div>
                 <h2 class="text-3xl font-black text-haxgreen tracking-widest uppercase drop-shadow-[0_0_10px_rgba(0,200,83,0.5)]">HAXPENAL</h2>
             </div>
-            <button onclick="cerrarHaxPenal()" class="text-gray-400 hover:text-white text-4xl font-bold leading-none mb-1 transition-colors">&times;</button>
+            <button onclick="cerrarHaxPenal()" class="text-gray-400 hover:text-white text-4xl font-bold leading-none mb-1 transition-colors">×</button>
         </div>
         <div class="relative w-full max-w-3xl aspect-[16/9] bg-black rounded-xl overflow-hidden shadow-neon border-2 border-white/10">
             <canvas id="hp-canvas" class="w-full h-full block cursor-crosshair"></canvas>
@@ -278,28 +367,15 @@
         
         <!-- Estadísticas HaxPenal -->
         <div class="w-full max-w-3xl mt-4 flex justify-between items-center glass-panel rounded-lg p-4">
-            <div class="text-gray-300 font-medium">Jugador: <span id="hp-stats-name" class="text-white font-bold ml-1">---</span></div>
+            <div class="text-gray-300 font-medium">Jugador: <span id="hp-stats-name" class="text-white font-bold ml-1">EspnHax (#17)</span></div>
             <div class="text-white font-bold bg-haxgreen/20 px-4 py-1 rounded-full border border-haxgreen/50">
-                XP: <span id="hp-stats-xp" class="text-haxgreen">0</span>
+                XP: <span id="hp-stats-xp" class="text-haxgreen">130</span>
             </div>
         </div>
     </div>
 
     <script>
         const SIMULAR_SIN_PARTIDOS = 'off';
-
-        /* ==========================================================================
-           GUÍA PARA EL EDITOR - ABREVIACIONES DE TORNEOS:
-           Coloca cualquiera de estas claves en la propiedad 'torneo' de cada partido:
-           
-           EU = EUROPA LEAGUE
-           CH = CHAMPIONS LEAGUE
-           LI = LIBERTADORES
-           SU = SUDAMERICANA
-           CA = COPA AMERICA BIG X3
-           CP = COPA CLASICOS RS X4
-           EC = EUROCOPA BIG X3
-           ========================================================================== */
 
         const DICCIONARIO_TORNEOS = {
             "EU": "EUROPA LEAGUE",
@@ -311,7 +387,6 @@
             "EC": "EUROCOPA BIG X3"
         };
 
-        // ESTILOS DE COLOR POR TORNEO PARA LOS TEXTOS REDONDEADOS (BADGES)
         const ESTILOS_TORNEO = {
             "EUROPA LEAGUE": "bg-amber-500/10 text-amber-400 border-amber-500/40 shadow-[0_0_10px_rgba(245,158,11,0.2)]",
             "CHAMPIONS LEAGUE": "bg-cyan-500/10 text-cyan-400 border-cyan-500/40 shadow-[0_0_10px_rgba(6,182,212,0.2)]",
@@ -325,18 +400,10 @@
         function formatearNombreTorneo(torneoInput) {
             if (!torneoInput) return "PARTIDO AMISTOSO";
             const claveUpper = String(torneoInput).trim().toUpperCase();
-            
-            if (DICCIONARIO_TORNEOS[claveUpper]) {
-                return DICCIONARIO_TORNEOS[claveUpper];
-            }
-            
-            return claveUpper
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .toUpperCase();
+            if (DICCIONARIO_TORNEOS[claveUpper]) return DICCIONARIO_TORNEOS[claveUpper];
+            return claveUpper.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
         }
 
-        // EDICIÓN Y AÑADIDO DE PARTIDOS
         const PARTIDOS = [
             {
                 equipo1: "RIVER PLATE",
@@ -346,8 +413,7 @@
                 mostrar_resultado: "off",
                 estado: "EN VIVO",
                 hora: "17:00 PM"
-            },
-          
+            }
         ];
 
         const VIDEOS_DESTACADOS = [
@@ -480,6 +546,56 @@
             setTimeout(() => toast.classList.add('opacity-0', 'invisible', 'translate-y-10'), 3000);
         }
 
+        /* ----- FUNCIONES DEL MENÚ Y REGLAS ----- */
+        function toggleMenu() {
+            const menu = document.getElementById('dropdown-menu');
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('flex');
+        }
+
+        // Cerrar menú al hacer clic fuera de él
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('dropdown-menu');
+            const button = menu.previousElementSibling;
+            if (menu && button && !menu.contains(event.target) && !button.contains(event.target) && !menu.classList.contains('hidden')) {
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
+            }
+        });
+
+        function abrirReglas() {
+            // Ocultar dropdown
+            const menu = document.getElementById('dropdown-menu');
+            menu.classList.add('hidden');
+            menu.classList.remove('flex');
+
+            // Mostrar Modal
+            const modal = document.getElementById('reglas-modal');
+            const container = document.getElementById('reglas-container');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // Animación de entrada
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                container.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function cerrarReglas() {
+            const modal = document.getElementById('reglas-modal');
+            const container = document.getElementById('reglas-container');
+            
+            // Animación de salida
+            modal.classList.add('opacity-0');
+            container.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+
         window.addEventListener('scroll', () => {
             const btn = document.getElementById('btn-volver');
             if (window.scrollY > 300) {
@@ -489,6 +605,7 @@
             }
         });
 
+        // FONDO ESTRELLAS
         const canvasBg = document.getElementById('starsCanvas');
         const ctxBg = canvasBg.getContext('2d');
         let w, h, stars = [];
@@ -630,35 +747,28 @@
         }
 
         function drawPenal() {
-            // Fondo verde oscuro
             hpCtx.fillStyle = '#1a3c20'; hpCtx.fillRect(0, 0, FIELD.w, FIELD.h);
             
-            // Líneas de la cancha
             hpCtx.strokeStyle = 'rgba(255,255,255,0.2)'; hpCtx.lineWidth = 3;
             hpCtx.beginPath(); hpCtx.moveTo(0, 70); hpCtx.lineTo(FIELD.w, 70); hpCtx.stroke(); 
             hpCtx.strokeRect(250, 70, 300, 100); 
 
-            // Arco (Goal)
             hpCtx.fillStyle = 'rgba(0,0,0,0.4)'; hpCtx.fillRect(300, 20, 200, 50);
             hpCtx.fillStyle = '#ffffff';
             hpCtx.beginPath(); hpCtx.arc(300, 70, 5, 0, Math.PI*2); hpCtx.fill();
             hpCtx.beginPath(); hpCtx.arc(500, 70, 5, 0, Math.PI*2); hpCtx.fill();
 
-            // Jugadores
             drawDiscFlat(gk.x, gk.y, gk.r, COLOR_BLUE, '1');
             drawDiscFlat(kicker.x, kicker.y, kicker.r, COLOR_RED, hpPlayerData.dorsal || '10');
 
-            // Pelota
             hpCtx.fillStyle = '#ffffff'; hpCtx.strokeStyle = '#000000';
             hpCtx.lineWidth = 2;
             hpCtx.beginPath(); hpCtx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2); 
             hpCtx.fill(); hpCtx.stroke();
 
-            // Interfaz de Tiro (Barras)
             if (hpState === 'IDLE_DIR' || hpState === 'IDLE_POWER') {
                 const barW = 340, barH = 24, barX = (FIELD.w - barW) / 2;
                 
-                // Barra de Dirección
                 const dirY = 190;
                 hpCtx.fillStyle = '#ffffff'; hpCtx.fillRect(barX, dirY, barW, barH);
                 hpCtx.strokeStyle = '#000000'; hpCtx.strokeRect(barX, dirY, barW, barH);
@@ -678,7 +788,6 @@
                 hpCtx.fillStyle = '#ffffff'; hpCtx.font = "bold 15px sans-serif"; hpCtx.textAlign = "center";
                 hpCtx.fillText(hpState === 'IDLE_DIR' ? "PASO 1: DIRECCION (CLICK)" : "DIRECCION FIJADA", FIELD.w/2, dirY - 26);
 
-                // Barra de Potencia
                 if (hpState === 'IDLE_POWER') {
                     const powY = 260, sectionW = barW / 5;
                     const colors = ['#F44336', '#FFEB3B', '#4CAF50', '#FFEB3B', '#F44336'];
@@ -783,7 +892,7 @@
             </div>
 
             <form id="chat-form" onsubmit="sendHaxMessage(event)" style="padding: 8px; background-color: #171717; border-top: 1px solid #262626; display: flex; gap: 6px;">
-                <input type="text" id="chat-input" placeholder="Preguntá a Haxball AI..." required style="flex: 1; background-color: #0a0a0a; color: #fff; font-size: 13px; border-radius: 6px; padding: 8px; border: 1px solid #404040; outline: none;">
+                <input type="text" id="chat-input" placeholder="Preguntá a Haxball AI..." required="" style="flex: 1; background-color: #0a0a0a; color: #fff; font-size: 13px; border-radius: 6px; padding: 8px; border: 1px solid #404040; outline: none;">
                 <button type="submit" id="chat-send-btn" style="background-color: #16a34a; color: #000; font-weight: 900; padding: 8px 12px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; text-transform: uppercase; transition: all 0.2s ease;">Enviar</button>
             </form>
         </div>

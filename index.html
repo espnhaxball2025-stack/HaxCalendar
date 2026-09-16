@@ -148,6 +148,7 @@
         </div>
 
         <div id="contenedor-partidos" class="flex flex-col space-y-6">
+            <!-- Los partidos se inyectan mediante JS -->
         </div>
     </section>
 
@@ -183,6 +184,7 @@
         </div>
 
         <div id="contenedor-videos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Los videos se inyectan mediante JS -->
         </div>
     </section>
 
@@ -219,7 +221,7 @@
 
     <!-- BOTONES FLOTANTES INFERIORES -->
     <div class="fixed bottom-6 right-6 z-40 flex flex-col gap-4">
-        <a href="#inicio" id="btn-volver" class="w-14 h-14 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full flex items-center justify-center hover:bg-haxgreen hover:text-black hover:border-haxgreen transition-all opacity-0 invisible translate-y-4">
+        <a href="#inicio" id="btn-volver" class="w-14 h-14 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full flex items-center justify-center hover:bg-haxgreen hover:text-black hover:border-haxgreen transition-all opacity-0 invisible translate-y-4 shadow-glass">
             <i class="fa-solid fa-arrow-up text-xl"></i>
         </a>
     </div>
@@ -234,12 +236,14 @@
     <div id="haxpenal-modal" class="fixed inset-0 z-[60] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/80">
         <div class="w-full max-w-3xl flex justify-between items-end mb-2">
             <div>
-                <h2 class="text-3xl font-black text-haxgreen tracking-widest uppercase">HAXPENAL</h2>
+                <h2 class="text-3xl font-black text-haxgreen tracking-widest uppercase drop-shadow-[0_0_10px_rgba(0,200,83,0.5)]">HAXPENAL</h2>
             </div>
             <button onclick="cerrarHaxPenal()" class="text-gray-400 hover:text-white text-4xl font-bold leading-none mb-1 transition-colors">&times;</button>
         </div>
         <div class="relative w-full max-w-3xl aspect-[16/9] bg-black rounded-xl overflow-hidden shadow-neon border-2 border-white/10">
             <canvas id="hp-canvas" class="w-full h-full block cursor-crosshair"></canvas>
+            
+            <!-- Menú Perfil HaxPenal -->
             <div id="hp-menu" class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-6 z-10 transition-opacity duration-300">
                 <div class="glass-panel rounded-2xl p-6 w-full max-w-md">
                     <h3 class="text-center font-bold text-xl mb-6 text-white uppercase tracking-wider">Tu Haxballer</h3>
@@ -258,6 +262,8 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Modal Resultado HaxPenal -->
             <div id="hp-resultado" class="absolute inset-0 bg-black/70 flex flex-col items-center justify-center p-6 z-10 hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm">
                 <div class="bg-[#1a1a1a] border border-[#333] rounded-2xl p-8 w-full max-w-lg text-center shadow-2xl relative overflow-hidden">
                     <div id="hp-res-bg" class="absolute inset-0 opacity-20 pointer-events-none"></div>
@@ -269,6 +275,8 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Estadísticas HaxPenal -->
         <div class="w-full max-w-3xl mt-4 flex justify-between items-center glass-panel rounded-lg p-4">
             <div class="text-gray-300 font-medium">Jugador: <span id="hp-stats-name" class="text-white font-bold ml-1">---</span></div>
             <div class="text-white font-bold bg-haxgreen/20 px-4 py-1 rounded-full border border-haxgreen/50">
@@ -280,21 +288,66 @@
     <script>
         const SIMULAR_SIN_PARTIDOS = 'off';
 
-        const PARTIDOS = [
-    
+        /* ==========================================================================
+           GUÍA PARA EL EDITOR - ABREVIACIONES DE TORNEOS:
+           Coloca cualquiera de estas claves en la propiedad 'torneo' de cada partido:
+           
+           EU = EUROPA LEAGUE
+           CH = CHAMPIONS LEAGUE
+           LI = LIBERTADORES
+           SU = SUDAMERICANA
+           CA = COPA AMERICA BIG X3
+           CP = COPA CLASICOS RS X4
+           EC = EUROCOPA BIG X3
+           ========================================================================== */
 
-             {
+        const DICCIONARIO_TORNEOS = {
+            "EU": "EUROPA LEAGUE",
+            "CH": "CHAMPIONS LEAGUE",
+            "LI": "LIBERTADORES",
+            "SU": "SUDAMERICANA",
+            "CA": "COPA AMERICA BIG X3",
+            "CP": "COPA CLASICOS RS X4",
+            "EC": "EUROCOPA BIG X3"
+        };
+
+        // ESTILOS DE COLOR POR TORNEO PARA LOS TEXTOS REDONDEADOS (BADGES)
+        const ESTILOS_TORNEO = {
+            "EUROPA LEAGUE": "bg-amber-500/10 text-amber-400 border-amber-500/40 shadow-[0_0_10px_rgba(245,158,11,0.2)]",
+            "CHAMPIONS LEAGUE": "bg-cyan-500/10 text-cyan-400 border-cyan-500/40 shadow-[0_0_10px_rgba(6,182,212,0.2)]",
+            "LIBERTADORES": "bg-yellow-500/10 text-yellow-400 border-yellow-500/40 shadow-[0_0_10px_rgba(234,179,8,0.2)]",
+            "SUDAMERICANA": "bg-emerald-500/10 text-emerald-400 border-emerald-500/40 shadow-[0_0_10px_rgba(16,185,129,0.2)]",
+            "COPA AMERICA BIG X3": "bg-rose-500/10 text-rose-400 border-rose-500/40 shadow-[0_0_10px_rgba(244,63,94,0.2)]",
+            "COPA CLASICOS RS X4": "bg-purple-500/10 text-purple-400 border-purple-500/40 shadow-[0_0_10px_rgba(168,85,247,0.2)]",
+            "EUROCOPA BIG X3": "bg-blue-500/10 text-blue-400 border-blue-500/40 shadow-[0_0_10px_rgba(59,130,246,0.2)]"
+        };
+
+        function formatearNombreTorneo(torneoInput) {
+            if (!torneoInput) return "PARTIDO AMISTOSO";
+            const claveUpper = String(torneoInput).trim().toUpperCase();
+            
+            if (DICCIONARIO_TORNEOS[claveUpper]) {
+                return DICCIONARIO_TORNEOS[claveUpper];
+            }
+            
+            return claveUpper
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toUpperCase();
+        }
+
+        // EDICIÓN Y AÑADIDO DE PARTIDOS
+        const PARTIDOS = [
+            {
                 equipo1: "RIVER PLATE",
                 equipo2: "ATLETICO NACIONAL",
+                torneo: "LI", 
                 resultado: "9 - 9",
                 mostrar_resultado: "off",
                 estado: "EN VIVO",
                 hora: "17:00 PM"
             },
-
-         
-
-    
+          
         ];
 
         const VIDEOS_DESTACADOS = [
@@ -319,17 +372,17 @@
             }
 
             PARTIDOS.forEach((partido, index) => {
-                let badgeHTML = '';
+                let badgeEstadoHTML = '';
                 if (partido.estado === 'EN VIVO') {
-                    badgeHTML = `
-                        <span class="inline-flex items-center gap-2 bg-red-600 text-white font-bold px-3 py-1 rounded-md text-xs tracking-wider shadow-neon-red">
+                    badgeEstadoHTML = `
+                        <span class="inline-flex items-center gap-2 bg-red-600 text-white font-bold px-3 py-1 rounded-md text-xs tracking-wider shadow-neon-red uppercase">
                             <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
                             EN VIVO
                         </span>
                     `;
                 } else if (partido.estado === 'FINALIZADO') {
-                    badgeHTML = `
-                        <span class="inline-flex items-center gap-2 bg-gray-600 text-white font-bold px-3 py-1 rounded-md text-xs tracking-wider">
+                    badgeEstadoHTML = `
+                        <span class="inline-flex items-center gap-2 bg-gray-600 text-white font-bold px-3 py-1 rounded-md text-xs tracking-wider uppercase">
                             <i class="fa-solid fa-flag-checkered"></i>
                             FINALIZADO
                         </span>
@@ -337,10 +390,17 @@
                 }
                 
                 const showRes = partido.mostrar_resultado === 'on' ? 'block' : 'hidden';
+                const torneoNombreExtendido = formatearNombreTorneo(partido.torneo);
+                const estiloTorneo = ESTILOS_TORNEO[torneoNombreExtendido] || "bg-haxgreen/10 text-haxgreen border-haxgreen/40 shadow-neon";
 
                 const cardHTML = `
                     <article class="match-card glass-panel rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-6 animate-fade-up" style="animation-delay: ${index * 0.1}s">
-                        <div class="flex-1 w-full">
+                        <div class="flex-1 w-full flex flex-col items-center md:items-start gap-3">
+                            <span class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-black tracking-widest uppercase border ${estiloTorneo}">
+                                <i class="fa-solid fa-trophy text-[11px] opacity-80"></i>
+                                ${torneoNombreExtendido}
+                            </span>
+                            
                             <h3 class="text-2xl md:text-3xl font-black uppercase tracking-wider text-gray-100">
                                 ${partido.equipo1} <span class="text-haxgreen font-normal mx-2 text-xl">VS</span> ${partido.equipo2}
                             </h3>
@@ -348,7 +408,7 @@
                         
                         <div class="flex flex-col sm:flex-row items-center gap-5 shrink-0">
                             <div class="flex flex-col items-center gap-2">
-                                ${badgeHTML}
+                                ${badgeEstadoHTML}
                                 <div class="${showRes} bg-black/60 border border-white/10 text-white font-black px-5 py-2 rounded-lg text-xl tracking-widest shadow-inner">
                                     ${partido.resultado}
                                 </div>
@@ -472,6 +532,7 @@
             cargarDatosHaxPenal();
         };
 
+        // VARIABLES DEL JUEGO HAXPENAL
         const hpCanvas = document.getElementById('hp-canvas');
         const hpCtx = hpCanvas.getContext('2d');
         let hpAnimationId;
@@ -569,27 +630,35 @@
         }
 
         function drawPenal() {
+            // Fondo verde oscuro
             hpCtx.fillStyle = '#1a3c20'; hpCtx.fillRect(0, 0, FIELD.w, FIELD.h);
+            
+            // Líneas de la cancha
             hpCtx.strokeStyle = 'rgba(255,255,255,0.2)'; hpCtx.lineWidth = 3;
             hpCtx.beginPath(); hpCtx.moveTo(0, 70); hpCtx.lineTo(FIELD.w, 70); hpCtx.stroke(); 
             hpCtx.strokeRect(250, 70, 300, 100); 
 
+            // Arco (Goal)
             hpCtx.fillStyle = 'rgba(0,0,0,0.4)'; hpCtx.fillRect(300, 20, 200, 50);
             hpCtx.fillStyle = '#ffffff';
             hpCtx.beginPath(); hpCtx.arc(300, 70, 5, 0, Math.PI*2); hpCtx.fill();
             hpCtx.beginPath(); hpCtx.arc(500, 70, 5, 0, Math.PI*2); hpCtx.fill();
 
+            // Jugadores
             drawDiscFlat(gk.x, gk.y, gk.r, COLOR_BLUE, '1');
             drawDiscFlat(kicker.x, kicker.y, kicker.r, COLOR_RED, hpPlayerData.dorsal || '10');
 
+            // Pelota
             hpCtx.fillStyle = '#ffffff'; hpCtx.strokeStyle = '#000000';
             hpCtx.lineWidth = 2;
             hpCtx.beginPath(); hpCtx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2); 
             hpCtx.fill(); hpCtx.stroke();
 
+            // Interfaz de Tiro (Barras)
             if (hpState === 'IDLE_DIR' || hpState === 'IDLE_POWER') {
                 const barW = 340, barH = 24, barX = (FIELD.w - barW) / 2;
                 
+                // Barra de Dirección
                 const dirY = 190;
                 hpCtx.fillStyle = '#ffffff'; hpCtx.fillRect(barX, dirY, barW, barH);
                 hpCtx.strokeStyle = '#000000'; hpCtx.strokeRect(barX, dirY, barW, barH);
@@ -607,8 +676,9 @@
                 hpCtx.fill();
                 
                 hpCtx.fillStyle = '#ffffff'; hpCtx.font = "bold 15px sans-serif"; hpCtx.textAlign = "center";
-                hpCtx.fillText(hpState === 'IDLE_DIR' ? "PASO 1: DIRECCIÓN (CLICK)" : "DIRECCIÓN FIJADA", FIELD.w/2, dirY - 26);
+                hpCtx.fillText(hpState === 'IDLE_DIR' ? "PASO 1: DIRECCION (CLICK)" : "DIRECCION FIJADA", FIELD.w/2, dirY - 26);
 
+                // Barra de Potencia
                 if (hpState === 'IDLE_POWER') {
                     const powY = 260, sectionW = barW / 5;
                     const colors = ['#F44336', '#FFEB3B', '#4CAF50', '#FFEB3B', '#F44336'];
@@ -700,13 +770,13 @@
         <div id="chat-window" style="display: none; flex-direction: column; width: 340px; height: 450px; background-color: #171717; border: 2px solid #404040; border-radius: 12px; position: absolute; bottom: 60px; right: 0; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);">
             <div style="background-color: #262626; padding: 12px; border-bottom: 1px solid #404040; display: flex; justify-content: space-between; align-items: center;">
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="width: 10px; height: 10px; background-color: #22c55e; border-radius: 50%;"></span>
+                    <span style="width: 10px; height: 10px; background-color: #22c55e; border-radius: 50%; box-shadow: 0 0 5px #22c55e;"></span>
                     <span style="font-weight: 800; color: #4ade80; font-size: 14px; text-transform: uppercase;">Haxball AI</span>
                 </div>
-                <button onclick="toggleHaxChat()" style="background: none; border: none; color: #a3a3a3; font-weight: bold; font-size: 18px; cursor: pointer;">✕</button>
+                <button onclick="toggleHaxChat()" style="background: none; border: none; color: #a3a3a3; font-weight: bold; font-size: 18px; cursor: pointer; padding: 0 5px;">✕</button>
             </div>
 
-            <div id="chat-messages" style="flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background-color: #0a0a0a; font-size: 13px; color: #e5e5e5;">
+            <div id="chat-messages" class="custom-scrollbar" style="flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background-color: #0a0a0a; font-size: 13px; color: #e5e5e5;">
                 <div style="background-color: #262626; padding: 10px; border-radius: 8px; border: 1px solid #404040; max-width: 85%;">
                     ¡Hola! Bienvenido al asistente virtual de <b>HaxCalendar</b>. Podés consultarme sobre la agenda de partidos, novedades de streamers, torneos y tácticas de Haxball. ¿En qué te puedo ayudar hoy?
                 </div>
@@ -714,7 +784,7 @@
 
             <form id="chat-form" onsubmit="sendHaxMessage(event)" style="padding: 8px; background-color: #171717; border-top: 1px solid #262626; display: flex; gap: 6px;">
                 <input type="text" id="chat-input" placeholder="Preguntá a Haxball AI..." required style="flex: 1; background-color: #0a0a0a; color: #fff; font-size: 13px; border-radius: 6px; padding: 8px; border: 1px solid #404040; outline: none;">
-                <button type="submit" id="chat-send-btn" style="background-color: #16a34a; color: #000; font-weight: 900; padding: 8px 12px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; text-transform: uppercase;">Enviar</button>
+                <button type="submit" id="chat-send-btn" style="background-color: #16a34a; color: #000; font-weight: 900; padding: 8px 12px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; text-transform: uppercase; transition: all 0.2s ease;">Enviar</button>
             </form>
         </div>
     </div>
@@ -725,6 +795,7 @@
             const win = document.getElementById('chat-window');
             if (win.style.display === 'none' || win.style.display === '') {
                 win.style.display = 'flex';
+                document.getElementById('chat-input').focus();
             } else {
                 win.style.display = 'none';
             }
@@ -740,17 +811,18 @@
             if (!text) return;
 
             const userDiv = document.createElement('div');
-            userDiv.style.cssText = 'background-color: #14532d; color: #dcfce7; padding: 10px; border-radius: 8px; border: 1px solid #15803d; max-width: 85%; margin-left: auto; text-align: right;';
+            userDiv.style.cssText = 'background-color: #14532d; color: #dcfce7; padding: 10px; border-radius: 8px; border: 1px solid #15803d; max-width: 85%; margin-left: auto; text-align: right; box-shadow: 0 2px 5px rgba(0,0,0,0.3);';
             userDiv.textContent = text;
             msgContainer.appendChild(userDiv);
 
             input.value = '';
             sendBtn.disabled = true;
+            sendBtn.style.opacity = '0.5';
 
             const loadingDiv = document.createElement('div');
             loadingDiv.id = 'loading-msg';
             loadingDiv.style.cssText = 'background-color: #262626; color: #a3a3a3; padding: 8px; border-radius: 8px; border: 1px solid #404040; max-width: 60%; font-style: italic; font-size: 11px;';
-            loadingDiv.textContent = 'Procesando respuesta...';
+            loadingDiv.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Procesando...';
             msgContainer.appendChild(loadingDiv);
             msgContainer.scrollTop = msgContainer.scrollHeight;
 
@@ -765,18 +837,19 @@
                 document.getElementById('loading-msg')?.remove();
 
                 const aiDiv = document.createElement('div');
-                aiDiv.style.cssText = 'background-color: #262626; color: #e5e5e5; padding: 10px; border-radius: 8px; border: 1px solid #404040; max-width: 85%;';
-                aiDiv.innerHTML = data.reply ? data.reply.replace(/\n/g, '<br>') : 'Error al obtener respuesta.';
+                aiDiv.style.cssText = 'background-color: #262626; color: #e5e5e5; padding: 10px; border-radius: 8px; border: 1px solid #404040; max-width: 85%; box-shadow: 0 2px 5px rgba(0,0,0,0.3);';
+                aiDiv.innerHTML = data.reply ? data.reply.replace(/\n/g, '<br>') : 'Error al procesar la respuesta.';
                 msgContainer.appendChild(aiDiv);
 
             } catch (err) {
                 document.getElementById('loading-msg')?.remove();
                 const errDiv = document.createElement('div');
                 errDiv.style.cssText = 'background-color: #7f1d1d; color: #fecaca; padding: 10px; border-radius: 8px; border: 1px solid #b91c1c; max-width: 85%;';
-                errDiv.textContent = 'Error de conexión con el servidor.';
+                errDiv.textContent = 'Sin conexión. El servidor no responde por el momento.';
                 msgContainer.appendChild(errDiv);
             } finally {
                 sendBtn.disabled = false;
+                sendBtn.style.opacity = '1';
                 msgContainer.scrollTop = msgContainer.scrollHeight;
             }
         }

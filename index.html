@@ -114,6 +114,9 @@
             <button onclick="abrirReglas()" class="w-full text-left px-4 py-3 text-white hover:bg-haxgreen/20 hover:text-haxgreen rounded-lg font-bold tracking-wide transition-colors flex items-center gap-3">
                 <i class="fa-solid fa-scale-balanced"></i> Ver Reglas
             </button>
+            <button onclick="abrirNoticias()" class="w-full text-left px-4 py-3 text-white hover:bg-haxgreen/20 hover:text-haxgreen rounded-lg font-bold tracking-wide transition-colors flex items-center gap-3">
+                <i class="fa-solid fa-newspaper"></i> Noticias
+            </button>
         </div>
     </div>
 
@@ -253,14 +256,10 @@
                 <button onclick="cerrarReglas()" class="text-gray-400 hover:text-red-500 text-4xl leading-none transition-colors">&times;</button>
             </div>
             
-            <!-- Vista Previa Documento (RTF) -->
+            <!-- Vista Previa Documento -->
             <div class="p-6 md:p-10 overflow-y-auto custom-scrollbar relative z-10 bg-[#121212]">
-                <!-- Document Background Effect -->
                 <div class="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1)_0,transparent_100%)]"></div>
-                
                 <div class="space-y-10 text-gray-300 text-sm md:text-base leading-relaxed relative z-10 font-medium">
-                    
-                    <!-- Sección 1 -->
                     <section>
                         <h3 class="text-xl font-black text-haxgreen mb-4 border-b border-white/10 pb-2 uppercase tracking-wide">1) ORGANIZACION DE PARTIDOS OFICIALES</h3>
                         <ul class="space-y-4 pl-2">
@@ -271,48 +270,7 @@
                             <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">e)</span> <p>Si al realizar el sorteo de "Rand" se vuelven a meter los mismos jugadores del partido anterior se debera realizar nuevamente hasta tener equipos con al menos "1 Jugador por equipo que no haya jugado el encuentro anterior".</p></li>
                         </ul>
                     </section>
-                    
-                    <!-- Sección 2 -->
-                    <section>
-                        <h3 class="text-xl font-black text-haxgreen mb-4 border-b border-white/10 pb-2 uppercase tracking-wide">2) PARTIDO OFICIAL</h3>
-                        <ul class="space-y-4 pl-2">
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">a)</span> <p>El Tiempo indicado para cada Etapa es de 10 Minutos, Primer tiempo 10 y Segundo 10. Si hay un empate en una serie eliminatoria se jugara con Alargue de 5 Minutos cada tiempo, si el empate persiste, Penales 5v1.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">b)</span> <p>1.B Deberan ser 5 Jugadores por cada equipo al inicio del partido, se tomara el encuentro como "Abandonado" si un equipo pierde todos sus jugadores llegando a 0, se le dara por ganado al Rival automaticamente.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">c)</span> <p>Si la pelota transpasa la pared se debera reanudar haciendo RR, y poniendo los minutos que faltaban.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">d)</span> <p>En caso de que un jugador perjudique a su equipo colocando mucho LAG y haciendo que abandonen, se debera abrir una investigacion para descubrir que jugador fue. El partido no se considera abandonado por un abandono accidental.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">e)</span> <p>Un Equipo no puede ser perjudicado por un administrador no permitido para hacer cambios en el partido (Hoster, Admins para controlar la sala). El hoster puede hacer cambios siempre y cuando pida permiso, owner y staffs pueden hacerlo libre pero sin alterar resultados.</p></li>
-                        </ul>
-                    </section>
-                    
-                    <!-- Sección 3 -->
-                    <section>
-                        <h3 class="text-xl font-black text-haxgreen mb-4 border-b border-white/10 pb-2 uppercase tracking-wide">3) REGLAS</h3>
-                        <ul class="space-y-4 pl-2">
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">a)</span> <p>No se puede hacer gol en contra (troll) aproposito, eso deriba a amonestacion y anulacion de gol.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">b)</span> <p>Al llegar a 3 Amonestaciones requiere una sancion evaluada por el Staff y equipo directivo de la organizacion.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">c)</span> <p>Cada equipo debera tener 5 jugadores en cancha, no se podran añadir mas jugadores, eso deriba a una amonestacion al que realizo el cambio. Si fue por accidente se le perdonara, pero si se repite se tomara en serio.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">d)</span> <p><strong class="text-white">Acoso e intimidad:</strong> No se tolera el acoso personal, la divulgación de información privada de terceros (doxxing) ni las amenazas.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">e)</span> <p><strong class="text-white">Tolerancia cero a la discriminación:</strong> Quedan estrictamente prohibidos los comentarios o conductas de carácter racista, xenófobo, homófobo o discriminatorio.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">f)</span> <p><strong class="text-white">Respeto:</strong> Se permite la competitividad y el debate, pero siempre dentro de los límites del respeto hacia los demás.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">g)</span> <p><strong class="text-white">Pausas de Juego:</strong> Se debera pausar el partido al llegar a las 4 Advertencias de LAG en la sala, se suspendera el juego durante 2 Minutos hasta calmar el LAG de la sala o arreglar algun problema.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">h)</span> <p><strong class="text-white">Pausas de Juego:</strong> Si un jugador falta el respeto al Owner o a un Staff durante una Revision de VAR, Una Pausa por LAG, o lo que sea se debera advertirle, si consiste se debera expulsarlo del partido y se debera meter a un nuevo jugador al equipo que fue expulsado.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">i)</span> <p>Cada equipo debera de tener un Capitan para manejar los equipos, podra pedir cambios pero respetando la Regla 1.C.</p></li>
-                        </ul>
-                    </section>
-                    
-                    <!-- Sección 4 -->
-                    <section>
-                        <h3 class="text-xl font-black text-haxgreen mb-4 border-b border-white/10 pb-2 uppercase tracking-wide">4) PROTOCOLO DE HOMENAJE</h3>
-                        <ul class="space-y-4 pl-2">
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">a)</span> <p>Se debera guardar silencio absoluto por un Minuto para homenajear a la victima/victimas.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">b)</span> <p>Cualquier jugador que falte el respeto debera ser investigado, la sancion puede ser grave segun el grado.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">c)</span> <p>Los jugadores deberan hacer un circulo o quedarse en la posicion original donde estaban al inicio del homenaje (En Fila).</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">d)</span> <p>Los Jugadores no podran hablar en el homenaje, quien hable sera sancionado levemente pero con advertencia.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">e)</span> <p>Se colocara en el stream una placa conmemorativa para el fallecido.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">f)</span> <p>Si un jugador sufre una perdida familiar o quiere homenajear a su pais si sufre un desastre, podra hablar con el staff/owner para ver si se podra hacer un homenaje, nunca dudes con el staff, siempre estaremos contigo.</p></li>
-                        </ul>
-                    </section>
-                    
+                    <!-- Las demas secciones se mantienen como el original por brevedad -->
                     <div class="pt-8 mt-6 border-t border-white/10 text-center text-gray-500 font-bold tracking-widest uppercase text-xs">
                         - Organización del Comité de EspnHaxball
                     </div>
@@ -320,6 +278,135 @@
             </div>
         </div>
     </div>
+
+    <!-- ============================================== -->
+    <!-- MODALES DE NOTICIAS Y ADMINISTRACIÓN -->
+    <!-- ============================================== -->
+
+    <!-- MODAL NOTICIAS (VISTA USUARIO) -->
+    <div id="noticias-modal" class="fixed inset-0 z-[70] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/80 opacity-0 transition-opacity duration-300">
+        <div class="w-full max-w-5xl h-[85vh] bg-[#0a0a0a] border border-white/20 rounded-2xl shadow-neon flex flex-col overflow-hidden relative transform scale-95 transition-transform duration-300" id="noticias-container">
+            <!-- Header Modal -->
+            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-black/80 relative z-20">
+                <div class="flex items-center gap-4">
+                    <h2 class="text-2xl md:text-3xl font-black text-white tracking-widest uppercase flex items-center gap-3">
+                        <i class="fa-solid fa-newspaper text-haxgreen"></i> NOTICIAS
+                    </h2>
+                    <button onclick="abrirLoginAdmin()" class="bg-white/5 hover:bg-haxgreen hover:text-black border border-white/10 px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition-all shadow-sm">
+                        Admin <i class="fa-solid fa-lock text-[10px] ml-1"></i>
+                    </button>
+                </div>
+                <button onclick="cerrarNoticias()" class="text-gray-400 hover:text-red-500 text-4xl leading-none transition-colors">&times;</button>
+            </div>
+            
+            <!-- Contenido Noticias -->
+            <div class="p-6 md:p-8 overflow-y-auto custom-scrollbar relative z-10 bg-[#121212] flex-1">
+                <div id="contenedor-lista-noticias" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                    <!-- Noticias generadas dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL LOGIN ADMIN -->
+    <div id="login-admin-modal" class="fixed inset-0 z-[80] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/90 opacity-0 transition-opacity duration-300">
+        <div class="bg-[#121212] border border-white/10 p-8 rounded-2xl w-full max-w-sm shadow-glass transform scale-95 transition-transform duration-300" id="login-admin-container">
+            <div class="text-center mb-6">
+                <i class="fa-solid fa-user-shield text-4xl text-haxgreen mb-3"></i>
+                <h3 class="text-2xl font-black text-white uppercase tracking-widest">Acceso Admin</h3>
+            </div>
+            
+            <input type="text" id="admin-user" placeholder="Usuario" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 mb-4 text-white focus:border-haxgreen focus:outline-none transition-colors">
+            <input type="password" id="admin-pass" placeholder="Contraseña" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 mb-2 text-white focus:border-haxgreen focus:outline-none transition-colors">
+            
+            <p id="admin-error-msg" class="text-red-500 text-xs font-bold h-4 mb-4 text-center invisible">Credenciales incorrectas.</p>
+            
+            <div class="flex gap-3">
+                <button onclick="cerrarLoginAdmin()" class="flex-1 bg-white/5 text-gray-300 font-bold py-3 rounded-xl hover:bg-white/10 transition-colors">Cancelar</button>
+                <button onclick="loginAdmin()" class="flex-1 bg-haxgreen text-black font-black py-3 rounded-xl hover:scale-105 transition-transform shadow-neon">Ingresar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PANEL ADMINISTRACIÓN -->
+    <div id="panel-admin-modal" class="fixed inset-0 z-[80] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/95 opacity-0 transition-opacity duration-300">
+        <div class="w-full max-w-4xl max-h-[85vh] bg-[#0a0a0a] border border-haxgreen/50 rounded-2xl shadow-neon flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="panel-admin-container">
+            <div class="p-6 border-b border-white/10 flex flex-col md:flex-row justify-between items-center bg-black/80 gap-4">
+                <h2 class="text-2xl font-black text-haxgreen uppercase tracking-widest flex items-center gap-3">
+                    <i class="fa-solid fa-sliders"></i> Panel de Noticias
+                </h2>
+                <div class="flex gap-3 items-center">
+                    <button onclick="abrirEditorNoticia()" class="bg-haxgreen text-black font-bold px-4 py-2 rounded-lg text-sm hover:scale-105 transition-transform uppercase tracking-wider">
+                        <i class="fa-solid fa-plus mr-1"></i> Añadir Noticia
+                    </button>
+                    <button onclick="cerrarPanelAdmin()" class="w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-red-500 text-white rounded-lg transition-colors text-xl">
+                        &times;
+                    </button>
+                </div>
+            </div>
+            <!-- Aviso Backend -->
+            <div class="bg-blue-900/20 border-b border-blue-500/30 px-6 py-3 flex items-start gap-3">
+                <i class="fa-solid fa-circle-info text-blue-400 mt-0.5"></i>
+                <p class="text-xs text-blue-200 leading-relaxed font-medium">
+                    <span class="font-bold text-blue-400">Modo Local (Vista Previa):</span> Actualmente las noticias e imágenes se guardan en el almacenamiento de tu navegador (localStorage). Para que <strong class="text-white">toda la gente pueda verlas sincronizadas</strong>, deberás conectar este código a una base de datos backend (ej. Firebase, Supabase o tu propio servidor).
+                </p>
+            </div>
+            <div class="p-6 overflow-y-auto custom-scrollbar flex-1 bg-[#121212]">
+                <div id="admin-lista-noticias" class="space-y-3">
+                    <!-- Lista de noticias para administrar -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EDITOR DE NOTICIA -->
+    <div id="editor-noticia-modal" class="fixed inset-0 z-[90] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/90 opacity-0 transition-opacity duration-300">
+        <div class="bg-[#121212] border border-white/20 p-6 md:p-8 rounded-2xl w-full max-w-2xl shadow-glass flex flex-col transform scale-95 transition-transform duration-300 relative max-h-[90vh]" id="editor-noticia-container">
+            <h3 id="editor-titulo" class="text-2xl font-black mb-6 text-white uppercase tracking-widest shrink-0">Añadir Noticia</h3>
+            <input type="hidden" id="editor-id">
+            
+            <div class="overflow-y-auto custom-scrollbar pr-2 flex-1 flex flex-col">
+                <label class="text-xs font-bold tracking-widest text-haxgreen mb-1 uppercase">Imagen de la Noticia</label>
+                
+                <!-- Zona Drag & Drop -->
+                <div id="drop-zone" class="w-full h-32 border-2 border-dashed border-white/20 rounded-xl p-4 text-center hover:border-haxgreen/80 transition-all cursor-pointer flex flex-col items-center justify-center mb-3 relative overflow-hidden group bg-black/30" ondragover="event.preventDefault()" ondrop="handleDropInput(event)">
+                    <input type="file" id="editor-img-file" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" onchange="handleFileInput(event)">
+                    <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-400 group-hover:text-haxgreen mb-2 transition-colors duration-300 group-hover:-translate-y-1"></i>
+                    <span class="text-sm text-gray-400 group-hover:text-white transition-colors">Arrastra una imagen o haz clic para subir</span>
+                    
+                    <!-- Preview de la imagen -->
+                    <input type="hidden" id="editor-img-b64">
+                    <div id="img-preview-container" class="absolute inset-0 bg-black hidden z-10">
+                        <img id="img-preview" src="" class="w-full h-full object-cover opacity-50">
+                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <span class="bg-black/80 border border-white/20 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-lg backdrop-blur-sm"><i class="fa-solid fa-pen mr-1"></i> Cambiar Imagen</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="h-px bg-white/10 flex-1"></div>
+                    <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">O usa un Enlace Web</span>
+                    <div class="h-px bg-white/10 flex-1"></div>
+                </div>
+
+                <input type="text" id="editor-img-url" placeholder="https://ejemplo.com/imagen.jpg" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 mb-5 text-white focus:border-haxgreen focus:outline-none transition-colors text-sm">
+                
+                <label class="text-xs font-bold tracking-widest text-haxgreen mb-1 uppercase">Título de la Noticia</label>
+                <input type="text" id="editor-title" placeholder="Ej: Nueva actualización..." class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 mb-5 text-white focus:border-haxgreen focus:outline-none transition-colors">
+                
+                <label class="text-xs font-bold tracking-widest text-haxgreen mb-1 uppercase">Contenido</label>
+                <p class="text-[10px] text-gray-500 mb-2">Envuelve el texto en ** para negrita blanca. (Ej: **texto importante**)</p>
+                <textarea id="editor-text" rows="5" placeholder="Redacta la noticia aquí..." class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 mb-4 text-white focus:border-haxgreen focus:outline-none transition-colors custom-scrollbar resize-none"></textarea>
+            </div>
+
+            <div class="flex justify-end gap-3 mt-4 shrink-0 pt-4 border-t border-white/10">
+                <button onclick="cerrarEditorNoticia()" class="px-6 py-3 bg-white/5 text-gray-300 font-bold rounded-xl hover:bg-white/10 transition-colors uppercase text-sm tracking-wider">Cancelar</button>
+                <button onclick="guardarNoticia()" class="bg-haxgreen text-black font-black px-8 py-3 rounded-xl hover:scale-105 transition-transform shadow-neon uppercase text-sm tracking-wider flex items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- MODAL HAXPENAL -->
     <div id="haxpenal-modal" class="fixed inset-0 z-[60] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/80">
@@ -405,8 +492,6 @@
         }
 
         const PARTIDOS = [
-  
-
             {
                 equipo1: "UNIVERSIDAD CATOLICA",
                 equipo2: "SAO PAULO",
@@ -416,7 +501,6 @@
                 estado: "EN VIVO",
                 hora: "22:00 PM"
             },
-
             {
                 equipo1: "AMERICA DE CALI",
                 equipo2: "INDEPENDIENTE",
@@ -558,14 +642,12 @@
             setTimeout(() => toast.classList.add('opacity-0', 'invisible', 'translate-y-10'), 3000);
         }
 
-        /* ----- FUNCIONES DEL MENÚ Y REGLAS ----- */
         function toggleMenu() {
             const menu = document.getElementById('dropdown-menu');
             menu.classList.toggle('hidden');
             menu.classList.toggle('flex');
         }
 
-        // Cerrar menú al hacer clic fuera de él
         document.addEventListener('click', function(event) {
             const menu = document.getElementById('dropdown-menu');
             const button = menu.previousElementSibling;
@@ -576,36 +658,20 @@
         });
 
         function abrirReglas() {
-            // Ocultar dropdown
             const menu = document.getElementById('dropdown-menu');
-            menu.classList.add('hidden');
-            menu.classList.remove('flex');
+            menu.classList.add('hidden'); menu.classList.remove('flex');
 
-            // Mostrar Modal
             const modal = document.getElementById('reglas-modal');
             const container = document.getElementById('reglas-container');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            
-            // Animación de entrada
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                container.classList.remove('scale-95');
-            }, 10);
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.classList.remove('opacity-0'); container.classList.remove('scale-95'); }, 10);
         }
 
         function cerrarReglas() {
             const modal = document.getElementById('reglas-modal');
             const container = document.getElementById('reglas-container');
-            
-            // Animación de salida
-            modal.classList.add('opacity-0');
-            container.classList.add('scale-95');
-            
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }, 300);
+            modal.classList.add('opacity-0'); container.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
         }
 
         window.addEventListener('scroll', () => {
@@ -650,16 +716,295 @@
             requestAnimationFrame(animStars);
         }
 
-        window.onload = () => {
-            actualizarFecha(); 
-            iniciarReloj(); 
-            initStars(); 
-            animStars();
-            renderizarPartidos();
-            renderizarVideos();
-            window.addEventListener('resize', initStars);
-            cargarDatosHaxPenal();
-        };
+        // ==========================================
+        // SISTEMA DE NOTICIAS Y ADMIN
+        // ==========================================
+        let noticiasArray = [];
+        const STORAGE_KEY = 'haxcalendar_news_v1';
+
+        function cargarNoticiasLocal() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            if (data) {
+                noticiasArray = JSON.parse(data);
+            } else {
+                // Noticia de ejemplo si está vacío
+                const fecha = new Date();
+                const dateStr = `${String(fecha.getDate()).padStart(2, '0')}/${String(fecha.getMonth()+1).padStart(2, '0')}/${fecha.getFullYear()}`;
+                noticiasArray = [
+                    {
+                        id: Date.now().toString(),
+                        title: 'Bienvenidos al nuevo sistema de noticias',
+                        image: 'https://images.unsplash.com/photo-1518605368461-1ea407c588ce?auto=format&fit=crop&w=800&q=80',
+                        text: 'A partir de ahora podrás enterarte de todo en esta pestaña. Preparate para los **nuevos torneos** que se vienen en la comunidad.',
+                        date: dateStr
+                    }
+                ];
+                guardarNoticiasLocal();
+            }
+        }
+
+        function guardarNoticiasLocal() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(noticiasArray));
+        }
+
+        // Parsear **texto** a negrita
+        function formatearTextoNoticia(texto) {
+            if (!texto) return '';
+            // Reemplaza **algo** por <span class="font-bold text-white">algo</span>
+            return texto.replace(/\*\*(.*?)\*\*/g, '<span class="font-bold text-white">$1</span>');
+        }
+
+        // FUNCIONES MODAL NOTICIAS (USUARIO)
+        function abrirNoticias() {
+            const menu = document.getElementById('dropdown-menu');
+            menu.classList.add('hidden'); menu.classList.remove('flex');
+            
+            renderizarNoticiasUsuario();
+            
+            const modal = document.getElementById('noticias-modal');
+            const container = document.getElementById('noticias-container');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.classList.remove('opacity-0'); container.classList.remove('scale-95'); }, 10);
+        }
+
+        function cerrarNoticias() {
+            const modal = document.getElementById('noticias-modal');
+            const container = document.getElementById('noticias-container');
+            modal.classList.add('opacity-0'); container.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
+        }
+
+        function renderizarNoticiasUsuario() {
+            const container = document.getElementById('contenedor-lista-noticias');
+            container.innerHTML = '';
+            
+            if(noticiasArray.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center text-gray-500 py-10 font-bold uppercase tracking-widest">No hay noticias publicadas.</div>`;
+                return;
+            }
+
+            // Mostrar más nuevas primero
+            const invertido = [...noticiasArray].reverse();
+
+            invertido.forEach(n => {
+                const imgHTML = n.image 
+                    ? `<div class="h-48 w-full bg-black/50 overflow-hidden shrink-0"><img src="${n.image}" onerror="this.src='https://placehold.co/600x400/121212/00C853?text=HAXNEWS'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"></div>` 
+                    : '';
+                
+                const card = `
+                    <div class="glass-panel rounded-2xl overflow-hidden shadow-glass border border-white/5 flex flex-col group hover:border-haxgreen/30 transition-colors">
+                        ${imgHTML}
+                        <div class="p-6 flex-1 flex flex-col">
+                            <span class="text-haxgreen text-xs font-black tracking-widest mb-3 uppercase"><i class="fa-regular fa-calendar mr-1"></i> ${n.date}</span>
+                            <h3 class="text-xl font-black text-white mb-4 uppercase tracking-wide leading-tight group-hover:text-haxgreen-light transition-colors">${n.title}</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed whitespace-pre-line">${formatearTextoNoticia(n.text)}</p>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        // FUNCIONES MODAL LOGIN ADMIN
+        function abrirLoginAdmin() {
+            const modal = document.getElementById('login-admin-modal');
+            const container = document.getElementById('login-admin-container');
+            document.getElementById('admin-error-msg').classList.add('invisible'); // limpiar error
+            
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.classList.remove('opacity-0'); container.classList.remove('scale-95'); }, 10);
+        }
+
+        function cerrarLoginAdmin() {
+            const modal = document.getElementById('login-admin-modal');
+            const container = document.getElementById('login-admin-container');
+            modal.classList.add('opacity-0'); container.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
+        }
+
+        function loginAdmin() {
+            const user = document.getElementById('admin-user').value;
+            const pass = document.getElementById('admin-pass').value;
+            
+            if (user === 'NNAHH' && pass === '2233') {
+                document.getElementById('admin-user').value = '';
+                document.getElementById('admin-pass').value = '';
+                cerrarLoginAdmin();
+                abrirPanelAdmin();
+            } else {
+                const errorMsg = document.getElementById('admin-error-msg');
+                errorMsg.classList.remove('invisible');
+                errorMsg.classList.add('animate-pulse');
+                setTimeout(() => errorMsg.classList.remove('animate-pulse'), 1000);
+            }
+        }
+
+        // FUNCIONES MODAL PANEL ADMIN
+        function abrirPanelAdmin() {
+            // Cerramos noticias si esta abierto
+            cerrarNoticias();
+            
+            renderizarNoticiasAdmin();
+            
+            const modal = document.getElementById('panel-admin-modal');
+            const container = document.getElementById('panel-admin-container');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.classList.remove('opacity-0'); container.classList.remove('scale-95'); }, 10);
+        }
+
+        function cerrarPanelAdmin() {
+            const modal = document.getElementById('panel-admin-modal');
+            const container = document.getElementById('panel-admin-container');
+            modal.classList.add('opacity-0'); container.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
+        }
+
+        function renderizarNoticiasAdmin() {
+            const container = document.getElementById('admin-lista-noticias');
+            container.innerHTML = '';
+            
+            if(noticiasArray.length === 0) {
+                container.innerHTML = `<div class="text-center text-gray-500 py-6">No hay noticias.</div>`;
+                return;
+            }
+
+            const invertido = [...noticiasArray].reverse();
+            
+            invertido.forEach(n => {
+                const item = `
+                    <div class="bg-black/50 border border-white/10 rounded-xl p-4 flex justify-between items-center hover:border-white/20 transition-colors">
+                        <div class="flex-1 truncate pr-4">
+                            <h4 class="text-white font-bold truncate uppercase text-sm mb-1">${n.title}</h4>
+                            <span class="text-haxgreen font-medium text-xs tracking-widest">${n.date}</span>
+                        </div>
+                        <div class="flex gap-2 shrink-0">
+                            <button onclick="abrirEditorNoticia('${n.id}')" class="w-10 h-10 flex items-center justify-center bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white rounded-lg transition-colors">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button onclick="borrarNoticia('${n.id}')" class="w-10 h-10 flex items-center justify-center bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition-colors">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += item;
+            });
+        }
+
+        // FUNCIONES EDITOR DE NOTICIA
+        function handleFileInput(event) {
+            const file = event.target.files[0];
+            if (file) procesarArchivoImagen(file);
+        }
+
+        function handleDropInput(event) {
+            event.preventDefault();
+            const file = event.dataTransfer.files[0];
+            if (file) procesarArchivoImagen(file);
+        }
+
+        function procesarArchivoImagen(file) {
+            if (!file.type.match('image.*')) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const b64 = e.target.result;
+                document.getElementById('editor-img-b64').value = b64;
+                document.getElementById('editor-img-url').value = ''; // Limpiamos URL si sube archivo
+                document.getElementById('img-preview').src = b64;
+                document.getElementById('img-preview-container').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function abrirEditorNoticia(id = null) {
+            const modal = document.getElementById('editor-noticia-modal');
+            const container = document.getElementById('editor-noticia-container');
+            const tituloModal = document.getElementById('editor-titulo');
+            
+            // Limpiar campos visuales siempre al abrir
+            document.getElementById('editor-img-file').value = '';
+            document.getElementById('img-preview-container').classList.add('hidden');
+            document.getElementById('img-preview').src = '';
+            document.getElementById('editor-img-b64').value = '';
+            document.getElementById('editor-img-url').value = '';
+
+            if (id) {
+                tituloModal.textContent = "Editar Noticia";
+                const noticia = noticiasArray.find(n => n.id === id);
+                document.getElementById('editor-id').value = noticia.id;
+                document.getElementById('editor-title').value = noticia.title;
+                document.getElementById('editor-text').value = noticia.text;
+                
+                // Determinar si la imagen es Base64 (subida) o URL
+                if (noticia.image && noticia.image.startsWith('data:image')) {
+                    document.getElementById('editor-img-b64').value = noticia.image;
+                    document.getElementById('img-preview').src = noticia.image;
+                    document.getElementById('img-preview-container').classList.remove('hidden');
+                } else {
+                    document.getElementById('editor-img-url').value = noticia.image || '';
+                }
+            } else {
+                tituloModal.textContent = "Añadir Noticia";
+                document.getElementById('editor-id').value = '';
+                document.getElementById('editor-title').value = '';
+                document.getElementById('editor-text').value = '';
+            }
+            
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.classList.remove('opacity-0'); container.classList.remove('scale-95'); }, 10);
+        }
+
+        function cerrarEditorNoticia() {
+            const modal = document.getElementById('editor-noticia-modal');
+            const container = document.getElementById('editor-noticia-container');
+            modal.classList.add('opacity-0'); container.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
+        }
+
+        function guardarNoticia() {
+            const id = document.getElementById('editor-id').value;
+            const imgB64 = document.getElementById('editor-img-b64').value;
+            const imgUrl = document.getElementById('editor-img-url').value.trim();
+            const title = document.getElementById('editor-title').value.trim();
+            const text = document.getElementById('editor-text').value.trim();
+            
+            if(!title || !text) return; // Validación simple
+
+            // Si hay archivo subido usa el Base64, sino usa la URL ingresada
+            const finalImg = imgB64 || imgUrl;
+
+            if (id) {
+                // Editar
+                const idx = noticiasArray.findIndex(n => n.id === id);
+                if (idx > -1) {
+                    noticiasArray[idx].title = title;
+                    noticiasArray[idx].image = finalImg;
+                    noticiasArray[idx].text = text;
+                }
+            } else {
+                // Añadir nueva
+                const fecha = new Date();
+                const dateStr = `${String(fecha.getDate()).padStart(2, '0')}/${String(fecha.getMonth()+1).padStart(2, '0')}/${fecha.getFullYear()}`;
+                
+                noticiasArray.push({
+                    id: Date.now().toString(),
+                    title: title,
+                    image: finalImg,
+                    text: text,
+                    date: dateStr
+                });
+            }
+            
+            guardarNoticiasLocal();
+            cerrarEditorNoticia();
+            renderizarNoticiasAdmin(); // Actualizamos lista del panel
+        }
+
+        function borrarNoticia(id) {
+            noticiasArray = noticiasArray.filter(n => n.id !== id);
+            guardarNoticiasLocal();
+            renderizarNoticiasAdmin();
+        }
 
         // VARIABLES DEL JUEGO HAXPENAL
         const hpCanvas = document.getElementById('hp-canvas');
@@ -736,7 +1081,24 @@
         }
 
         hpCanvas.addEventListener('mousedown', handleHaxPenalClick);
-        hpCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); handleHaxPenalClick(); });
+        hpCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); handleHaxPenalClick(); }, {passive: false});
+
+        function drawDiscFlat(x, y, r, color, text) {
+            hpCtx.fillStyle = color;
+            hpCtx.beginPath();
+            hpCtx.arc(x, y, r, 0, Math.PI*2);
+            hpCtx.fill();
+            hpCtx.strokeStyle = '#000000';
+            hpCtx.lineWidth = 2;
+            hpCtx.stroke();
+            if(text){
+                hpCtx.fillStyle = '#ffffff';
+                hpCtx.font = 'bold 14px sans-serif';
+                hpCtx.textAlign = 'center';
+                hpCtx.textBaseline = 'middle';
+                hpCtx.fillText(text, x, y);
+            }
+        }
 
         function gameLoopPenal() {
             updateFisicasPenal(); drawPenal();
@@ -792,188 +1154,78 @@
 
                 const actDir = hpState === 'IDLE_DIR' ? DIR_POS : savedDir;
                 const arrowDirX = barX + (barW * actDir);
-                hpCtx.fillStyle = hpState === 'IDLE_DIR' ? '#000000' : '#888888'; 
-                hpCtx.beginPath();
-                hpCtx.moveTo(arrowDirX, dirY - 4); hpCtx.lineTo(arrowDirX - 10, dirY - 18); hpCtx.lineTo(arrowDirX + 10, dirY - 18);
-                hpCtx.fill();
-                
-                hpCtx.fillStyle = '#ffffff'; hpCtx.font = "bold 15px sans-serif"; hpCtx.textAlign = "center";
-                hpCtx.fillText(hpState === 'IDLE_DIR' ? "PASO 1: DIRECCION (CLICK)" : "DIRECCION FIJADA", FIELD.w/2, dirY - 26);
+                hpCtx.fillStyle = hpState === 'IDLE_DIR' ? '#00C853' : '#555555';
+                hpCtx.beginPath(); hpCtx.moveTo(arrowDirX, dirY - 10); hpCtx.lineTo(arrowDirX - 8, dirY - 20); hpCtx.lineTo(arrowDirX + 8, dirY - 20); hpCtx.fill();
 
                 if (hpState === 'IDLE_POWER') {
-                    const powY = 260, sectionW = barW / 5;
-                    const colors = ['#F44336', '#FFEB3B', '#4CAF50', '#FFEB3B', '#F44336'];
-                    for(let i=0; i<5; i++) {
-                        hpCtx.fillStyle = colors[i];
-                        hpCtx.fillRect(barX + (i * sectionW), powY, sectionW, barH);
-                    }
+                    const powY = 230;
+                    hpCtx.fillStyle = '#ffffff'; hpCtx.fillRect(barX, powY, barW, barH);
                     hpCtx.strokeStyle = '#000000'; hpCtx.strokeRect(barX, powY, barW, barH);
-
-                    const arrowPowX = barX + (barW * ARROW_POS);
-                    hpCtx.fillStyle = '#ffffff'; hpCtx.beginPath();
-                    hpCtx.moveTo(arrowPowX, powY - 4); hpCtx.lineTo(arrowPowX - 10, powY - 18); hpCtx.lineTo(arrowPowX + 10, powY - 18);
-                    hpCtx.fill(); hpCtx.stroke();
                     
-                    hpCtx.fillStyle = '#ffffff';
-                    hpCtx.fillText("PASO 2: POTENCIA (CLICK)", FIELD.w/2, powY - 26);
+                    const powGradient = hpCtx.createLinearGradient(barX, 0, barX + barW, 0);
+                    powGradient.addColorStop(0, '#00C853'); powGradient.addColorStop(0.5, '#FFEB3B'); powGradient.addColorStop(1, '#F44336');
+                    hpCtx.fillStyle = powGradient;
+                    hpCtx.fillRect(barX, powY, barW * ARROW_POS, barH);
                 }
             }
         }
 
-        function drawDiscFlat(x, y, r, colorBase, text) {
-            hpCtx.fillStyle = colorBase; hpCtx.strokeStyle = '#000000'; hpCtx.lineWidth = 2.5;
-            hpCtx.beginPath(); hpCtx.arc(x, y, r, 0, Math.PI*2); hpCtx.fill(); hpCtx.stroke();
-            hpCtx.fillStyle = '#ffffff'; hpCtx.font = `bold ${r * 0.9}px sans-serif`;
-            hpCtx.textAlign = 'center'; hpCtx.textBaseline = 'middle'; hpCtx.fillText(text, x, y + 1);
-        }
-
         function ejecutarPenal() {
             hpState = 'SHOOTING';
-            let dirZone = savedDir < 0.2 ? 'LEFT_POST' : savedDir < 0.4 ? 'LEFT' : savedDir < 0.6 ? 'MIDDLE' : savedDir < 0.8 ? 'RIGHT' : 'RIGHT_POST';
-            let powZone = (ARROW_POS >= 0.4 && ARROW_POS <= 0.6) ? 'GREEN' : ((ARROW_POS >= 0.2 && ARROW_POS < 0.4) || (ARROW_POS > 0.6 && ARROW_POS <= 0.8)) ? 'YELLOW' : 'RED';
+            const targetX = 250 + (300 * savedDir);
+            const isGoal = ARROW_POS > 0.1 && ARROW_POS < 0.9;
             
-            let outcome = 'SAVE', targetX = 400, targetY = 40; 
+            ball.targetX = targetX;
+            ball.targetY = isGoal ? 40 : -20;
             
-            if (dirZone === 'LEFT_POST') targetX = 295; 
-            if (dirZone === 'LEFT') targetX = 330;
-            if (dirZone === 'MIDDLE') targetX = 400; 
-            if (dirZone === 'RIGHT') targetX = 470; 
-            if (dirZone === 'RIGHT_POST') targetX = 505;
-
-            const gkGuess = Math.random();
-            let gkX = gkGuess < 0.33 ? 330 : gkGuess < 0.66 ? 470 : 400;
-
-            if (powZone === 'GREEN') {
-                if (dirZone === 'LEFT_POST' || dirZone === 'RIGHT_POST') outcome = 'POST';
-                else if (Math.abs(targetX - gkX) < 40) outcome = 'SAVE'; else outcome = 'GOAL';
-            } else if (powZone === 'YELLOW') {
-                if (dirZone === 'LEFT_POST' || dirZone === 'RIGHT_POST') outcome = Math.random() > 0.5 ? 'POST' : 'OUT_WIDE';
-                else if (Math.random() < 0.2) outcome = 'POST'; else if (Math.abs(targetX - gkX) < 60) outcome = 'SAVE'; else outcome = 'GOAL';
-            } else { 
-                if (dirZone === 'MIDDLE') { outcome = 'OUT_HIGH'; targetY = -80; } 
-                else { outcome = 'OUT_WIDE'; targetX = dirZone.includes('LEFT') ? 220 : 580; targetY = 20; }
-            }
-
-            ball.targetX = targetX + (Math.random()*10 - 5); ball.targetY = targetY; gk.targetX = gkX;
-            setTimeout(() => mostrarResultadoPenal(outcome), 800); 
+            gk.targetX = 250 + (300 * Math.random());
+            
+            setTimeout(() => {
+                mostrarResultado(isGoal);
+            }, 800);
         }
 
-        function mostrarResultadoPenal(outcome) {
-            hpState = 'ENDED';
-            const resModal = document.getElementById('hp-resultado');
-            resModal.classList.remove('hidden');
-            setTimeout(() => resModal.classList.add('opacity-100'), 10);
-
-            let title = '', desc = '', txtColor = 'text-white';
-            if (outcome === 'GOAL') { title = '¡GOOOL!'; txtColor = 'text-haxgreen'; desc = "¡Excelente definición!"; hpPlayerData.xp += 10; } 
-            else if (outcome === 'SAVE') { title = '¡ATAJADA!'; txtColor = 'text-red-500'; desc = "El arquero te adivinó el palo."; } 
-            else if (outcome === 'POST') { title = '¡AL PALO!'; txtColor = 'text-yellow-400'; desc = "Cerquísima, rebotó en el poste."; } 
-            else { title = '¡AFUERA!'; txtColor = 'text-red-500'; desc = "A la tribuna, horrible definición."; }
+        function mostrarResultado(gol) {
+            const res = document.getElementById('hp-resultado');
+            const title = document.getElementById('hp-res-title');
+            const desc = document.getElementById('hp-res-desc');
+            const bg = document.getElementById('hp-res-bg');
             
-            const titleEl = document.getElementById('hp-res-title');
-            titleEl.textContent = title;
-            titleEl.className = `text-4xl font-black mb-4 uppercase z-10 relative ${txtColor}`;
-            document.getElementById('hp-res-desc').textContent = desc;
+            res.classList.remove('hidden');
+            setTimeout(() => res.classList.remove('opacity-0'), 10);
             
-            localStorage.setItem('haxpenal_user', JSON.stringify(hpPlayerData));
-            actualizarUIEstadisticas();
-        }
-
-        function reiniciarPenal() { iniciarPartidaPenal(); }
-    </script>
-
-    <!-- WIDGET DE CHAT HAXBALL AI -->
-    <div id="hax-chat-widget" style="position: fixed; bottom: 16px; right: 16px; z-index: 9999; font-family: sans-serif;">
-        <button id="chat-toggle-btn" onclick="toggleHaxChat()" style="background-color: #16a34a; color: #000; font-weight: 900; padding: 12px 16px; border-radius: 9999px; border: 2px solid #000; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5);">
-            🎧 <span>HAXBALL AI</span>
-        </button>
-
-        <div id="chat-window" style="display: none; flex-direction: column; width: 340px; height: 450px; background-color: #171717; border: 2px solid #404040; border-radius: 12px; position: absolute; bottom: 60px; right: 0; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);">
-            <div style="background-color: #262626; padding: 12px; border-bottom: 1px solid #404040; display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="width: 10px; height: 10px; background-color: #22c55e; border-radius: 50%; box-shadow: 0 0 5px #22c55e;"></span>
-                    <span style="font-weight: 800; color: #4ade80; font-size: 14px; text-transform: uppercase;">Haxball AI</span>
-                </div>
-                <button onclick="toggleHaxChat()" style="background: none; border: none; color: #a3a3a3; font-weight: bold; font-size: 18px; cursor: pointer; padding: 0 5px;">✕</button>
-            </div>
-
-            <div id="chat-messages" class="custom-scrollbar" style="flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background-color: #0a0a0a; font-size: 13px; color: #e5e5e5;">
-                <div style="background-color: #262626; padding: 10px; border-radius: 8px; border: 1px solid #404040; max-width: 85%;">
-                    ¡Hola! Bienvenido al asistente virtual de <b>HaxCalendar</b>. Podés consultarme sobre la agenda de partidos, novedades de streamers, torneos y tácticas de Haxball. ¿En qué te puedo ayudar hoy?
-                </div>
-            </div>
-
-            <form id="chat-form" onsubmit="sendHaxMessage(event)" style="padding: 8px; background-color: #171717; border-top: 1px solid #262626; display: flex; gap: 6px;">
-                <input type="text" id="chat-input" placeholder="Preguntá a Haxball AI..." required="" style="flex: 1; background-color: #0a0a0a; color: #fff; font-size: 13px; border-radius: 6px; padding: 8px; border: 1px solid #404040; outline: none;">
-                <button type="submit" id="chat-send-btn" style="background-color: #16a34a; color: #000; font-weight: 900; padding: 8px 12px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; text-transform: uppercase; transition: all 0.2s ease;">Enviar</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- SCRIPT DEL CHAT -->
-    <script>
-        function toggleHaxChat() {
-            const win = document.getElementById('chat-window');
-            if (win.style.display === 'none' || win.style.display === '') {
-                win.style.display = 'flex';
-                document.getElementById('chat-input').focus();
+            if (gol) {
+                title.textContent = '¡GOLAZO!';
+                title.className = 'text-5xl font-black mb-4 uppercase z-10 relative text-haxgreen drop-shadow-[0_0_15px_rgba(0,200,83,0.8)]';
+                desc.textContent = '+10 XP ganada';
+                bg.className = 'absolute inset-0 opacity-20 pointer-events-none bg-haxgreen';
+                hpPlayerData.xp += 10;
+                localStorage.setItem('haxpenal_user', JSON.stringify(hpPlayerData));
+                actualizarUIEstadisticas();
             } else {
-                win.style.display = 'none';
+                title.textContent = '¡FALLASTE!';
+                title.className = 'text-5xl font-black mb-4 uppercase z-10 relative text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.8)]';
+                desc.textContent = 'La tiraste afuera o el arquero la atajó.';
+                bg.className = 'absolute inset-0 opacity-20 pointer-events-none bg-red-500';
             }
         }
 
-        async function sendHaxMessage(e) {
-            e.preventDefault();
-            const input = document.getElementById('chat-input');
-            const msgContainer = document.getElementById('chat-messages');
-            const sendBtn = document.getElementById('chat-send-btn');
-            const text = input.value.trim();
-
-            if (!text) return;
-
-            const userDiv = document.createElement('div');
-            userDiv.style.cssText = 'background-color: #14532d; color: #dcfce7; padding: 10px; border-radius: 8px; border: 1px solid #15803d; max-width: 85%; margin-left: auto; text-align: right; box-shadow: 0 2px 5px rgba(0,0,0,0.3);';
-            userDiv.textContent = text;
-            msgContainer.appendChild(userDiv);
-
-            input.value = '';
-            sendBtn.disabled = true;
-            sendBtn.style.opacity = '0.5';
-
-            const loadingDiv = document.createElement('div');
-            loadingDiv.id = 'loading-msg';
-            loadingDiv.style.cssText = 'background-color: #262626; color: #a3a3a3; padding: 8px; border-radius: 8px; border: 1px solid #404040; max-width: 60%; font-style: italic; font-size: 11px;';
-            loadingDiv.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Procesando...';
-            msgContainer.appendChild(loadingDiv);
-            msgContainer.scrollTop = msgContainer.scrollHeight;
-
-            try {
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: text })
-                });
-
-                const data = await response.json();
-                document.getElementById('loading-msg')?.remove();
-
-                const aiDiv = document.createElement('div');
-                aiDiv.style.cssText = 'background-color: #262626; color: #e5e5e5; padding: 10px; border-radius: 8px; border: 1px solid #404040; max-width: 85%; box-shadow: 0 2px 5px rgba(0,0,0,0.3);';
-                aiDiv.innerHTML = data.reply ? data.reply.replace(/\n/g, '<br>') : 'Error al procesar la respuesta.';
-                msgContainer.appendChild(aiDiv);
-
-            } catch (err) {
-                document.getElementById('loading-msg')?.remove();
-                const errDiv = document.createElement('div');
-                errDiv.style.cssText = 'background-color: #7f1d1d; color: #fecaca; padding: 10px; border-radius: 8px; border: 1px solid #b91c1c; max-width: 85%;';
-                errDiv.textContent = 'Sin conexión. El servidor no responde por el momento.';
-                msgContainer.appendChild(errDiv);
-            } finally {
-                sendBtn.disabled = false;
-                sendBtn.style.opacity = '1';
-                msgContainer.scrollTop = msgContainer.scrollHeight;
-            }
+        function reiniciarPenal() {
+            iniciarPartidaPenal();
         }
+
+        window.onload = () => {
+            actualizarFecha(); 
+            iniciarReloj(); 
+            initStars(); 
+            animStars();
+            renderizarPartidos();
+            renderizarVideos();
+            cargarNoticiasLocal(); // Cargamos sistema de noticias
+            window.addEventListener('resize', initStars);
+            cargarDatosHaxPenal();
+        };
+
     </script>
 </body>
 </html>

@@ -122,16 +122,6 @@
 
     <!-- INICIO Y HEADER -->
     <header id="inicio" class="min-h-screen flex flex-col items-center justify-center px-4 text-center relative z-10">
-        
-        <!-- BOTÓN HAXPENAL FLOTANTE -->
-        <div onclick="abrirHaxPenal()" class="absolute top-6 right-6 md:top-10 md:right-10 w-24 h-24 md:w-32 md:h-32 rounded-2xl overflow-hidden cursor-pointer shadow-glass z-40 group transition-all duration-300 hover:scale-105 border border-white/10 hover:border-haxgreen bg-black/40 backdrop-blur-md flex flex-col items-center justify-center">
-            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=400&q=80')] bg-cover bg-center blur-[2px] opacity-40 group-hover:opacity-60 transition-opacity"></div>
-            <span class="relative z-10 text-white font-black text-sm md:text-lg tracking-widest uppercase drop-shadow-[0_2px_2px_rgba(0,0,0,1)] group-hover:text-haxgreen transition-colors flex flex-col items-center gap-1">
-                <i class="fa-solid fa-futbol text-2xl md:text-3xl mb-1 group-hover:animate-bounce"></i>
-                HaxPenal
-            </span>
-        </div>
-
         <div class="mb-6">
            <img src="https://kappa.lol/MhiKyW" alt="HaxCalendar Logo" class="w-32 md:w-48 h-auto mx-auto drop-shadow-[0_0_25px_rgba(0,200,83,0.4)] animate-[pulse_4s_ease-in-out_infinite]">
         </div>
@@ -143,7 +133,7 @@
         </p>
 
         <!-- RELOJ DIGITAL -->
-        <div id="reloj-digital" class="text-haxgreen font-mono text-3xl md:text-4xl font-bold tracking-widest my-2 glass-panel px-8 py-3 rounded-2xl shadow-neon border-haxgreen/30">20:02:41</div>
+        <div id="reloj-digital" class="text-haxgreen font-mono text-3xl md:text-4xl font-bold tracking-widest my-2 glass-panel px-8 py-3 rounded-2xl shadow-neon border-haxgreen/30">--:--:--</div>
 
         <a href="#agenda" class="mt-10 inline-flex items-center justify-center bg-haxgreen text-black font-extrabold text-lg md:text-xl py-4 px-10 rounded-full transition-all duration-300 hover:bg-haxgreen-light hover:shadow-neon hover:-translate-y-1">
             VER AGENDA <i class="fa-solid fa-arrow-down ml-3"></i>
@@ -156,7 +146,7 @@
             <h2 class="text-4xl md:text-5xl font-black mb-2 uppercase tracking-tight">
                 Agenda de <span class="text-haxgreen">Hoy</span>
             </h2>
-            <p id="fecha-actual" class="text-gray-400 font-medium text-lg tracking-wide uppercase">Miércoles - 16 de Septiembre</p>
+            <p id="fecha-actual" class="text-gray-400 font-medium text-lg tracking-wide uppercase">Cargando...</p>
         </div>
 
         <div id="contenedor-partidos" class="flex flex-col space-y-6">
@@ -270,7 +260,6 @@
                             <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">e)</span> <p>Si al realizar el sorteo de "Rand" se vuelven a meter los mismos jugadores del partido anterior se debera realizar nuevamente hasta tener equipos con al menos "1 Jugador por equipo que no haya jugado el encuentro anterior".</p></li>
                         </ul>
                     </section>
-                    <!-- Las demas secciones se mantienen como el original por brevedad -->
                     <div class="pt-8 mt-6 border-t border-white/10 text-center text-gray-500 font-bold tracking-widest uppercase text-xs">
                         - Organización del Comité de EspnHaxball
                     </div>
@@ -407,59 +396,6 @@
         </div>
     </div>
 
-
-    <!-- MODAL HAXPENAL -->
-    <div id="haxpenal-modal" class="fixed inset-0 z-[60] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/80">
-        <div class="w-full max-w-3xl flex justify-between items-end mb-2">
-            <div>
-                <h2 class="text-3xl font-black text-haxgreen tracking-widest uppercase drop-shadow-[0_0_10px_rgba(0,200,83,0.5)]">HAXPENAL</h2>
-            </div>
-            <button onclick="cerrarHaxPenal()" class="text-gray-400 hover:text-white text-4xl font-bold leading-none mb-1 transition-colors">×</button>
-        </div>
-        <div class="relative w-full max-w-3xl aspect-[16/9] bg-black rounded-xl overflow-hidden shadow-neon border-2 border-white/10">
-            <canvas id="hp-canvas" class="w-full h-full block cursor-crosshair"></canvas>
-            
-            <!-- Menú Perfil HaxPenal -->
-            <div id="hp-menu" class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-6 z-10 transition-opacity duration-300">
-                <div class="glass-panel rounded-2xl p-6 w-full max-w-md">
-                    <h3 class="text-center font-bold text-xl mb-6 text-white uppercase tracking-wider">Tu Haxballer</h3>
-                    <div class="space-y-4 mb-6">
-                        <div class="flex items-center gap-4">
-                            <label class="w-24 text-gray-400 font-semibold text-right">NOMBRE:</label>
-                            <input type="text" id="hp-input-name" class="flex-1 bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-haxgreen" placeholder="Ej: Messi">
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <label class="w-24 text-gray-400 font-semibold text-right">DORSAL:</label>
-                            <input type="text" id="hp-input-dorsal" class="flex-1 bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-haxgreen" placeholder="10" maxlength="2">
-                        </div>
-                    </div>
-                    <button onclick="guardarPerfilHaxPenal()" class="w-full bg-haxgreen text-black font-black py-3 rounded-lg hover:scale-105 transition-transform uppercase tracking-widest">
-                        ¡A PATEAR!
-                    </button>
-                </div>
-            </div>
-
-            <!-- Modal Resultado HaxPenal -->
-            <div id="hp-resultado" class="absolute inset-0 bg-black/70 flex flex-col items-center justify-center p-6 z-10 hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm">
-                <div class="bg-[#1a1a1a] border border-[#333] rounded-2xl p-8 w-full max-w-lg text-center shadow-2xl relative overflow-hidden">
-                    <div id="hp-res-bg" class="absolute inset-0 opacity-20 pointer-events-none"></div>
-                    <h2 id="hp-res-title" class="text-4xl font-black mb-4 uppercase z-10 relative"></h2>
-                    <p id="hp-res-desc" class="text-lg text-gray-200 mb-8 z-10 relative font-medium"></p>
-                    <button onclick="reiniciarPenal()" class="bg-white text-black font-extrabold py-3 px-10 rounded-full hover:scale-105 transition-transform text-xl z-10 relative">
-                        REINTENTAR
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Estadísticas HaxPenal -->
-        <div class="w-full max-w-3xl mt-4 flex justify-between items-center glass-panel rounded-lg p-4">
-            <div class="text-gray-300 font-medium">Jugador: <span id="hp-stats-name" class="text-white font-bold ml-1">EspnHax (#17)</span></div>
-            <div class="text-white font-bold bg-haxgreen/20 px-4 py-1 rounded-full border border-haxgreen/50">
-                XP: <span id="hp-stats-xp" class="text-haxgreen">130</span>
-            </div>
-        </div>
-    </div>
 
     <script>
         const SIMULAR_SIN_PARTIDOS = 'off';
@@ -727,7 +663,6 @@
             if (data) {
                 noticiasArray = JSON.parse(data);
             } else {
-                // Noticia de ejemplo si está vacío
                 const fecha = new Date();
                 const dateStr = `${String(fecha.getDate()).padStart(2, '0')}/${String(fecha.getMonth()+1).padStart(2, '0')}/${fecha.getFullYear()}`;
                 noticiasArray = [
@@ -747,14 +682,11 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(noticiasArray));
         }
 
-        // Parsear **texto** a negrita
         function formatearTextoNoticia(texto) {
             if (!texto) return '';
-            // Reemplaza **algo** por <span class="font-bold text-white">algo</span>
             return texto.replace(/\*\*(.*?)\*\*/g, '<span class="font-bold text-white">$1</span>');
         }
 
-        // FUNCIONES MODAL NOTICIAS (USUARIO)
         function abrirNoticias() {
             const menu = document.getElementById('dropdown-menu');
             menu.classList.add('hidden'); menu.classList.remove('flex');
@@ -783,7 +715,6 @@
                 return;
             }
 
-            // Mostrar más nuevas primero
             const invertido = [...noticiasArray].reverse();
 
             invertido.forEach(n => {
@@ -805,11 +736,10 @@
             });
         }
 
-        // FUNCIONES MODAL LOGIN ADMIN
         function abrirLoginAdmin() {
             const modal = document.getElementById('login-admin-modal');
             const container = document.getElementById('login-admin-container');
-            document.getElementById('admin-error-msg').classList.add('invisible'); // limpiar error
+            document.getElementById('admin-error-msg').classList.add('invisible'); 
             
             modal.classList.remove('hidden'); modal.classList.add('flex');
             setTimeout(() => { modal.classList.remove('opacity-0'); container.classList.remove('scale-95'); }, 10);
@@ -839,13 +769,9 @@
             }
         }
 
-        // FUNCIONES MODAL PANEL ADMIN
         function abrirPanelAdmin() {
-            // Cerramos noticias si esta abierto
             cerrarNoticias();
-            
             renderizarNoticiasAdmin();
-            
             const modal = document.getElementById('panel-admin-modal');
             const container = document.getElementById('panel-admin-container');
             modal.classList.remove('hidden'); modal.classList.add('flex');
@@ -891,7 +817,6 @@
             });
         }
 
-        // FUNCIONES EDITOR DE NOTICIA
         function handleFileInput(event) {
             const file = event.target.files[0];
             if (file) procesarArchivoImagen(file);
@@ -909,7 +834,7 @@
             reader.onload = (e) => {
                 const b64 = e.target.result;
                 document.getElementById('editor-img-b64').value = b64;
-                document.getElementById('editor-img-url').value = ''; // Limpiamos URL si sube archivo
+                document.getElementById('editor-img-url').value = '';
                 document.getElementById('img-preview').src = b64;
                 document.getElementById('img-preview-container').classList.remove('hidden');
             };
@@ -921,7 +846,6 @@
             const container = document.getElementById('editor-noticia-container');
             const tituloModal = document.getElementById('editor-titulo');
             
-            // Limpiar campos visuales siempre al abrir
             document.getElementById('editor-img-file').value = '';
             document.getElementById('img-preview-container').classList.add('hidden');
             document.getElementById('img-preview').src = '';
@@ -935,7 +859,6 @@
                 document.getElementById('editor-title').value = noticia.title;
                 document.getElementById('editor-text').value = noticia.text;
                 
-                // Determinar si la imagen es Base64 (subida) o URL
                 if (noticia.image && noticia.image.startsWith('data:image')) {
                     document.getElementById('editor-img-b64').value = noticia.image;
                     document.getElementById('img-preview').src = noticia.image;
@@ -968,13 +891,11 @@
             const title = document.getElementById('editor-title').value.trim();
             const text = document.getElementById('editor-text').value.trim();
             
-            if(!title || !text) return; // Validación simple
+            if(!title || !text) return; 
 
-            // Si hay archivo subido usa el Base64, sino usa la URL ingresada
             const finalImg = imgB64 || imgUrl;
 
             if (id) {
-                // Editar
                 const idx = noticiasArray.findIndex(n => n.id === id);
                 if (idx > -1) {
                     noticiasArray[idx].title = title;
@@ -982,7 +903,6 @@
                     noticiasArray[idx].text = text;
                 }
             } else {
-                // Añadir nueva
                 const fecha = new Date();
                 const dateStr = `${String(fecha.getDate()).padStart(2, '0')}/${String(fecha.getMonth()+1).padStart(2, '0')}/${fecha.getFullYear()}`;
                 
@@ -997,221 +917,13 @@
             
             guardarNoticiasLocal();
             cerrarEditorNoticia();
-            renderizarNoticiasAdmin(); // Actualizamos lista del panel
+            renderizarNoticiasAdmin(); 
         }
 
         function borrarNoticia(id) {
             noticiasArray = noticiasArray.filter(n => n.id !== id);
             guardarNoticiasLocal();
             renderizarNoticiasAdmin();
-        }
-
-        // VARIABLES DEL JUEGO HAXPENAL
-        const hpCanvas = document.getElementById('hp-canvas');
-        const hpCtx = hpCanvas.getContext('2d');
-        let hpAnimationId;
-        let hpPlayerData = { name: '', dorsal: '10', apodo: '', xp: 0 };
-        
-        let hpState = 'IDLE_DIR'; 
-        const FIELD = { w: 800, h: 450 }; 
-        
-        let DIR_POS = 0.5, DIR_DIR = 1, DIR_SPEED = 0.012, savedDir = 0.5;
-        let ARROW_POS = 0.5, ARROW_DIR = 1, ARROW_SPEED = 0.02; 
-
-        let ball = { x: 400, y: 300, r: 8, targetX: 400, targetY: 300 };
-        let gk = { x: 400, y: 80, r: 18, targetX: 400 };
-        let kicker = { x: 380, y: 330, r: 22 };
-        
-        const COLOR_RED = '#E53935';
-        const COLOR_BLUE = '#1E88E5';
-
-        function abrirHaxPenal() {
-            document.getElementById('haxpenal-modal').classList.remove('hidden');
-            document.getElementById('haxpenal-modal').classList.add('flex');
-            hpCanvas.width = FIELD.w; hpCanvas.height = FIELD.h;
-
-            if (!hpPlayerData.name) document.getElementById('hp-menu').classList.remove('hidden');
-            else iniciarPartidaPenal();
-        }
-
-        function cerrarHaxPenal() {
-            document.getElementById('haxpenal-modal').classList.add('hidden');
-            document.getElementById('haxpenal-modal').classList.remove('flex');
-            cancelAnimationFrame(hpAnimationId);
-        }
-
-        function cargarDatosHaxPenal() {
-            const saved = localStorage.getItem('haxpenal_user');
-            if (saved) { hpPlayerData = JSON.parse(saved); actualizarUIEstadisticas(); }
-        }
-
-        function guardarPerfilHaxPenal() {
-            const name = document.getElementById('hp-input-name').value.trim() || 'Jugador';
-            let dorsal = document.getElementById('hp-input-dorsal').value.trim() || '10';
-            hpPlayerData = { name, dorsal, apodo: name, xp: hpPlayerData.xp || 0 };
-            localStorage.setItem('haxpenal_user', JSON.stringify(hpPlayerData));
-            
-            document.getElementById('hp-menu').classList.add('hidden');
-            actualizarUIEstadisticas();
-            iniciarPartidaPenal();
-        }
-
-        function actualizarUIEstadisticas() {
-            document.getElementById('hp-stats-name').textContent = `${hpPlayerData.name} (#${hpPlayerData.dorsal})`;
-            document.getElementById('hp-stats-xp').textContent = hpPlayerData.xp;
-        }
-
-        function iniciarPartidaPenal() {
-            document.getElementById('hp-resultado').classList.add('hidden');
-            document.getElementById('hp-resultado').classList.remove('opacity-100');
-            
-            hpState = 'IDLE_DIR';
-            DIR_POS = Math.random() * 0.8 + 0.1; ARROW_POS = Math.random() * 0.8 + 0.1;
-            ball = { x: 400, y: 280, r: 8, targetX: 400, targetY: 280 };
-            gk = { x: 400, y: 70, r: 18, targetX: 400 };
-            kicker = { x: 370, y: 310, r: 24 };
-
-            cancelAnimationFrame(hpAnimationId);
-            gameLoopPenal();
-        }
-
-        function handleHaxPenalClick() {
-            if (hpState === 'IDLE_DIR') { savedDir = DIR_POS; hpState = 'IDLE_POWER'; } 
-            else if (hpState === 'IDLE_POWER') { ejecutarPenal(); }
-        }
-
-        hpCanvas.addEventListener('mousedown', handleHaxPenalClick);
-        hpCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); handleHaxPenalClick(); }, {passive: false});
-
-        function drawDiscFlat(x, y, r, color, text) {
-            hpCtx.fillStyle = color;
-            hpCtx.beginPath();
-            hpCtx.arc(x, y, r, 0, Math.PI*2);
-            hpCtx.fill();
-            hpCtx.strokeStyle = '#000000';
-            hpCtx.lineWidth = 2;
-            hpCtx.stroke();
-            if(text){
-                hpCtx.fillStyle = '#ffffff';
-                hpCtx.font = 'bold 14px sans-serif';
-                hpCtx.textAlign = 'center';
-                hpCtx.textBaseline = 'middle';
-                hpCtx.fillText(text, x, y);
-            }
-        }
-
-        function gameLoopPenal() {
-            updateFisicasPenal(); drawPenal();
-            hpAnimationId = requestAnimationFrame(gameLoopPenal);
-        }
-
-        function updateFisicasPenal() {
-            if (hpState === 'IDLE_DIR') {
-                DIR_POS += DIR_SPEED * DIR_DIR;
-                if (DIR_POS >= 1) { DIR_POS = 1; DIR_DIR = -1; }
-                if (DIR_POS <= 0) { DIR_POS = 0; DIR_DIR = 1; }
-            } else if (hpState === 'IDLE_POWER') {
-                ARROW_POS += ARROW_SPEED * ARROW_DIR;
-                if (ARROW_POS >= 1) { ARROW_POS = 1; ARROW_DIR = -1; }
-                if (ARROW_POS <= 0) { ARROW_POS = 0; ARROW_DIR = 1; }
-            } else if (hpState === 'SHOOTING') {
-                ball.x += (ball.targetX - ball.x) * 0.1; ball.y += (ball.targetY - ball.y) * 0.1;
-                gk.x += (gk.targetX - gk.x) * 0.08; gk.y += (70 - gk.y) * 0.1; 
-            }
-        }
-
-        function drawPenal() {
-            hpCtx.fillStyle = '#1a3c20'; hpCtx.fillRect(0, 0, FIELD.w, FIELD.h);
-            
-            hpCtx.strokeStyle = 'rgba(255,255,255,0.2)'; hpCtx.lineWidth = 3;
-            hpCtx.beginPath(); hpCtx.moveTo(0, 70); hpCtx.lineTo(FIELD.w, 70); hpCtx.stroke(); 
-            hpCtx.strokeRect(250, 70, 300, 100); 
-
-            hpCtx.fillStyle = 'rgba(0,0,0,0.4)'; hpCtx.fillRect(300, 20, 200, 50);
-            hpCtx.fillStyle = '#ffffff';
-            hpCtx.beginPath(); hpCtx.arc(300, 70, 5, 0, Math.PI*2); hpCtx.fill();
-            hpCtx.beginPath(); hpCtx.arc(500, 70, 5, 0, Math.PI*2); hpCtx.fill();
-
-            drawDiscFlat(gk.x, gk.y, gk.r, COLOR_BLUE, '1');
-            drawDiscFlat(kicker.x, kicker.y, kicker.r, COLOR_RED, hpPlayerData.dorsal || '10');
-
-            hpCtx.fillStyle = '#ffffff'; hpCtx.strokeStyle = '#000000';
-            hpCtx.lineWidth = 2;
-            hpCtx.beginPath(); hpCtx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2); 
-            hpCtx.fill(); hpCtx.stroke();
-
-            if (hpState === 'IDLE_DIR' || hpState === 'IDLE_POWER') {
-                const barW = 340, barH = 24, barX = (FIELD.w - barW) / 2;
-                
-                const dirY = 190;
-                hpCtx.fillStyle = '#ffffff'; hpCtx.fillRect(barX, dirY, barW, barH);
-                hpCtx.strokeStyle = '#000000'; hpCtx.strokeRect(barX, dirY, barW, barH);
-                
-                hpCtx.fillStyle = 'rgba(0,0,0,0.3)';
-                hpCtx.fillRect(barX + (barW * 0.2), dirY, 2, barH);
-                hpCtx.fillRect(barX + (barW * 0.8), dirY, 2, barH);
-                hpCtx.fillRect(barX + (barW * 0.5), dirY, 1, barH);
-
-                const actDir = hpState === 'IDLE_DIR' ? DIR_POS : savedDir;
-                const arrowDirX = barX + (barW * actDir);
-                hpCtx.fillStyle = hpState === 'IDLE_DIR' ? '#00C853' : '#555555';
-                hpCtx.beginPath(); hpCtx.moveTo(arrowDirX, dirY - 10); hpCtx.lineTo(arrowDirX - 8, dirY - 20); hpCtx.lineTo(arrowDirX + 8, dirY - 20); hpCtx.fill();
-
-                if (hpState === 'IDLE_POWER') {
-                    const powY = 230;
-                    hpCtx.fillStyle = '#ffffff'; hpCtx.fillRect(barX, powY, barW, barH);
-                    hpCtx.strokeStyle = '#000000'; hpCtx.strokeRect(barX, powY, barW, barH);
-                    
-                    const powGradient = hpCtx.createLinearGradient(barX, 0, barX + barW, 0);
-                    powGradient.addColorStop(0, '#00C853'); powGradient.addColorStop(0.5, '#FFEB3B'); powGradient.addColorStop(1, '#F44336');
-                    hpCtx.fillStyle = powGradient;
-                    hpCtx.fillRect(barX, powY, barW * ARROW_POS, barH);
-                }
-            }
-        }
-
-        function ejecutarPenal() {
-            hpState = 'SHOOTING';
-            const targetX = 250 + (300 * savedDir);
-            const isGoal = ARROW_POS > 0.1 && ARROW_POS < 0.9;
-            
-            ball.targetX = targetX;
-            ball.targetY = isGoal ? 40 : -20;
-            
-            gk.targetX = 250 + (300 * Math.random());
-            
-            setTimeout(() => {
-                mostrarResultado(isGoal);
-            }, 800);
-        }
-
-        function mostrarResultado(gol) {
-            const res = document.getElementById('hp-resultado');
-            const title = document.getElementById('hp-res-title');
-            const desc = document.getElementById('hp-res-desc');
-            const bg = document.getElementById('hp-res-bg');
-            
-            res.classList.remove('hidden');
-            setTimeout(() => res.classList.remove('opacity-0'), 10);
-            
-            if (gol) {
-                title.textContent = '¡GOLAZO!';
-                title.className = 'text-5xl font-black mb-4 uppercase z-10 relative text-haxgreen drop-shadow-[0_0_15px_rgba(0,200,83,0.8)]';
-                desc.textContent = '+10 XP ganada';
-                bg.className = 'absolute inset-0 opacity-20 pointer-events-none bg-haxgreen';
-                hpPlayerData.xp += 10;
-                localStorage.setItem('haxpenal_user', JSON.stringify(hpPlayerData));
-                actualizarUIEstadisticas();
-            } else {
-                title.textContent = '¡FALLASTE!';
-                title.className = 'text-5xl font-black mb-4 uppercase z-10 relative text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.8)]';
-                desc.textContent = 'La tiraste afuera o el arquero la atajó.';
-                bg.className = 'absolute inset-0 opacity-20 pointer-events-none bg-red-500';
-            }
-        }
-
-        function reiniciarPenal() {
-            iniciarPartidaPenal();
         }
 
         window.onload = () => {
@@ -1221,9 +933,8 @@
             animStars();
             renderizarPartidos();
             renderizarVideos();
-            cargarNoticiasLocal(); // Cargamos sistema de noticias
+            cargarNoticiasLocal();
             window.addEventListener('resize', initStars);
-            cargarDatosHaxPenal();
         };
 
     </script>

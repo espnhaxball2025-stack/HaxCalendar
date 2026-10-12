@@ -235,42 +235,31 @@
     </div>
 
     <!-- MODAL REGLAS DEL DOCUMENTO -->
-    <div id="reglas-modal" class="fixed inset-0 z-[70] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/60 opacity-0 transition-opacity duration-300">
+    <div id="reglas-modal" class="fixed inset-0 z-[70] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/80 opacity-0 transition-opacity duration-300">
         <div class="w-full max-w-4xl max-h-[85vh] bg-[#0a0a0a] border border-white/20 rounded-2xl shadow-neon flex flex-col overflow-hidden relative transform scale-95 transition-transform duration-300" id="reglas-container">
             
             <!-- Header Modal -->
             <div class="p-6 border-b border-white/10 flex justify-between items-center bg-black/80 relative z-20">
-                <h2 class="text-2xl md:text-3xl font-black text-white tracking-widest uppercase flex items-center gap-3">
-                    <i class="fa-solid fa-file-contract text-haxgreen"></i> NORMAS Y REGLAS
-                </h2>
+                <div class="flex items-center gap-4">
+                    <h2 class="text-2xl md:text-3xl font-black text-white tracking-widest uppercase flex items-center gap-3">
+                        <i class="fa-solid fa-file-contract text-haxgreen"></i> NORMAS Y REGLAS
+                    </h2>
+                    <button onclick="abrirLoginAdminReglas()" class="bg-white/5 hover:bg-haxgreen hover:text-black border border-white/10 px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition-all shadow-sm">
+                        Admin <i class="fa-solid fa-lock text-[10px] ml-1"></i>
+                    </button>
+                </div>
                 <button onclick="cerrarReglas()" class="text-gray-400 hover:text-red-500 text-4xl leading-none transition-colors">&times;</button>
             </div>
             
             <!-- Vista Previa Documento -->
-            <div class="p-6 md:p-10 overflow-y-auto custom-scrollbar relative z-10 bg-[#121212]">
+            <div class="p-6 md:p-10 overflow-y-auto custom-scrollbar relative z-10 bg-[#121212] flex-1">
                 <div class="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1)_0,transparent_100%)]"></div>
-                <div class="space-y-10 text-gray-300 text-sm md:text-base leading-relaxed relative z-10 font-medium">
-                    <section>
-                        <h3 class="text-xl font-black text-haxgreen mb-4 border-b border-white/10 pb-2 uppercase tracking-wide">1) ORGANIZACION DE PARTIDOS OFICIALES</h3>
-                        <ul class="space-y-4 pl-2">
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">a)</span> <p>Previo a un Inicio de un Partido se realizara un sorteo con el boton "Rand" hasta llegar a 2 Equipos con 5 Jugadores cada uno.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">b)</span> <p>Seran 5v5 en el inicio del partido, lo minimo es 4v4.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">c)</span> <p>Para meter jugadores se debera meter por orden en el que estan en el menu de Espectadores.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">d)</span> <p>Se debera jugar en un host con nombre adecuado para hacer referencia al Encuentro.</p></li>
-                            <li class="flex gap-3"><span class="text-haxgreen font-black shrink-0">e)</span> <p>Si al realizar el sorteo de "Rand" se vuelven a meter los mismos jugadores del partido anterior se debera realizar nuevamente hasta tener equipos con al menos "1 Jugador por equipo que no haya jugado el encuentro anterior".</p></li>
-                        </ul>
-                    </section>
-                    <div class="pt-8 mt-6 border-t border-white/10 text-center text-gray-500 font-bold tracking-widest uppercase text-xs">
-                        - Organización del Comité de EspnHaxball
-                    </div>
+                <div id="contenedor-lista-reglas" class="space-y-10 text-gray-300 text-sm md:text-base leading-relaxed relative z-10 font-medium">
+                    <!-- Renderizado dinámico de reglas -->
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- ============================================== -->
-    <!-- MODALES DE NOTICIAS Y ADMINISTRACIÓN -->
-    <!-- ============================================== -->
 
     <!-- MODAL NOTICIAS (VISTA USUARIO) -->
     <div id="noticias-modal" class="fixed inset-0 z-[70] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/80 opacity-0 transition-opacity duration-300">
@@ -322,10 +311,14 @@
         <div class="w-full max-w-4xl max-h-[85vh] bg-[#0a0a0a] border border-haxgreen/50 rounded-2xl shadow-neon flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="panel-admin-container">
             <div class="p-6 border-b border-white/10 flex flex-col md:flex-row justify-between items-center bg-black/80 gap-4">
                 <h2 class="text-2xl font-black text-haxgreen uppercase tracking-widest flex items-center gap-3">
-                    <i class="fa-solid fa-sliders"></i> Panel de Noticias
+                    <i class="fa-solid fa-sliders"></i> Panel de Administración
                 </h2>
+                <div class="flex items-center gap-2 bg-black/60 p-1.5 rounded-xl border border-white/10">
+                    <button onclick="cambiarTabAdmin('noticias')" id="tab-btn-noticias" class="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all bg-haxgreen text-black">Noticias</button>
+                    <button onclick="cambiarTabAdmin('reglas')" id="tab-btn-reglas" class="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all text-gray-400 hover:text-white">Reglas</button>
+                </div>
                 <div class="flex gap-3 items-center">
-                    <button onclick="abrirEditorNoticia()" class="bg-haxgreen text-black font-bold px-4 py-2 rounded-lg text-sm hover:scale-105 transition-transform uppercase tracking-wider">
+                    <button id="btn-add-item" onclick="abrirEditorActual()" class="bg-haxgreen text-black font-bold px-4 py-2 rounded-lg text-sm hover:scale-105 transition-transform uppercase tracking-wider">
                         <i class="fa-solid fa-plus mr-1"></i> Añadir Noticia
                     </button>
                     <button onclick="cerrarPanelAdmin()" class="w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-red-500 text-white rounded-lg transition-colors text-xl">
@@ -337,12 +330,12 @@
             <div class="bg-blue-900/20 border-b border-blue-500/30 px-6 py-3 flex items-start gap-3">
                 <i class="fa-solid fa-circle-info text-blue-400 mt-0.5"></i>
                 <p class="text-xs text-blue-200 leading-relaxed font-medium">
-                    <span class="font-bold text-blue-400">Modo Local (Vista Previa):</span> Actualmente las noticias e imágenes se guardan en el almacenamiento de tu navegador (localStorage). Para que <strong class="text-white">toda la gente pueda verlas sincronizadas</strong>, deberás conectar este código a una base de datos backend (ej. Firebase, Supabase o tu propio servidor).
+                    <span class="font-bold text-blue-400">Modo Local (Vista Previa):</span> Las modificaciones se guardan en el almacenamiento de tu navegador (localStorage). Para sincronizar en tiempo real con <strong class="text-white">todos los usuarios</strong>, conecta el código a un backend (Firebase, Supabase o servidor propio).
                 </p>
             </div>
             <div class="p-6 overflow-y-auto custom-scrollbar flex-1 bg-[#121212]">
-                <div id="admin-lista-noticias" class="space-y-3">
-                    <!-- Lista de noticias para administrar -->
+                <div id="admin-lista-contenido" class="space-y-3">
+                    <!-- Contenido dinámico (Noticias o Reglas) -->
                 </div>
             </div>
         </div>
@@ -396,6 +389,39 @@
         </div>
     </div>
 
+    <!-- MODAL EDITOR DE REGLA -->
+    <div id="editor-regla-modal" class="fixed inset-0 z-[90] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/90 opacity-0 transition-opacity duration-300">
+        <div class="bg-[#121212] border border-white/20 p-6 md:p-8 rounded-2xl w-full max-w-xl shadow-glass flex flex-col transform scale-95 transition-transform duration-300 relative max-h-[90vh]" id="editor-regla-container">
+            <h3 id="editor-regla-titulo" class="text-2xl font-black mb-6 text-white uppercase tracking-widest shrink-0">Editar Regla</h3>
+            <input type="hidden" id="editor-regla-cat-id">
+            <input type="hidden" id="editor-regla-item-letra">
+            
+            <div class="overflow-y-auto custom-scrollbar pr-2 flex-1 flex flex-col space-y-4">
+                <div>
+                    <label class="text-xs font-bold tracking-widest text-haxgreen mb-1 uppercase block">Categoría / Sección</label>
+                    <select id="editor-regla-categoria" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-haxgreen focus:outline-none transition-colors text-sm">
+                        <!-- Opciones dinámicas -->
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-xs font-bold tracking-widest text-haxgreen mb-1 uppercase block">Literal / Inciso (ej. a, b, c...)</label>
+                    <input type="text" id="editor-regla-letra-input" placeholder="a" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-haxgreen focus:outline-none transition-colors uppercase">
+                </div>
+                
+                <div>
+                    <label class="text-xs font-bold tracking-widest text-haxgreen mb-1 uppercase block">Texto de la Regla</label>
+                    <textarea id="editor-regla-texto" rows="4" placeholder="Redacta el texto de la regla..." class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-haxgreen focus:outline-none transition-colors custom-scrollbar resize-none"></textarea>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 mt-6 shrink-0 pt-4 border-t border-white/10">
+                <button onclick="cerrarEditorRegla()" class="px-6 py-3 bg-white/5 text-gray-300 font-bold rounded-xl hover:bg-white/10 transition-colors uppercase text-sm tracking-wider">Cancelar</button>
+                <button onclick="guardarRegla()" class="bg-haxgreen text-black font-black px-8 py-3 rounded-xl hover:scale-105 transition-transform shadow-neon uppercase text-sm tracking-wider flex items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Guardar Regla</button>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         const SIMULAR_SIN_PARTIDOS = 'on';
@@ -437,8 +463,7 @@
                 estado: "EN VIVO",
                 hora: "22:30 PM"
             },
-
-               {
+            {
                 equipo1: "FLUMINENSE",
                 equipo2: "LANUS",
                 torneo: "SU", 
@@ -447,7 +472,6 @@
                 estado: "EN VIVO",
                 hora: "23:00 PM"
             },
-        
         ];
 
         const VIDEOS_DESTACADOS = [
@@ -599,6 +623,8 @@
             const menu = document.getElementById('dropdown-menu');
             menu.classList.add('hidden'); menu.classList.remove('flex');
 
+            renderizarReglasUsuario();
+
             const modal = document.getElementById('reglas-modal');
             const container = document.getElementById('reglas-container');
             modal.classList.remove('hidden'); modal.classList.add('flex');
@@ -655,15 +681,71 @@
         }
 
         // ==========================================
-        // SISTEMA DE NOTICIAS Y ADMIN
+        // SISTEMA DE REGLAS Y NOTICIAS CON ADMIN CRUD
         // ==========================================
+        let adminTabActual = 'noticias'; // 'noticias' o 'reglas'
         let noticiasArray = [];
-        const STORAGE_KEY = 'haxcalendar_news_v1';
+        let reglasArray = [];
+        const STORAGE_NEWS_KEY = 'haxcalendar_news_v1';
+        const STORAGE_RULES_KEY = 'haxcalendar_rules_v1';
 
-        function cargarNoticiasLocal() {
-            const data = localStorage.getItem(STORAGE_KEY);
-            if (data) {
-                noticiasArray = JSON.parse(data);
+        const REGLAS_DEFAULT = [
+            {
+                id: "cat_1",
+                titulo: "1) ORGANIZACION DE PARTIDOS OFICIALES",
+                items: [
+                    { letra: "a", texto: "Previo a un Inicio de un Partido se realizara un sorteo con el boton \"Rand\" hasta llegar a 2 Equipos con 5 Jugadores cada uno" },
+                    { letra: "b", texto: "Seran 5v5 en el inicio del partido, lo minimo es 4v4" },
+                    { letra: "c", texto: "Para meter jugadores se debera meter por orden en el que estan en el menu de Espectadores" },
+                    { letra: "d", texto: "Se debera jugar en un host con nombre adecuado para hacer referencia al Encuentro" },
+                    { letra: "e", texto: "Si al realizar el sorteo de \"Rand\" se vuelven a meter los mismos jugadores del partido anterior se debera realizar nuevamente hasta tener equipos con al menos \"1 Jugador por equipo que no haya jugado el encuentro anterior" }
+                ]
+            },
+            {
+                id: "cat_2",
+                titulo: "2) PARTIDO OFICIAL",
+                items: [
+                    { letra: "a", texto: "El Tiempo indicado para cada Etapa es de 10 Minutos, Primer tiempo 10 y Segundo 10, Si hay un empate en una serie eliminatoria se jugara con Alargue de 5 Minutos cada tiempo, si el empate persiste, Penales 5v1" },
+                    { letra: "b", texto: "1.B Deberan ser 5 Jugadores por cada equipo al inicio del partido, se tomara el encuentro como \"Abandonado\" si un equipo pierde todos sus jugadores llegando a 0, se le dara por ganado al Rival automaticamente" },
+                    { letra: "c", texto: "Si la pelota transpasa la pared se debera reanudar haciendo RR, y poniendo los minutos que faltaban" },
+                    { letra: "d", texto: "En caso de que un jugador perjudique asi equipo colocando mucho LAG y haciendo que abandonen, se debera abrir una investigacion para descubrir que jugador fue, el partido no se considera abandonado por un abandono accidental" },
+                    { letra: "e", texto: "Un Equipo no puede ser perjudicado por un administrador no permitido para hacer cambios en el partido, Hoster, Admins para controlar la sala, el hoster puede hacer cambios siempre y cuando pida permiso, owner y staffs pueden hacerlo libre pero sin alterar resultados" }
+                ]
+            },
+            {
+                id: "cat_3",
+                titulo: "3) REGLAS",
+                items: [
+                    { letra: "a", texto: "No se puede hacer gol en contra (troll) aproposito, eso deriba a amonestacion y anulacion de gol" },
+                    { letra: "b", texto: "Al llegar a 3 Amonestaciones requiere una sancion evaluada por el Staff y equipo directivo de la organizacion" },
+                    { letra: "c", texto: "Cada equipo debera tener 5 jugadores en cancha, no se podran añadir mas jugadores, eso deriba a una amonestacion al que realizo el cambio, si fue por accidente se le perdonara, pero si se repite se tomara en serio" },
+                    { letra: "d", texto: "Acoso e intimidad: No se tolera el acoso personal, la divulgación de información privada de terceros (doxxing) ni las amenazas." },
+                    { letra: "e", texto: "Tolerancia cero a la discriminación: Quedan estrictamente prohibidos los comentarios o conductas de carácter racista, xenófobo, homófobo o discriminatorio." },
+                    { letra: "f", texto: "Respeto: Se permite la competitividad y el debate, pero siempre dentro de los límites del respeto hacia los demás." },
+                    { letra: "g", texto: "Pausas de Juego: Se debera pausar el partido al llegar a las 4 Advertencias de LAG en la sala, se suspendera el juego durante 2 Minutos hasta calmar el LAG de la sala o arreglar algun problema" },
+                    { letra: "h", texto: "Pausas de Juego: Si un jugador falta el respeto al Owner o a un Staff durante una Revision de VAR, Una Pausa por LAG, o lo que sea se debera advertirle, si consiste se debera expulsarlo del partido y se debera meter a un nuevo jugador al equipo que fue expulsado" },
+                    { letra: "i", texto: "Cada equipo debera de tener un Capitan para manejar los equipos, podra pedir cambios pero respetando la Regla 1.C" }
+                ]
+            },
+            {
+                id: "cat_4",
+                titulo: "4) PROTOCOLO DE HOMENAJE",
+                items: [
+                    { letra: "a", texto: "Se debera guardar silencio absoluto por un Minuto para homenajear a la victima/victimas" },
+                    { letra: "b", texto: "Cualquier jugador que falte el respeto debera ser investigado, la sancion puede ser grave segun el grado" },
+                    { letra: "c", texto: "Los jugadores deberan hacer un circulo o quedarse en la posicion original donde estaban al inicio del homenaje (En Fila)" },
+                    { letra: "d", texto: "Los Jugadores no podran hablar en el homenaje, quien hable sera sancionado levemente pero con advertencia" },
+                    { letra: "e", texto: "Se colocara en el stream una placa conmemorativa para el fallecido" },
+                    { letra: "f", texto: "Si un jugador sufre una perdida familiar o quiere homenajear a su pais si sufre un desastre, podra hablar con el staff/owner para ver si se podra hacer un homenaje, nunca dudes con el staff, siempre estaremos contigo" }
+                ]
+            }
+        ];
+
+        function cargarDatosLocales() {
+            // Noticias
+            const newsData = localStorage.getItem(STORAGE_NEWS_KEY);
+            if (newsData) {
+                noticiasArray = JSON.parse(newsData);
             } else {
                 const fecha = new Date();
                 const dateStr = `${String(fecha.getDate()).padStart(2, '0')}/${String(fecha.getMonth()+1).padStart(2, '0')}/${fecha.getFullYear()}`;
@@ -678,15 +760,62 @@
                 ];
                 guardarNoticiasLocal();
             }
+
+            // Reglas
+            const rulesData = localStorage.getItem(STORAGE_RULES_KEY);
+            if (rulesData) {
+                reglasArray = JSON.parse(rulesData);
+            } else {
+                reglasArray = JSON.parse(JSON.stringify(REGLAS_DEFAULT));
+                guardarReglasLocal();
+            }
         }
 
         function guardarNoticiasLocal() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(noticiasArray));
+            localStorage.setItem(STORAGE_NEWS_KEY, JSON.stringify(noticiasArray));
+        }
+
+        function guardarReglasLocal() {
+            localStorage.setItem(STORAGE_RULES_KEY, JSON.stringify(reglasArray));
         }
 
         function formatearTextoNoticia(texto) {
             if (!texto) return '';
             return texto.replace(/\*\*(.*?)\*\*/g, '<span class="font-bold text-white">$1</span>');
+        }
+
+        // Renderizado Reglas Usuario
+        function renderizarReglasUsuario() {
+            const container = document.getElementById('contenedor-lista-reglas');
+            container.innerHTML = '';
+
+            reglasArray.forEach(cat => {
+                let itemsHTML = '';
+                cat.items.forEach(it => {
+                    itemsHTML += `
+                        <li class="flex gap-3">
+                            <span class="text-haxgreen font-black shrink-0">${it.letra})</span> 
+                            <p>${it.texto}.</p>
+                        </li>
+                    `;
+                });
+
+                const catHTML = `
+                    <section class="mb-8">
+                        <h3 class="text-xl font-black text-haxgreen mb-4 border-b border-white/10 pb-2 uppercase tracking-wide">${cat.titulo}</h3>
+                        <ul class="space-y-4 pl-2">
+                            ${itemsHTML}
+                        </ul>
+                    </section>
+                `;
+                container.innerHTML += catHTML;
+            });
+
+            container.innerHTML += `
+                <div class="pt-8 mt-6 border-t border-white/10 text-center text-gray-500 font-bold tracking-widest uppercase text-xs">
+                    - Organización del Comité de EspnHaxball
+                </div>
+            `;
         }
 
         function abrirNoticias() {
@@ -739,6 +868,16 @@
         }
 
         function abrirLoginAdmin() {
+            cerrarNoticias();
+            abrirLoginAdminModal();
+        }
+
+        function abrirLoginAdminReglas() {
+            cerrarReglas();
+            abrirLoginAdminModal();
+        }
+
+        function abrirLoginAdminModal() {
             const modal = document.getElementById('login-admin-modal');
             const container = document.getElementById('login-admin-container');
             document.getElementById('admin-error-msg').classList.add('invisible'); 
@@ -772,8 +911,9 @@
         }
 
         function abrirPanelAdmin() {
-            cerrarNoticias();
-            renderizarNoticiasAdmin();
+            adminTabActual = 'noticias';
+            actualizarTabsAdminUI();
+            renderizarAdminContenido();
             const modal = document.getElementById('panel-admin-modal');
             const container = document.getElementById('panel-admin-container');
             modal.classList.remove('hidden'); modal.classList.add('flex');
@@ -787,36 +927,177 @@
             setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
         }
 
-        function renderizarNoticiasAdmin() {
-            const container = document.getElementById('admin-lista-noticias');
+        function cambiarTabAdmin(tab) {
+            adminTabActual = tab;
+            actualizarTabsAdminUI();
+            renderizarAdminContenido();
+        }
+
+        function actualizarTabsAdminUI() {
+            const btnNoticias = document.getElementById('tab-btn-noticias');
+            const btnReglas = document.getElementById('tab-btn-reglas');
+            const btnAdd = document.getElementById('btn-add-item');
+
+            if (adminTabActual === 'noticias') {
+                btnNoticias.className = "px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all bg-haxgreen text-black";
+                btnReglas.className = "px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all text-gray-400 hover:text-white";
+                btnAdd.innerHTML = '<i class="fa-solid fa-plus mr-1"></i> Añadir Noticia';
+            } else {
+                btnReglas.className = "px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all bg-haxgreen text-black";
+                btnNoticias.className = "px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all text-gray-400 hover:text-white";
+                btnAdd.innerHTML = '<i class="fa-solid fa-plus mr-1"></i> Añadir Regla';
+            }
+        }
+
+        function abrirEditorActual() {
+            if (adminTabActual === 'noticias') {
+                abrirEditorNoticia();
+            } else {
+                abrirEditorRegla();
+            }
+        }
+
+        function renderizarAdminContenido() {
+            const container = document.getElementById('admin-lista-contenido');
             container.innerHTML = '';
+
+            if (adminTabActual === 'noticias') {
+                if(noticiasArray.length === 0) {
+                    container.innerHTML = `<div class="text-center text-gray-500 py-6">No hay noticias.</div>`;
+                    return;
+                }
+                const invertido = [...noticiasArray].reverse();
+                invertido.forEach(n => {
+                    const item = `
+                        <div class="bg-black/50 border border-white/10 rounded-xl p-4 flex justify-between items-center hover:border-white/20 transition-colors">
+                            <div class="flex-1 truncate pr-4">
+                                <h4 class="text-white font-bold truncate uppercase text-sm mb-1">${n.title}</h4>
+                                <span class="text-haxgreen font-medium text-xs tracking-widest">${n.date}</span>
+                            </div>
+                            <div class="flex gap-2 shrink-0">
+                                <button onclick="abrirEditorNoticia('${n.id}')" class="w-10 h-10 flex items-center justify-center bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white rounded-lg transition-colors">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button onclick="borrarNoticia('${n.id}')" class="w-10 h-10 flex items-center justify-center bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition-colors">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += item;
+                });
+            } else {
+                // Renderizar Reglas agrupadas por categoría
+                reglasArray.forEach(cat => {
+                    let itemsAdminHTML = '';
+                    cat.items.forEach(it => {
+                        itemsAdminHTML += `
+                            <div class="bg-black/40 border border-white/5 rounded-lg p-3 flex justify-between items-center my-2">
+                                <div class="flex-1 pr-3">
+                                    <span class="text-haxgreen font-bold mr-2">${it.letra})</span>
+                                    <span class="text-gray-300 text-sm">${it.texto}</span>
+                                </div>
+                                <div class="flex gap-2 shrink-0">
+                                    <button onclick="abrirEditorRegla('${cat.id}', '${it.letra}')" class="w-8 h-8 flex items-center justify-center bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white rounded-lg transition-colors text-xs">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                    <button onclick="borrarReglaItem('${cat.id}', '${it.letra}')" class="w-8 h-8 flex items-center justify-center bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition-colors text-xs">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    const catBlock = `
+                        <div class="bg-black/50 border border-white/10 rounded-xl p-5 mb-4">
+                            <h4 class="text-haxgreen font-black text-base uppercase mb-3 border-b border-white/10 pb-2">${cat.titulo}</h4>
+                            <div class="space-y-2">
+                                ${itemsAdminHTML}
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += catBlock;
+                });
+            }
+        }
+
+        // Gestión de Editor de Reglas
+        function abrirEditorRegla(catId = null, letra = null) {
+            const modal = document.getElementById('editor-regla-modal');
+            const container = document.getElementById('editor-regla-container');
+            const selectCat = document.getElementById('editor-regla-categoria');
+            const tituloModal = document.getElementById('editor-regla-titulo');
             
-            if(noticiasArray.length === 0) {
-                container.innerHTML = `<div class="text-center text-gray-500 py-6">No hay noticias.</div>`;
-                return;
+            // Llenar select con categorías
+            selectCat.innerHTML = '';
+            reglasArray.forEach(c => {
+                selectCat.innerHTML += `<option value="${c.id}">${c.titulo}</option>`;
+            });
+
+            if (catId && letra) {
+                tituloModal.textContent = "Editar Regla";
+                const cat = reglasArray.find(c => c.id === catId);
+                const item = cat.items.find(i => i.letra === letra);
+                
+                document.getElementById('editor-regla-cat-id').value = catId;
+                document.getElementById('editor-regla-item-letra').value = letra;
+                selectCat.value = catId;
+                document.getElementById('editor-regla-letra-input').value = letra;
+                document.getElementById('editor-regla-texto').value = item.texto;
+            } else {
+                tituloModal.textContent = "Añadir Nueva Regla";
+                document.getElementById('editor-regla-cat-id').value = '';
+                document.getElementById('editor-regla-item-letra').value = '';
+                document.getElementById('editor-regla-letra-input').value = 'z';
+                document.getElementById('editor-regla-texto').value = '';
             }
 
-            const invertido = [...noticiasArray].reverse();
-            
-            invertido.forEach(n => {
-                const item = `
-                    <div class="bg-black/50 border border-white/10 rounded-xl p-4 flex justify-between items-center hover:border-white/20 transition-colors">
-                        <div class="flex-1 truncate pr-4">
-                            <h4 class="text-white font-bold truncate uppercase text-sm mb-1">${n.title}</h4>
-                            <span class="text-haxgreen font-medium text-xs tracking-widest">${n.date}</span>
-                        </div>
-                        <div class="flex gap-2 shrink-0">
-                            <button onclick="abrirEditorNoticia('${n.id}')" class="w-10 h-10 flex items-center justify-center bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white rounded-lg transition-colors">
-                                <i class="fa-solid fa-pen"></i>
-                            </button>
-                            <button onclick="borrarNoticia('${n.id}')" class="w-10 h-10 flex items-center justify-center bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition-colors">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += item;
-            });
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.classList.remove('opacity-0'); container.classList.remove('scale-95'); }, 10);
+        }
+
+        function cerrarEditorRegla() {
+            const modal = document.getElementById('editor-regla-modal');
+            const container = document.getElementById('editor-regla-container');
+            modal.classList.add('opacity-0'); container.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
+        }
+
+        function guardarRegla() {
+            const catIdOriginal = document.getElementById('editor-regla-cat-id').value;
+            const letraOriginal = document.getElementById('editor-regla-item-letra').value;
+            const nuevaCatId = document.getElementById('editor-regla-categoria').value;
+            const nuevaLetra = document.getElementById('editor-regla-letra-input').value.trim().toLowerCase();
+            const nuevoTexto = document.getElementById('editor-regla-texto').value.trim();
+
+            if (!nuevoTexto || !nuevaLetra) return;
+
+            if (catIdOriginal && letraOriginal) {
+                // Editando
+                const catOrig = reglasArray.find(c => c.id === catIdOriginal);
+                catOrig.items = catOrig.items.filter(i => i.letra !== letraOriginal);
+
+                const catDest = reglasArray.find(c => c.id === nuevaCatId);
+                catDest.items.push({ letra: nuevaLetra, texto: nuevoTexto });
+            } else {
+                // Nuevo
+                const catDest = reglasArray.find(c => c.id === nuevaCatId);
+                catDest.items.push({ letra: nuevaLetra, texto: nuevoTexto });
+            }
+
+            guardarReglasLocal();
+            cerrarEditorRegla();
+            renderizarAdminContenido();
+        }
+
+        function borrarReglaItem(catId, letra) {
+            const cat = reglasArray.find(c => c.id === catId);
+            if (cat) {
+                cat.items = cat.items.filter(i => i.letra !== letra);
+                guardarReglasLocal();
+                renderizarAdminContenido();
+            }
         }
 
         function handleFileInput(event) {
@@ -919,13 +1200,13 @@
             
             guardarNoticiasLocal();
             cerrarEditorNoticia();
-            renderizarNoticiasAdmin(); 
+            renderizarAdminContenido(); 
         }
 
         function borrarNoticia(id) {
             noticiasArray = noticiasArray.filter(n => n.id !== id);
             guardarNoticiasLocal();
-            renderizarNoticiasAdmin();
+            renderizarAdminContenido();
         }
 
         window.onload = () => {
@@ -935,7 +1216,7 @@
             animStars();
             renderizarPartidos();
             renderizarVideos();
-            cargarNoticiasLocal();
+            cargarDatosLocales();
             window.addEventListener('resize', initStars);
         };
 

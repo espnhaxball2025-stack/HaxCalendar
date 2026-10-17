@@ -1124,90 +1124,30 @@
             reader.readAsDataURL(file);
         }
 
-        function abrirEditorNoticia(id = null) {
-            const modal = document.getElementById('editor-noticia-modal');
-            const container = document.getElementById('editor-noticia-container');
-            const tituloModal = document.getElementById('editor-titulo');
+ <!-- MODAL PORTADA DEL DIA / NOTICIAS -->
+    <div id="noticias-modal" class="fixed inset-0 z-[70] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/80 opacity-0 transition-opacity duration-300">
+        <div class="w-full max-w-5xl h-[85vh] bg-[#0a0a0a] border border-white/20 rounded-2xl shadow-neon flex flex-col overflow-hidden relative transform scale-95 transition-transform duration-300" id="noticias-container">
+            <!-- Header Modal -->
+            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-black/80 relative z-20">
+                <div class="flex items-center gap-4">
+                    <h2 class="text-2xl md:text-3xl font-black text-white tracking-widest uppercase flex items-center gap-3">
+                        <i class="fa-solid fa-newspaper text-haxgreen"></i> Noticias
+                    </h2>
+                </div>
+                <button onclick="cerrarNoticias()" class="text-gray-400 hover:text-red-500 text-4xl leading-none transition-colors">×</button>
+            </div>
             
-            document.getElementById('editor-img-file').value = '';
-            document.getElementById('img-preview-container').classList.add('hidden');
-            document.getElementById('img-preview').src = '';
-            document.getElementById('editor-img-b64').value = '';
-            document.getElementById('editor-img-url').value = '';
-
-            if (id) {
-                tituloModal.textContent = "Editar Noticia";
-                const noticia = noticiasArray.find(n => n.id === id);
-                document.getElementById('editor-id').value = noticia.id;
-                document.getElementById('editor-title').value = noticia.title;
-                document.getElementById('editor-text').value = noticia.text;
-                
-                if (noticia.image && noticia.image.startsWith('data:image')) {
-                    document.getElementById('editor-img-b64').value = noticia.image;
-                    document.getElementById('img-preview').src = noticia.image;
-                    document.getElementById('img-preview-container').classList.remove('hidden');
-                } else {
-                    document.getElementById('editor-img-url').value = noticia.image || '';
-                }
-            } else {
-                tituloModal.textContent = "Añadir Noticia";
-                document.getElementById('editor-id').value = '';
-                document.getElementById('editor-title').value = '';
-                document.getElementById('editor-text').value = '';
-            }
-            
-            modal.classList.remove('hidden'); modal.classList.add('flex');
-            setTimeout(() => { modal.classList.remove('opacity-0'); container.classList.remove('scale-95'); }, 10);
-        }
-
-        function cerrarEditorNoticia() {
-            const modal = document.getElementById('editor-noticia-modal');
-            const container = document.getElementById('editor-noticia-container');
-            modal.classList.add('opacity-0'); container.classList.add('scale-95');
-            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
-        }
-
-        function guardarNoticia() {
-            const id = document.getElementById('editor-id').value;
-            const imgB64 = document.getElementById('editor-img-b64').value;
-            const imgUrl = document.getElementById('editor-img-url').value.trim();
-            const title = document.getElementById('editor-title').value.trim();
-            const text = document.getElementById('editor-text').value.trim();
-            
-            if(!title || !text) return; 
-
-            const finalImg = imgB64 || imgUrl;
-
-            if (id) {
-                const idx = noticiasArray.findIndex(n => n.id === id);
-                if (idx > -1) {
-                    noticiasArray[idx].title = title;
-                    noticiasArray[idx].image = finalImg;
-                    noticiasArray[idx].text = text;
-                }
-            } else {
-                const fecha = new Date();
-                const dateStr = `${String(fecha.getDate()).padStart(2, '0')}/${String(fecha.getMonth()+1).padStart(2, '0')}/${fecha.getFullYear()}`;
-                
-                noticiasArray.push({
-                    id: Date.now().toString(),
-                    title: title,
-                    image: finalImg,
-                    text: text,
-                    date: dateStr
-                });
-            }
-            
-            guardarNoticiasLocal();
-            cerrarEditorNoticia();
-            renderizarAdminContenido(); 
-        }
-
-        function borrarNoticia(id) {
-            noticiasArray = noticiasArray.filter(n => n.id !== id);
-            guardarNoticiasLocal();
-            renderizarAdminContenido();
-        }
+            <!-- Contenido Portada del Día -->
+            <div class="p-6 md:p-10 overflow-y-auto custom-scrollbar relative z-10 bg-[#121212] flex-1 flex flex-col items-center justify-center text-center">
+                <h3 class="text-3xl md:text-5xl font-black text-haxgreen uppercase tracking-widest mb-6 drop-shadow-[0_0_15px_rgba(0,200,83,0.5)]">
+                    PORTADA DEL DÍA
+                </h3>
+                <div class="w-full max-w-4xl rounded-2xl overflow-hidden glass-panel border border-haxgreen/40 shadow-neon p-3 bg-black/60">
+                    <img id="img-portada-dia" src="" alt="Portada del Día" class="w-full h-auto max-h-[60vh] object-contain rounded-xl mx-auto shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </div>
 
         window.onload = () => {
             actualizarFecha(); 
@@ -1220,6 +1160,11 @@
             window.addEventListener('resize', initStars);
         };
 
+// ==========================================
+// PORTADA DEL DÍA (Pegá el link de tu imagen entre las comillas)
+// ==========================================
+const PORTADA_IMAGEN_URL = "PEGÁ_ACÁ_EL_LINK_DE_TU_IMAGEN";
+        
     </script>
 </body>
 </html>

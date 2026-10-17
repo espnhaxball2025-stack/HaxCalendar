@@ -365,26 +365,26 @@
         </div>
     </div>
 
-    <!-- MODAL NOTICIAS (VISTA USUARIO) -->
+    <!-- MODAL PORTADA DEL DIA / NOTICIAS -->
     <div id="noticias-modal" class="fixed inset-0 z-[70] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/80 opacity-0 transition-opacity duration-300">
         <div class="w-full max-w-5xl h-[85vh] bg-[#0a0a0a] border border-white/20 rounded-2xl shadow-neon flex flex-col overflow-hidden relative transform scale-95 transition-transform duration-300" id="noticias-container">
             <!-- Header Modal -->
             <div class="p-6 border-b border-white/10 flex justify-between items-center bg-black/80 relative z-20">
                 <div class="flex items-center gap-4">
                     <h2 class="text-2xl md:text-3xl font-black text-white tracking-widest uppercase flex items-center gap-3">
-                        <i class="fa-solid fa-newspaper text-haxgreen"></i> NOTICIAS
+                        <i class="fa-solid fa-newspaper text-haxgreen"></i> Noticias
                     </h2>
-                    <button onclick="abrirLoginAdmin()" class="bg-white/5 hover:bg-haxgreen hover:text-black border border-white/10 px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition-all shadow-sm">
-                        Admin <i class="fa-solid fa-lock text-[10px] ml-1"></i>
-                    </button>
                 </div>
                 <button onclick="cerrarNoticias()" class="text-gray-400 hover:text-red-500 text-4xl leading-none transition-colors">×</button>
             </div>
             
-            <!-- Contenido Noticias -->
-            <div class="p-6 md:p-8 overflow-y-auto custom-scrollbar relative z-10 bg-[#121212] flex-1">
-                <div id="contenedor-lista-noticias" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-                    <!-- Noticias generadas dinámicamente -->
+            <!-- Contenido Portada del Día -->
+            <div class="p-6 md:p-10 overflow-y-auto custom-scrollbar relative z-10 bg-[#121212] flex-1 flex flex-col items-center justify-center text-center">
+                <h3 class="text-3xl md:text-5xl font-black text-haxgreen uppercase tracking-widest mb-6 drop-shadow-[0_0_15px_rgba(0,200,83,0.5)]">
+                    PORTADA DEL DÍA
+                </h3>
+                <div class="w-full max-w-4xl rounded-2xl overflow-hidden glass-panel border border-haxgreen/40 shadow-neon p-3 bg-black/60">
+                    <img id="img-portada-dia" src="" alt="Portada del Día" class="w-full h-auto max-h-[60vh] object-contain rounded-xl mx-auto shadow-2xl">
                 </div>
             </div>
         </div>
@@ -418,12 +418,11 @@
                     <i class="fa-solid fa-sliders"></i> Panel de Administración
                 </h2>
                 <div class="flex items-center gap-2 bg-black/60 p-1.5 rounded-xl border border-white/10">
-                    <button onclick="cambiarTabAdmin('noticias')" id="tab-btn-noticias" class="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all bg-haxgreen text-black">Noticias</button>
-                    <button onclick="cambiarTabAdmin('reglas')" id="tab-btn-reglas" class="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all text-gray-400 hover:text-white">Reglas</button>
+                    <button id="tab-btn-reglas" class="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all bg-haxgreen text-black">Reglas</button>
                 </div>
                 <div class="flex gap-3 items-center">
                     <button id="btn-add-item" onclick="abrirEditorActual()" class="bg-haxgreen text-black font-bold px-4 py-2 rounded-lg text-sm hover:scale-105 transition-transform uppercase tracking-wider">
-                        <i class="fa-solid fa-plus mr-1"></i> Añadir Noticia
+                        <i class="fa-solid fa-plus mr-1"></i> Añadir Regla
                     </button>
                     <button onclick="cerrarPanelAdmin()" class="w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-red-500 text-white rounded-lg transition-colors text-xl">
                         ×
@@ -434,61 +433,13 @@
             <div class="bg-blue-900/20 border-b border-blue-500/30 px-6 py-3 flex items-start gap-3">
                 <i class="fa-solid fa-circle-info text-blue-400 mt-0.5"></i>
                 <p class="text-xs text-blue-200 leading-relaxed font-medium">
-                    <span class="font-bold text-blue-400">Modo Local (Vista Previa):</span> Las modificaciones se guardan en el almacenamiento de tu navegador (localStorage). Para sincronizar en tiempo real con <strong class="text-white">todos los usuarios</strong>, conecta el código a un backend (Firebase, Supabase o servidor propio).
+                    <span class="font-bold text-blue-400">Modo Local (Vista Previa):</span> Las modificaciones se guardan en el almacenamiento de tu navegador (localStorage).
                 </p>
             </div>
             <div class="p-6 overflow-y-auto custom-scrollbar flex-1 bg-[#121212]">
                 <div id="admin-lista-contenido" class="space-y-3">
-                    <!-- Contenido dinámico (Noticias o Reglas) -->
+                    <!-- Contenido dinámico (Reglas) -->
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL EDITOR DE NOTICIA -->
-    <div id="editor-noticia-modal" class="fixed inset-0 z-[90] hidden flex-col items-center justify-center p-4 backdrop-blur-md bg-black/90 opacity-0 transition-opacity duration-300">
-        <div class="bg-[#121212] border border-white/20 p-6 md:p-8 rounded-2xl w-full max-w-2xl shadow-glass flex flex-col transform scale-95 transition-transform duration-300 relative max-h-[90vh]" id="editor-noticia-container">
-            <h3 id="editor-titulo" class="text-2xl font-black mb-6 text-white uppercase tracking-widest shrink-0">Añadir Noticia</h3>
-            <input type="hidden" id="editor-id">
-            
-            <div class="overflow-y-auto custom-scrollbar pr-2 flex-1 flex flex-col">
-                <label class="text-xs font-bold tracking-widest text-haxgreen mb-1 uppercase">Imagen de la Noticia</label>
-                
-                <!-- Zona Drag & Drop -->
-                <div id="drop-zone" class="w-full h-32 border-2 border-dashed border-white/20 rounded-xl p-4 text-center hover:border-haxgreen/80 transition-all cursor-pointer flex flex-col items-center justify-center mb-3 relative overflow-hidden group bg-black/30" ondragover="event.preventDefault()" ondrop="handleDropInput(event)">
-                    <input type="file" id="editor-img-file" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" onchange="handleFileInput(event)">
-                    <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-400 group-hover:text-haxgreen mb-2 transition-colors duration-300 group-hover:-translate-y-1"></i>
-                    <span class="text-sm text-gray-400 group-hover:text-white transition-colors">Arrastra una imagen o haz clic para subir</span>
-                    
-                    <!-- Preview de la imagen -->
-                    <input type="hidden" id="editor-img-b64">
-                    <div id="img-preview-container" class="absolute inset-0 bg-black hidden z-10">
-                        <img id="img-preview" src="https://haxcalendar.pages.dev/" class="w-full h-full object-cover opacity-50">
-                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <span class="bg-black/80 border border-white/20 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-lg backdrop-blur-sm"><i class="fa-solid fa-pen mr-1"></i> Cambiar Imagen</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-2 mb-3">
-                    <div class="h-px bg-white/10 flex-1"></div>
-                    <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">O usa un Enlace Web</span>
-                    <div class="h-px bg-white/10 flex-1"></div>
-                </div>
-
-                <input type="text" id="editor-img-url" placeholder="https://ejemplo.com/imagen.jpg" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 mb-5 text-white focus:border-haxgreen focus:outline-none transition-colors text-sm">
-                
-                <label class="text-xs font-bold tracking-widest text-haxgreen mb-1 uppercase">Título de la Noticia</label>
-                <input type="text" id="editor-title" placeholder="Ej: Nueva actualización..." class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 mb-5 text-white focus:border-haxgreen focus:outline-none transition-colors">
-                
-                <label class="text-xs font-bold tracking-widest text-haxgreen mb-1 uppercase">Contenido</label>
-                <p class="text-[10px] text-gray-500 mb-2">Envuelve el texto en ** para negrita blanca. (Ej: **texto importante**)</p>
-                <textarea id="editor-text" rows="5" placeholder="Redacta la noticia aquí..." class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 mb-4 text-white focus:border-haxgreen focus:outline-none transition-colors custom-scrollbar resize-none"></textarea>
-            </div>
-
-            <div class="flex justify-end gap-3 mt-4 shrink-0 pt-4 border-t border-white/10">
-                <button onclick="cerrarEditorNoticia()" class="px-6 py-3 bg-white/5 text-gray-300 font-bold rounded-xl hover:bg-white/10 transition-colors uppercase text-sm tracking-wider">Cancelar</button>
-                <button onclick="guardarNoticia()" class="bg-haxgreen text-black font-black px-8 py-3 rounded-xl hover:scale-105 transition-transform shadow-neon uppercase text-sm tracking-wider flex items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
             </div>
         </div>
     </div>
@@ -528,6 +479,11 @@
 
 
     <script>
+        // ==========================================
+        // PORTADA DEL DÍA (Pegá el link de tu imagen acá abajo)
+        // ==========================================
+        const PORTADA_IMAGEN_URL = "https://images.unsplash.com/photo-1518605368461-1ea407c588ce?auto=format&fit=crop&w=1200&q=80";
+
         const SIMULAR_SIN_PARTIDOS = 'off';
 
         const DICCIONARIO_TORNEOS = {
@@ -785,12 +741,9 @@
         }
 
         // ==========================================
-        // SISTEMA DE REGLAS Y NOTICIAS CON ADMIN CRUD
+        // SISTEMA DE REGLAS CON ADMIN CRUD
         // ==========================================
-        let adminTabActual = 'noticias'; // 'noticias' o 'reglas'
-        let noticiasArray = [];
         let reglasArray = [];
-        const STORAGE_NEWS_KEY = 'haxcalendar_news_v1';
         const STORAGE_RULES_KEY = 'haxcalendar_rules_v1';
 
         const REGLAS_DEFAULT = [
@@ -846,26 +799,6 @@
         ];
 
         function cargarDatosLocales() {
-            // Noticias
-            const newsData = localStorage.getItem(STORAGE_NEWS_KEY);
-            if (newsData) {
-                noticiasArray = JSON.parse(newsData);
-            } else {
-                const fecha = new Date();
-                const dateStr = `${String(fecha.getDate()).padStart(2, '0')}/${String(fecha.getMonth()+1).padStart(2, '0')}/${fecha.getFullYear()}`;
-                noticiasArray = [
-                    {
-                        id: Date.now().toString(),
-                        title: 'Bienvenidos al nuevo sistema de noticias',
-                        image: 'https://images.unsplash.com/photo-1518605368461-1ea407c588ce?auto=format&fit=crop&w=800&q=80',
-                        text: 'A partir de ahora podrás enterarte de todo en esta pestaña. Preparate para los **nuevos torneos** que se vienen en la comunidad.',
-                        date: dateStr
-                    }
-                ];
-                guardarNoticiasLocal();
-            }
-
-            // Reglas
             const rulesData = localStorage.getItem(STORAGE_RULES_KEY);
             if (rulesData) {
                 reglasArray = JSON.parse(rulesData);
@@ -875,20 +808,10 @@
             }
         }
 
-        function guardarNoticiasLocal() {
-            localStorage.setItem(STORAGE_NEWS_KEY, JSON.stringify(noticiasArray));
-        }
-
         function guardarReglasLocal() {
             localStorage.setItem(STORAGE_RULES_KEY, JSON.stringify(reglasArray));
         }
 
-        function formatearTextoNoticia(texto) {
-            if (!texto) return '';
-            return texto.replace(/\*\*(.*?)\*\*/g, '<span class="font-bold text-white">$1</span>');
-        }
-
-        // Renderizado Reglas Usuario
         function renderizarReglasUsuario() {
             const container = document.getElementById('contenedor-lista-reglas');
             container.innerHTML = '';
@@ -926,7 +849,10 @@
             const menu = document.getElementById('dropdown-menu');
             menu.classList.add('hidden'); menu.classList.remove('flex');
             
-            renderizarNoticiasUsuario();
+            const imgEl = document.getElementById('img-portada-dia');
+            if (imgEl) {
+                imgEl.src = PORTADA_IMAGEN_URL;
+            }
             
             const modal = document.getElementById('noticias-modal');
             const container = document.getElementById('noticias-container');
@@ -939,41 +865,6 @@
             const container = document.getElementById('noticias-container');
             modal.classList.add('opacity-0'); container.classList.add('scale-95');
             setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
-        }
-
-        function renderizarNoticiasUsuario() {
-            const container = document.getElementById('contenedor-lista-noticias');
-            container.innerHTML = '';
-            
-            if(noticiasArray.length === 0) {
-                container.innerHTML = `<div class="col-span-full text-center text-gray-500 py-10 font-bold uppercase tracking-widest">No hay noticias publicadas.</div>`;
-                return;
-            }
-
-            const invertido = [...noticiasArray].reverse();
-
-            invertido.forEach(n => {
-                const imgHTML = n.image 
-                    ? `<div class="h-48 w-full bg-black/50 overflow-hidden shrink-0"><img src="${n.image}" onerror="this.src='https://placehold.co/600x400/121212/00C853?text=HAXNEWS'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"></div>` 
-                    : '';
-                
-                const card = `
-                    <div class="glass-panel rounded-2xl overflow-hidden shadow-glass border border-white/5 flex flex-col group hover:border-haxgreen/30 transition-colors">
-                        ${imgHTML}
-                        <div class="p-6 flex-1 flex flex-col">
-                            <span class="text-haxgreen text-xs font-black tracking-widest mb-3 uppercase"><i class="fa-regular fa-calendar mr-1"></i> ${n.date}</span>
-                            <h3 class="text-xl font-black text-white mb-4 uppercase tracking-wide leading-tight group-hover:text-haxgreen-light transition-colors">${n.title}</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed whitespace-pre-line">${formatearTextoNoticia(n.text)}</p>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += card;
-            });
-        }
-
-        function abrirLoginAdmin() {
-            cerrarNoticias();
-            abrirLoginAdminModal();
         }
 
         function abrirLoginAdminReglas() {
@@ -1015,8 +906,6 @@
         }
 
         function abrirPanelAdmin() {
-            adminTabActual = 'noticias';
-            actualizarTabsAdminUI();
             renderizarAdminContenido();
             const modal = document.getElementById('panel-admin-modal');
             const container = document.getElementById('panel-admin-container');
@@ -1031,109 +920,53 @@
             setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
         }
 
-        function cambiarTabAdmin(tab) {
-            adminTabActual = tab;
-            actualizarTabsAdminUI();
-            renderizarAdminContenido();
-        }
-
-        function actualizarTabsAdminUI() {
-            const btnNoticias = document.getElementById('tab-btn-noticias');
-            const btnReglas = document.getElementById('tab-btn-reglas');
-            const btnAdd = document.getElementById('btn-add-item');
-
-            if (adminTabActual === 'noticias') {
-                btnNoticias.className = "px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all bg-haxgreen text-black";
-                btnReglas.className = "px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all text-gray-400 hover:text-white";
-                btnAdd.innerHTML = '<i class="fa-solid fa-plus mr-1"></i> Añadir Noticia';
-            } else {
-                btnReglas.className = "px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all bg-haxgreen text-black";
-                btnNoticias.className = "px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all text-gray-400 hover:text-white";
-                btnAdd.innerHTML = '<i class="fa-solid fa-plus mr-1"></i> Añadir Regla';
-            }
-        }
-
         function abrirEditorActual() {
-            if (adminTabActual === 'noticias') {
-                abrirEditorNoticia();
-            } else {
-                abrirEditorRegla();
-            }
+            abrirEditorRegla();
         }
 
         function renderizarAdminContenido() {
             const container = document.getElementById('admin-lista-contenido');
             container.innerHTML = '';
 
-            if (adminTabActual === 'noticias') {
-                if(noticiasArray.length === 0) {
-                    container.innerHTML = `<div class="text-center text-gray-500 py-6">No hay noticias.</div>`;
-                    return;
-                }
-                const invertido = [...noticiasArray].reverse();
-                invertido.forEach(n => {
-                    const item = `
-                        <div class="bg-black/50 border border-white/10 rounded-xl p-4 flex justify-between items-center hover:border-white/20 transition-colors">
-                            <div class="flex-1 truncate pr-4">
-                                <h4 class="text-white font-bold truncate uppercase text-sm mb-1">${n.title}</h4>
-                                <span class="text-haxgreen font-medium text-xs tracking-widest">${n.date}</span>
+            reglasArray.forEach(cat => {
+                let itemsAdminHTML = '';
+                cat.items.forEach(it => {
+                    itemsAdminHTML += `
+                        <div class="bg-black/40 border border-white/5 rounded-lg p-3 flex justify-between items-center my-2">
+                            <div class="flex-1 pr-3">
+                                <span class="text-haxgreen font-bold mr-2">${it.letra})</span>
+                                <span class="text-gray-300 text-sm">${it.texto}</span>
                             </div>
                             <div class="flex gap-2 shrink-0">
-                                <button onclick="abrirEditorNoticia('${n.id}')" class="w-10 h-10 flex items-center justify-center bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white rounded-lg transition-colors">
+                                <button onclick="abrirEditorRegla('${cat.id}', '${it.letra}')" class="w-8 h-8 flex items-center justify-center bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white rounded-lg transition-colors text-xs">
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
-                                <button onclick="borrarNoticia('${n.id}')" class="w-10 h-10 flex items-center justify-center bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition-colors">
+                                <button onclick="borrarReglaItem('${cat.id}', '${it.letra}')" class="w-8 h-8 flex items-center justify-center bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition-colors text-xs">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
                         </div>
                     `;
-                    container.innerHTML += item;
                 });
-            } else {
-                // Renderizar Reglas agrupadas por categoría
-                reglasArray.forEach(cat => {
-                    let itemsAdminHTML = '';
-                    cat.items.forEach(it => {
-                        itemsAdminHTML += `
-                            <div class="bg-black/40 border border-white/5 rounded-lg p-3 flex justify-between items-center my-2">
-                                <div class="flex-1 pr-3">
-                                    <span class="text-haxgreen font-bold mr-2">${it.letra})</span>
-                                    <span class="text-gray-300 text-sm">${it.texto}</span>
-                                </div>
-                                <div class="flex gap-2 shrink-0">
-                                    <button onclick="abrirEditorRegla('${cat.id}', '${it.letra}')" class="w-8 h-8 flex items-center justify-center bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white rounded-lg transition-colors text-xs">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </button>
-                                    <button onclick="borrarReglaItem('${cat.id}', '${it.letra}')" class="w-8 h-8 flex items-center justify-center bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition-colors text-xs">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        `;
-                    });
 
-                    const catBlock = `
-                        <div class="bg-black/50 border border-white/10 rounded-xl p-5 mb-4">
-                            <h4 class="text-haxgreen font-black text-base uppercase mb-3 border-b border-white/10 pb-2">${cat.titulo}</h4>
-                            <div class="space-y-2">
-                                ${itemsAdminHTML}
-                            </div>
+                const catBlock = `
+                    <div class="bg-black/50 border border-white/10 rounded-xl p-5 mb-4">
+                        <h4 class="text-haxgreen font-black text-base uppercase mb-3 border-b border-white/10 pb-2">${cat.titulo}</h4>
+                        <div class="space-y-2">
+                            ${itemsAdminHTML}
                         </div>
-                    `;
-                    container.innerHTML += catBlock;
-                });
-            }
+                    </div>
+                `;
+                container.innerHTML += catBlock;
+            });
         }
 
-        // Gestión de Editor de Reglas
         function abrirEditorRegla(catId = null, letra = null) {
             const modal = document.getElementById('editor-regla-modal');
             const container = document.getElementById('editor-regla-container');
             const selectCat = document.getElementById('editor-regla-categoria');
             const tituloModal = document.getElementById('editor-regla-titulo');
             
-            // Llenar select con categorías
             selectCat.innerHTML = '';
             reglasArray.forEach(c => {
                 selectCat.innerHTML += `<option value="${c.id}">${c.titulo}</option>`;
@@ -1178,14 +1011,12 @@
             if (!nuevoTexto || !nuevaLetra) return;
 
             if (catIdOriginal && letraOriginal) {
-                // Editando
                 const catOrig = reglasArray.find(c => c.id === catIdOriginal);
                 catOrig.items = catOrig.items.filter(i => i.letra !== letraOriginal);
 
                 const catDest = reglasArray.find(c => c.id === nuevaCatId);
                 catDest.items.push({ letra: nuevaLetra, texto: nuevoTexto });
             } else {
-                // Nuevo
                 const catDest = reglasArray.find(c => c.id === nuevaCatId);
                 catDest.items.push({ letra: nuevaLetra, texto: nuevoTexto });
             }
@@ -1202,115 +1033,6 @@
                 guardarReglasLocal();
                 renderizarAdminContenido();
             }
-        }
-
-        function handleFileInput(event) {
-            const file = event.target.files[0];
-            if (file) procesarArchivoImagen(file);
-        }
-
-        function handleDropInput(event) {
-            event.preventDefault();
-            const file = event.dataTransfer.files[0];
-            if (file) procesarArchivoImagen(file);
-        }
-
-        function procesarArchivoImagen(file) {
-            if (!file.type.match('image.*')) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const b64 = e.target.result;
-                document.getElementById('editor-img-b64').value = b64;
-                document.getElementById('editor-img-url').value = '';
-                document.getElementById('img-preview').src = b64;
-                document.getElementById('img-preview-container').classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function abrirEditorNoticia(id = null) {
-            const modal = document.getElementById('editor-noticia-modal');
-            const container = document.getElementById('editor-noticia-container');
-            const tituloModal = document.getElementById('editor-titulo');
-            
-            document.getElementById('editor-img-file').value = '';
-            document.getElementById('img-preview-container').classList.add('hidden');
-            document.getElementById('img-preview').src = '';
-            document.getElementById('editor-img-b64').value = '';
-            document.getElementById('editor-img-url').value = '';
-
-            if (id) {
-                tituloModal.textContent = "Editar Noticia";
-                const noticia = noticiasArray.find(n => n.id === id);
-                document.getElementById('editor-id').value = noticia.id;
-                document.getElementById('editor-title').value = noticia.title;
-                document.getElementById('editor-text').value = noticia.text;
-                
-                if (noticia.image && noticia.image.startsWith('data:image')) {
-                    document.getElementById('editor-img-b64').value = noticia.image;
-                    document.getElementById('img-preview').src = noticia.image;
-                    document.getElementById('img-preview-container').classList.remove('hidden');
-                } else {
-                    document.getElementById('editor-img-url').value = noticia.image || '';
-                }
-            } else {
-                tituloModal.textContent = "Añadir Noticia";
-                document.getElementById('editor-id').value = '';
-                document.getElementById('editor-title').value = '';
-                document.getElementById('editor-text').value = '';
-            }
-            
-            modal.classList.remove('hidden'); modal.classList.add('flex');
-            setTimeout(() => { modal.classList.remove('opacity-0'); container.classList.remove('scale-95'); }, 10);
-        }
-
-        function cerrarEditorNoticia() {
-            const modal = document.getElementById('editor-noticia-modal');
-            const container = document.getElementById('editor-noticia-container');
-            modal.classList.add('opacity-0'); container.classList.add('scale-95');
-            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
-        }
-
-        function guardarNoticia() {
-            const id = document.getElementById('editor-id').value;
-            const imgB64 = document.getElementById('editor-img-b64').value;
-            const imgUrl = document.getElementById('editor-img-url').value.trim();
-            const title = document.getElementById('editor-title').value.trim();
-            const text = document.getElementById('editor-text').value.trim();
-            
-            if(!title || !text) return; 
-
-            const finalImg = imgB64 || imgUrl;
-
-            if (id) {
-                const idx = noticiasArray.findIndex(n => n.id === id);
-                if (idx > -1) {
-                    noticiasArray[idx].title = title;
-                    noticiasArray[idx].image = finalImg;
-                    noticiasArray[idx].text = text;
-                }
-            } else {
-                const fecha = new Date();
-                const dateStr = `${String(fecha.getDate()).padStart(2, '0')}/${String(fecha.getMonth()+1).padStart(2, '0')}/${fecha.getFullYear()}`;
-                
-                noticiasArray.push({
-                    id: Date.now().toString(),
-                    title: title,
-                    image: finalImg,
-                    text: text,
-                    date: dateStr
-                });
-            }
-            
-            guardarNoticiasLocal();
-            cerrarEditorNoticia();
-            renderizarAdminContenido(); 
-        }
-
-        function borrarNoticia(id) {
-            noticiasArray = noticiasArray.filter(n => n.id !== id);
-            guardarNoticiasLocal();
-            renderizarAdminContenido();
         }
 
         window.onload = () => {
